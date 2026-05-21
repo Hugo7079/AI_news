@@ -1,0 +1,2 @@
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+/bin/bash: /Users/leolee/Desktop/AI新聞爬搜整理/run_daily.sh: Operation not permitted

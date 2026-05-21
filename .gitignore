@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.DS_Store
+.streamlit/secrets.toml
+.ainews_llm_config.json
+
+# 輸出：保留 JSON + 封面圖（部署到 Streamlit Cloud 用），Excel / log 不入 git
+output/*.xlsx
+output/cron.log

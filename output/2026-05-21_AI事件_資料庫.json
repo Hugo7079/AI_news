@@ -1,0 +1,4530 @@
+{
+  "date": "2026-05-21",
+  "generated_at": "2026-05-21T15:28:44",
+  "total": 108,
+  "by_category_label": {
+    "技術突破與研究": 25,
+    "產業動態與商業": 25,
+    "硬體與基礎建設": 18,
+    "產品與應用": 25,
+    "政策法規與社會影響": 15
+  },
+  "events": [
+    {
+      "title": "OpenAI 推理模型破解 80 年前 Erdős 平面單位距離猜想",
+      "summary": "OpenAI 的通用推理模型成功解決了 1946 年由 Paul Erdős 提出的平面單位距離問題，透過發現全新的構造族證明了原有的上界猜想不成立。此成果已公開詳細證明文件，標誌著 AI 首度自主解決數學領域的重大開放性問題，展現強大的邏輯推理與科學研究潛力。",
+      "category": "tech_research",
+      "importance": 9,
+      "who": [
+        "OpenAI",
+        "OpenAI 模型",
+        "OpenAI 推理模型"
+      ],
+      "what": "解決數學猜想",
+      "when": "近期",
+      "where": "不適用",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/openai-claims-it-solved-an-80-year-old-math-problem-for-real-this-time/",
+          "title": "OpenAI claims it solved an 80-year-old math problem — for real this time",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T20:28:27+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tiwa59/openai_general_purpose_model_had_a_breakthrough/",
+          "title": "OpenAI general purpose model had a breakthrough on famous 80 year old Erdos problem. “This marks the first time AI has autonomously solved a prominent open problem central to a field of mathematics”",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T19:31:23+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture/",
+          "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
+          "source_name": "Hacker News (front)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T19:05:30+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQSTRhR2hrbkZhMlN0V2ZmMFVDQ0oxY1FxVU03SXdhbkpqUTJ3WTRNZzlhZkVKT09VT3VBdng4Z1hyYWFsVVlkdmYtS192emE4OUc4X0FRcC1YS2NGQ0pPeGNabGpxTE15QWdpeXEzQ183ekx1Zzg3N0h0eE1RZ1pZNTJoQjhhenlLcnZyX3FiaVg3VkVUOUFIcmczZGthcEdkWjFYM1FZSDc?oc=5",
+          "title": "OpenAI claims it solved an 80-year-old math problem — for real this time - TechCrunch",
+          "source_name": "GoogleNews:TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T20:28:27+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tiwl33/an_openai_model_has_disproved_a_central/",
+          "title": "An OpenAI model has disproved a central conjecture in discrete geometry",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T19:41:51+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9yX01zN3g1dUU2anpzWXA3d3RaQ3RaYWRPVkUtRzlyeElQN0lBZVFfNzQ1dTFleFB6aThGc0pweklXck9ZSXhMelJ0amRKaEY4ZDdoVkJqMEFXTkQ4OWp6OTlnNmZ2VUNlTVRDSHN5WVVUc0xndXU5T2t3?oc=5",
+          "title": "An OpenAI model has disproved a central conjecture in discrete geometry - OpenAI",
+          "source_name": "GoogleNews:OpenAI",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T16:31:14+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tiw0vq/a_glimpse_of_level_4_openai_model_helps_challenge/",
+          "title": "A glimpse of Level 4? OpenAI model helps challenge an 80-year-old math assumption",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T19:22:42+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/MachineLearning/comments/1tiy6s4/openai_claims_a_generalpurpose_reasoning_model/",
+          "title": "OpenAI claims a general-purpose reasoning model found a counterexample to Erdos's unit-distance bound [D]",
+          "source_name": "Reddit r/MachineLearning",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T20:37:12+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 8,
+      "event_id": "ab336fe8e2",
+      "url": "https://techcrunch.com/2026/05/20/openai-claims-it-solved-an-80-year-old-math-problem-for-real-this-time/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2026/05/Erdos-problems.png?resize=1200,863"
+      }
+    },
+    {
+      "title": "Google DeepMind 將 Genie 3 模型與街景服務整合",
+      "summary": "Google DeepMind 將 Genie 3 世界模型與 Google 街景影像結合，讓使用者能透過在地圖上標記地點，生成可探索的 AI 擬真世界。此舉旨在將街景數據轉化為 AI 代理與機器人的戰略訓練資源。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "Google DeepMind",
+        "Genie 3"
+      ],
+      "what": "整合 Genie 3 與街景服務",
+      "when": "近期",
+      "where": "全球",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/google-pairs-its-genie-world-model-with-street-view-to-create-explorable-ai-worlds-based-on-real-places/",
+          "title": "Google pairs its Genie world model with Street View to create explorable AI worlds based on real places",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T11:30:28+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "615e1a7f48",
+      "url": "https://the-decoder.com/google-pairs-its-genie-world-model-with-street-view-to-create-explorable-ai-worlds-based-on-real-places/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://the-decoder.com/wp-content/uploads/2025/08/genie_3_google_deepmind.png"
+      }
+    },
+    {
+      "title": "提出 VLM 代理對齊框架 GROW",
+      "summary": "研究人員提出 GROW 框架，將群組相對策略優化（GRPO）與狀態-動作建模對齊，以提升視覺語言模型（VLM）代理在開放世界多輪任務中的表現。該方法旨在解決標準 GRPO 在多輪強化學習中對完整軌跡的依賴問題。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "GROW"
+      ],
+      "what": "提出對齊框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20246",
+          "title": "GROW: Aligning GRPO with State-Action Modeling for Open-World VLM Agents",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "4f3bfb8198",
+      "url": "https://arxiv.org/abs/2605.20246",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+      }
+    },
+    {
+      "title": "推出少步生成語言模型 FlowLM",
+      "summary": "研究提出 FlowLM，透過將預訓練的擴散語言模型轉換為流匹配模型，實現高品質的少步生成。FlowLM 在極少訓練週期下即可達到性能飽和，且生成品質可媲美 2,000 步擴散採樣。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "FlowLM"
+      ],
+      "what": "推出新模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20199",
+          "title": "FlowLM: Few-Step Language Modeling via Diffusion-to-Flow Adaptation",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b048cb90e5"
+    },
+    {
+      "title": "微軟研究院發表LLM文件處理可靠性論文",
+      "summary": "微軟研究院發表論文《LLMs Corrupt Your Documents When You Delegate》，指出 LLM 在處理長流程委派式文件工作時，難以維持內容的完整性與準確性。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "微軟研究院"
+      ],
+      "what": "發表論文",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/176007",
+          "title": "先進AI模型處理長流程文件任務仍不可靠，內容遭改寫更難察覺",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T11:05:24+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b3f9dc9de5"
+    },
+    {
+      "title": "Meta 與 Nvidia 啟動 GPU 漏洞獎勵計畫",
+      "summary": "Meta 與 Nvidia 宣布合作，預計於今年 6 月啟動 GPU Kernel Module Bug Bounty 計畫，旨在提升 GPU 核心模組的安全性。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Meta",
+        "Nvidia"
+      ],
+      "what": "啟動漏洞獎勵計畫",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175951",
+          "title": "Meta MBBRC首度登臺！祭30萬美元獎金鎖定AI代理等安全",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:44:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "00aedc1dc5"
+    },
+    {
+      "title": "評測 Gemini 3.0 Flash 醫療 AI 能力",
+      "summary": "研究人員利用 2,257 個使用者查詢，評估 Gemini 3.0 Flash 在結合個人健康紀錄（PHR）作為上下文時，提供個人化醫療問答的實用性與準確度。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Gemini 3.0 Flash"
+      ],
+      "what": "評測醫療問答能力",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.18937",
+          "title": "Evaluating the Utility of Personal Health Records in Personalized Health AI",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c73924c15a"
+    },
+    {
+      "title": "推出 LLM 訓練控制層 LBW-Guard",
+      "summary": "研究人員開發 LBW-Guard 治理層，透過觀察訓練遙測數據並對 AdamW 優化器執行有界控制，以解決 LLM 在激進學習率或規模化訓練時的不穩定與計算浪費問題。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "LBW-Guard"
+      ],
+      "what": "推出訓練控制層",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19008",
+          "title": "Learn-by-Wire Training Control Governance: Bounded Autonomous Training Under Stress for Stability and Efficiency",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a0a408e656"
+    },
+    {
+      "title": "開發 NL2SQL 代理工具 AgentNLQ",
+      "summary": "研究人員提出 AgentNLQ 多代理方法，旨在提升自然語言轉 SQL 的準確度，並在 BIRD 基準測試中達到 78.1% 的語義準確率，優於單一 LLM 表現。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "AgentNLQ"
+      ],
+      "what": "推出多代理方法",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19010",
+          "title": "AgentNLQ: A General-Purpose Agent for Natural Language to SQL",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "8c3fbbff01"
+    },
+    {
+      "title": "推出 ResearchArena 自動研究評測平台",
+      "summary": "研究人員推出 ResearchArena 評測平台，旨在系統性研究 AI 代理生成論文的品質。該平台讓 Claude Code、Codex 與 Kimi Code 等代理在輕量指導下，獨立完成從構思、實驗到論文撰寫的完整研究循環。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "ResearchArena",
+        "arXiv"
+      ],
+      "what": "推出評測平台",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19156",
+          "title": "How Far Are We From True Auto-Research?",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "76e371e9e5"
+    },
+    {
+      "title": "推出藥物推薦框架 GraphDiffMed",
+      "summary": "研究團隊開發 GraphDiffMed 框架，利用藥理學圖先驗與雙尺度微分注意力機制，解決電子健康記錄中患者軌跡長且雜訊多的問題。該框架旨在提供更安全且有效的藥物組合推薦。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "GraphDiffMed"
+      ],
+      "what": "推出推薦框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20188",
+          "title": "GraphDiffMed: Knowledge-Constrained Differential Attention with Pharmacological Graph Priors for Medication Recommendation",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e5d3d6e9fb"
+    },
+    {
+      "title": "推出表格數據多任務學習模型 TabPFN-MT",
+      "summary": "研究人員提出 TabPFN-MT 模型，透過擴展的多目標合成先驗訓練，使其具備原生多任務上下文學習能力。該模型能捕捉任務間的依賴關係，避免在處理多個目標值時重複進行前向計算。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "TabPFN-MT"
+      ],
+      "what": "推出多任務學習模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20234",
+          "title": "TabPFN-MT: A Natively Multitask In-Context Learner for Tabular Data",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "400b4ec24b"
+    },
+    {
+      "title": "推出 LLM 安全探測工具 Geometry-Lite",
+      "summary": "研究人員開發 Geometry-Lite 緊湊型提示級探測工具，用於分析大型語言模型隱狀態中安全證據的層級幾何分佈。該工具旨在解釋模型如何區分安全與不安全提示，並研究其在基準測試偏移下的穩定性。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Geometry-Lite"
+      ],
+      "what": "推出安全探測工具",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20241",
+          "title": "Geometry-Lite: Interpretable Safety Probing via Layer-Wise Margin Geometry",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "d5f93e1af7"
+    },
+    {
+      "title": "開發鈣鈦礦添加劑發現框架 LEAP",
+      "summary": "研究團隊開發 LEAP 框架，將領域專用大型語言模型（LLM）與主動學習結合，用於鈣鈦礦太陽能電池的前驅體添加劑發現。該系統能從文獻中提取機制相關知識並迭代優先級排序。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "LEAP"
+      ],
+      "what": "推出化學發現框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20242",
+          "title": "LEAP: A closed-loop framework for perovskite precursor additive discovery",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "7dc01e054b"
+    },
+    {
+      "title": "提出 FBOS-RL 優化模型推理能力",
+      "summary": "研究人員提出 FBOS-RL（回饋驅動雙目標協同強化學習），旨在優化 GRPO 等強化學習訓練迴路，透過改進採樣與策略更新機制來提升大型模型的推理能力。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "FBOS-RL"
+      ],
+      "what": "提出新強化學習方法",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20256",
+          "title": "FBOS-RL: Feedback-Driven Bi-Objective Synergistic Reinforcement Learning",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "d0e01f0b0b"
+    },
+    {
+      "title": "發布醫療概念提取基準測試 MedicalBench",
+      "summary": "研究推出 MedicalBench 基準測試，旨在評估大型語言模型在電子健康記錄中提取醫療概念的能力，特別著重於對隱含概念的提取及其在醫療文本中的證據 grounding。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "MedicalBench"
+      ],
+      "what": "發布基準測試",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20197",
+          "title": "MedicalBench: Evaluating Large Language Models Toward Improved Medical Concept Extraction",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "df872b2f5c"
+    },
+    {
+      "title": "提出 ProxyCoT 長文本推理訓練框架",
+      "summary": "針對 LLM 在長文本複雜推理任務中表現不佳的問題，研究提出 ProxyCoT 訓練框架。該框架透過將短代理上下文（proxy context）的推理能力轉移至全文本，提升模型的長文本推理性能。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "ProxyCoT"
+      ],
+      "what": "提出訓練框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20201",
+          "title": "Long-Context Reasoning Through Proxy-Based Chain-of-Thought Tuning",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "f2ee50562f"
+    },
+    {
+      "title": "研究人員提出 Masked Diffusion 語言模型 MDLM",
+      "summary": "研究人員開發出 SDAR-8B 與 WeDLM-8B 等遮蔽擴散語言模型（MDLM），旨在解決自回歸模型在生成全局不一致的問題。實驗證明 MDLM 在 BLEU-1 與 ROUGE-L 等指標上顯著優於基準模型。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "SDAR-8B",
+        "WeDLM-8B"
+      ],
+      "what": "發表研究成果",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/MachineLearning/comments/1tj9tna/masked_diffusion_language_models_are_strong_and/",
+          "title": "Masked Diffusion Language Models are Strong and Steerable Text-Based World Models for Agentic RL [R]",
+          "source_name": "Reddit r/MachineLearning",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:36:46+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "06e7e703f6"
+    },
+    {
+      "title": "推出 CANTANTE 優化多代理系統方法",
+      "summary": "研究人員提出 CANTANTE 方法，透過對比信用歸因（Contrastive Credit Attribution）來優化基於 LLM 的多代理系統。該方法旨在解決全局性能評分與局部代理行為之間的信用分配瓶頸，減少手動調整提示詞的嘗試錯誤過程。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "CANTANTE",
+        "研究人員"
+      ],
+      "what": "提出優化方法",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/MachineLearning/comments/1tij4st/cantante_optimizing_agentic_systems_via/",
+          "title": "CANTANTE: Optimizing Agentic Systems via Contrastive Credit Attribution [R]",
+          "source_name": "Reddit r/MachineLearning",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T11:43:12+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6d3616dc46"
+    },
+    {
+      "title": "Qwen 3.7 Max 在 SWE-Bench Pro 獲 60.6%",
+      "summary": "Qwen 3.7 Max 模型在軟體工程評測基準 SWE-Bench Pro 中取得了 60.6% 的得分，展現其在自動化解決軟體問題上的能力。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Qwen 3.7 Max",
+        "Alibaba"
+      ],
+      "what": "性能評測",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tj95nl/qwen_37_max_scores_606_on_swebench_pro/",
+          "title": "Qwen 3.7 Max scores 60.6% on SWE-Bench Pro",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:04:57+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e64167d727"
+    },
+    {
+      "title": "HalBench 開源 LLM 幻覺評測基準",
+      "summary": "開發者推出名為 HalBench 的開源基準測試，旨在衡量 LLM 的諂媚與幻覺現象。該基準包含 3,200 個錯誤前提提示詞，並已對 Sonnet 4.6 與 GPT-5.4 等模型進行測試。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "HalBench"
+      ],
+      "what": "推出評測基準",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tizvih/halbench_i_built_a_custom_sycophancy_and/",
+          "title": "HalBench: I built a custom sycophancy and hallucination benchmark and tested 4 frontier models (Sonnet 4.6, Grok 4.3, GPT 5.4 and Gemini 3.1 Pro), looking for input on what OSS models to run next!",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T21:35:16+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "14aeaf6a32"
+    },
+    {
+      "title": "Meta 於臺灣舉辦 MBBRC 資安大會",
+      "summary": "Meta 首度將年度資安盛事 Bug Bounty 研究者大會（MBBRC）移師臺灣，匯聚全球 26 國白帽駭客，針對 AI 代理、系統性濫用及隱私保護技術進行挖掘。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "Meta"
+      ],
+      "what": "舉辦資安大會",
+      "when": "近期",
+      "where": "臺灣",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175951",
+          "title": "Meta MBBRC首度登臺！祭30萬美元獎金鎖定AI代理等安全",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:44:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "cbb25edfa3"
+    },
+    {
+      "title": "提出 Document AI 微服務架構",
+      "summary": "研究人員提出一種微服務架構，將 OCR、分類與 LLM 結構化欄位提取整合於管線中，並證明該系統能每小時處理數千份多頁文件，縮小研究與生產規模間的差距。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "Document AI 微服務架構"
+      ],
+      "what": "提出微服務架構",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.18818",
+          "title": "Operationalizing Document AI: A Microservice Architecture for OCR and LLM Pipelines in Production",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "40136d9924"
+    },
+    {
+      "title": "提出 KAN-MLP-Mixer 混合網路",
+      "summary": "研究人員開發 KAN-MLP-Mixer，結合 Kolmogorov-Arnold 網路（KAN）的精確度與多層感知器（MLP）的魯棒性，用以提升基於 IMU 的人體活動識別性能。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "KAN-MLP-Mixer"
+      ],
+      "what": "提出混合網路模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19031",
+          "title": "KAN-MLP-Mixer: A comprehensive investigation of the usage of Kolmogorov-Arnold Networks (KANs) for improving IMU-based Human Activity Recognition",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "3a155f02b7"
+    },
+    {
+      "title": "提出遮蔽離散序列模型互資訊估計框架",
+      "summary": "研究人員提出一種神經框架，可直接從預訓練遮蔽擴散模型（MDM）的隱狀態中估計成對條件互資訊。該方法利用模型自身的條件分佈計算出的真實互資訊進行監督，旨在提升模型的解釋力與生成效率。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "Neural framework for MI estimation"
+      ],
+      "what": "提出新框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20187",
+          "title": "Neural Estimation of Pairwise Mutual Information in Masked Discrete Sequence Models",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "325394d42c"
+    },
+    {
+      "title": "Anthropic 每年支付 SpaceX 150 億美元租用算力",
+      "summary": "根據 SpaceX 招股說明書，Anthropic 同意每月向 SpaceX 支付 12.5 億美元（年度總計 150 億美元），以獲取 Colossus 1 與 Colossus 2 的算力容量，支持其模型訓練與運作需求。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "Anthropic",
+        "SpaceX"
+      ],
+      "what": "支付算力租用費用",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/anthropic-will-pay-xai-1-25-billion-per-month-for-compute/",
+          "title": "Anthropic will pay xAI $1.25B per month for compute",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T21:29:22+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQb29TWnM5b0w0bFZfVU1tOGtHQkQ0dG4wTmxHTXU2cXBjYzd1aG9lVTVQNzFPWXNmWUhrNlFteHJCUTMxdEZHak5MNF8zNF81ajFidklQRGxDdy00TGxyNTZSZEc5S3p0eVpwNlBFSzFLcWlrMWhFc1lJV1JUaGo1aDh5bVdIRDlQMXRxcDQ2X1BfSlNCMXNiMk1YdENZa2FmdVBaM3NJSWlyWnJHREZtNDJsUnc3al9ZV2FITUJB?oc=5",
+          "title": "Anthropic nears first quarterly profit, agrees to pay SpaceX $1.25 billion monthly for computing power - Reuters",
+          "source_name": "GoogleNews:Reuters",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-21T00:04:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPczF3bm1XLW5NdzlJSk1yZ2NvT1lNeFN4UkNGVkRBR3hyWXU0eXdOYnlzV1huREpaRnVQY2JxdGtBd1MwdUU4QTF5VzU0c1RycllqUG5oUlJqbU5sQ3JIMEZuUGhBcThKaVNmeEkyWFNCT3pUSEZ3VkRoVGNUdzQwVlpmM1ZQWDFta0pvdkpaQ2llVzBiMWFN?oc=5",
+          "title": "Anthropic will pay xAI $1.25B per month for compute - TechCrunch",
+          "source_name": "GoogleNews:TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T21:29:22+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.wired.com/story/spacex-ipo-anthropic-compute-finances-risks/",
+          "title": "SpaceX IPO Filing Reveals Anthropic Is Paying $15 Billion a Year to Access Its Data Centers",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T21:43:40+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-20/anthropic-to-pay-spacex-nearly-45-billion-for-computing-deal",
+          "title": "Anthropic to Pay SpaceX Nearly $45 Billion for Computing Deal",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T21:54:40+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tj3csv/anthropic_is_paying_spacex_15_billion_per_year/",
+          "title": "Anthropic is paying SpaceX $15 billion per year",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T23:51:10+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tj0efw/anthropicspacex_deal_seems_much_larger_than/",
+          "title": "Anthropic-SpaceX deal seems much larger than previously reported",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T21:55:14+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1OWkFxcHdYaVppd2FTc2N1Z2h4ekhOcVlYT29CNXEyNDNsVmtOc05oUjM3OERzS2VZNVZCNWNWMjl3YmFzU25jR2Utc05xdWt3OU1mX2JfT2hJSnVkSGw0d05MTjlFZzg4?oc=5",
+          "title": "Anthropic is paying SpaceX $15 billion per year - Axios",
+          "source_name": "GoogleNews:Axios",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T21:44:15+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNS1FMQ1BESjhUMHBzOW5VbGw1dkVZYWZPcDlNZE1zUmFIb1VXdU1hQkVZSE5iTUtCbVZZdUVnemZGVE9BTTlkYmV2OFYwY29HSTNyZ2htTkxEYVhVUVhidndvWEZuU0VOMDIyRGNpc3pzN01jd01kY1VjTjRUT3BZTk9acw?oc=5",
+          "title": "Anthropic Is Paying SpaceX $1.25 Billion a Month for AI Compute - Business Insider",
+          "source_name": "GoogleNews:Business Insider",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T21:51:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5DbjhTS1ZFQkhoWVhIZzZrdE9IOXJUY0h6eUozNVJhWENFVHl6eVh6bHp4aHlRS29Ic2RDWjVHTFllLUtKeTVPZk9yVURQT1VIeTRjcXp6aG1ILTN6Q3dYcjZhZmpOcVhiQkwyR3dmUFpDOVBXWFMtSy1CUFc?oc=5",
+          "title": "SpaceX IPO Filing Reveals Anthropic Is Paying $15 Billion a Year to Access Its Data Centers - WIRED",
+          "source_name": "GoogleNews:WIRED",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T21:43:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 10,
+      "event_id": "e046cef1b0",
+      "url": "https://techcrunch.com/2026/05/20/anthropic-will-pay-xai-1-25-billion-per-month-for-compute/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2025/07/GettyImages-2223576505.jpg?resize=1200,800"
+      }
+    },
+    {
+      "title": "OpenAI 加速推進首次公開募股 (IPO) 計畫",
+      "summary": "OpenAI 在贏得與馬斯克的法律訴訟後，正積極籌備首次公開募股（IPO），據報最快可能於本週五秘密提交申請，或於 9 月份正式掛牌。此舉旨在透過公開市場籌集大量資金，以支持其龐大的 AI 模型訓練與運算基礎設施需求。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "OpenAI"
+      ],
+      "what": "籌備並申請首次公開募股 (IPO)",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756072_NW7LE2CY853QMZ1G6XG5Z",
+          "title": "OpenAI準備遞交IPO申請　最快9月掛牌",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:09:27+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/20/openai-barrels-toward-ipo-that-may-happen-in-september/",
+          "title": "OpenAI barrels toward IPO that may happen in September",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T17:24:24+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPbUNPM3RKdnF0aklKak9TejBpS0R6Q2s5R1VENnFjS0R4Ui0wbEZ5enhOWjBlMFBlUzUwVnZPN3pvRzJzaWxmb3cxdDhpTHhfMDBlOUNCVE95N19XUGthMEdLN2RzYVhVc3lkTEpDLWRRSWJYdE9HYWZ4bFdHdlB1Nnh0SFdYS3ZqU3p0R2l6dGIzZHJJTVV4Z1N3eURET29lejIwbkEyUXNvb1U2OUdFMDdkeW1HeUZxcnlOUDh4dGFKV0Zqam5QMFpXOTE3NXNj?oc=5",
+          "title": "OpenAI Could Confidentially File For IPO As Soon As Friday, Report Says - Forbes",
+          "source_name": "GoogleNews:Forbes",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T16:51:40+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQQzZOZXNXNlpLX1N2a0MzSFFDRmdMY2xLRk9BNkw3M3N4aG9DNXV4MEkxeUdqcTl1V1dQeXZBQmdpNURYZG1nTEduUXFpU0x1ZUc1MS04dU40NXFLVDd5S3Z6aE0tS05yYUd2T0JYbWlPVWMySm5PeUNkakdBcmtBbWlsd21ubXVEUm5obktmT1RTSmlmc2ZQT016MU5WYUdrbGlrbDJ0ZUU4MFVwTUgxLQ?oc=5",
+          "title": "OpenAI Is Preparing to File for an IPO in the Coming Weeks - Bloomberg.com",
+          "source_name": "GoogleNews:Bloomberg.com",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T16:48:01+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTFBRenYyMXEyVGhlMnlXNi1pb2xaVlRURFNaYW5NUGdERVB4WVdQa2dfYWVoNjdJYXcwUVRjQ0FpTzZBdnVMUHZQRktvYUROdWdEYVRGbm1TNDJraGVXYkpiQ3ZrZ21oM25wVkpZ?oc=5",
+          "title": "Exclusive | OpenAI Is Preparing to File for an IPO Very Soon - WSJ",
+          "source_name": "GoogleNews:WSJ",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T17:43:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQMnZDYW4zd0pDVEQxVFRhNlozSDdMaTVma1FrQVhaZVZKd1lXTGtVdk9QUVVmN2pDbmc1SG8xVkRSTElVNThiZVlpV3dmLTZSVEdvaVhScGh3bm5oRk11WFZ6V05QbUk4a19ZcWlXRVVkeVUtRnZRYjFBQ0JUczRvNmJCam11YzN2U0NGeUlPUVA?oc=5",
+          "title": "OpenAI aiming for speedy IPO, source says - Reuters",
+          "source_name": "GoogleNews:Reuters",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T23:41:12+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.bloomberg.com/news/newsletters/2026-05-20/openai-faces-ipo-unknowns-even-after-victory-over-musk",
+          "title": "OpenAI Faces IPO Unknowns Even After Victory Over Musk",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T22:09:47+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://finance.technews.tw/2026/05/21/openai-to-confidentially-file-for-ipo-as-soon-as-friday/",
+          "title": "與高盛、大摩合作，OpenAI 最快週五祕密提交 IPO 說明文件",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T02:09:46+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.cnbc.com/2026/05/20/openai-ipo-filing.html",
+          "title": "OpenAI to confidentially file for IPO as soon as Friday",
+          "source_name": "Hacker News (front)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T02:24:35+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 9,
+      "event_id": "a807942467",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756072_NW7LE2CY853QMZ1G6XG5Z",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0521/756072-1-6xg5z_l.jpg"
+      }
+    },
+    {
+      "title": "SpaceX 提交 IPO 申請並揭露 Grok 法律風險",
+      "summary": "SpaceX 正式向納斯達克提交 IPO 申請，預計將成為史上最大規模的首次公開募股之一。文件中特別將 Grok 的「Spicy」模式列為風險因素，並撥款超過 5 億美元以應對因生成色情圖像而可能面臨的法律訴訟損失。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "SpaceX",
+        "Grok"
+      ],
+      "what": "提交 IPO 申請並揭露 AI 產品法律風險",
+      "when": "近期",
+      "where": "納斯達克 (Nasdaq)",
+      "sources": [
+        {
+          "url": "https://www.wired.com/story/spacex-ipo-grok-spicy-mode-risks/",
+          "title": "SpaceX Listed Grok’s ‘Spicy’ Mode as a Risk in Its IPO Filing",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-21T00:43:13+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5DbjhTS1ZFQkhoWVhIZzZrdE9IOXJUY0h6eUozNVJhWENFVHl6eVh6bHp4aHlRS29Ic2RDWjVHTFllLUtKeTVPZk9yVURQT1VIeTRjcXp6aG1ILTN6Q3dYcjZhZmpOcVhiQkwyR3dmUFpDOVBXWFMtSy1CUFc?oc=5",
+          "title": "SpaceX IPO Filing Reveals Anthropic Is Paying $15 Billion a Year to Access Its Data Centers - WIRED",
+          "source_name": "GoogleNews:WIRED",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T21:43:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.bloomberg.com/news/videos/2026-05-20/musk-s-spacex-files-publicly-for-nasdaq-ipo-video-mpem2etf",
+          "title": "Musk’s SpaceX Files Publicly for Nasdaq IPO",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T22:05:57+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.bloomberg.com/news/videos/2026-05-20/musk-s-spacex-files-publicly-for-nasdaq-ipo-video",
+          "title": "Musk’s SpaceX Files Publicly for Nasdaq IPO Under Symbol SPCX",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T21:13:07+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 4,
+      "event_id": "6346c894d4",
+      "url": "https://www.wired.com/story/spacex-ipo-grok-spicy-mode-risks/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://media.wired.com/photos/6a0e32d330c7f349f26634db/191:100/w_1280,c_limit/Grok-Has-Over-100-Million-Monthly-Users-Business-2255064635.jpg"
+      }
+    },
+    {
+      "title": "Nvidia 獲利 583 億美元創紀錄",
+      "summary": "Nvidia 公布最新財報，受益於 AI 晶片需求爆發，公司獲利達到 583 億美元，創下歷史新高。此結果顯示全球 AI 基礎設施投資持續強勁。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "Nvidia"
+      ],
+      "what": "公布財報獲利",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQYkFqREdpdHMzU1JlWVhLd3VYd3VYaFRYc3Y5TktrVlFaVU1uQVAxbTBacUhlQk0yQVRBckpkdzQtN3FkV2dmbHJGeHowTU96Q1VfcW9nUDE0TlpGS1lZQk9SRTBUYVZRS3VwelhiaWdWVzgtRmhOQ2x0TGlpX3o5T2tlVjZVcUNCU01ld1hsMVhqRTVWcDlQMVIzSXRPZjZrbWfSAacBQVVfeXFMUGpXSFI4bjQ1anAyTXFDS2ZlNk9qTUJWZU93RzYtZ1J5R05teXdyWkdUR3ZOLWcyVUZhOFk5aWdfb0NCZmNPSHpreXNqZXRFbE5IM2UwMmRJczBNSjVhYkwzMGptNjlJSXdXMFVfMVZzeExYcFVSMkNZQzlHLUpNSTY4LU1tZkFBRXdXUzBWazJVUDEyVllFaFBoUldMZ0ZzcVRGY1pfMUU?oc=5",
+          "title": "Nvidia posts record profit of $58.3bn amid AI chip boom - Al Jazeera",
+          "source_name": "GoogleNews:Al Jazeera",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-21T06:15:53+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE5xYW55bVF5aGlIRmI1T0tQa2ZIZXM5d05NQTYyV2RaanpYeURsOUc4cTNxOGdCQ3lXRWl4TWVubG5BMGJMVHBYUVVyREFxNkNaWDl0TDZIOEtIZW90WXh5TTVzVC1TVkFSeklwV2pvR1BqUQ?oc=5",
+          "title": "Nvidia’s Profit Hits $58.3 Billion as A.I. Boom Gathers More Steam - The New York Times",
+          "source_name": "GoogleNews:The New York Times",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T22:54:31+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "637fbaae02"
+    },
+    {
+      "title": "Nvidia 披露持有 430 億美元初創公司股份",
+      "summary": "Nvidia 在公布創紀錄的季度營收之際，揭露其目前持有價值約 430 億美元的初創公司股份。此舉顯示 Nvidia 正透過大規模投資佈局 AI 生態系統。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "Nvidia"
+      ],
+      "what": "披露投資持股",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/nvidia-posts-another-record-quarter-reveals-43-billion-of-holdings-in-startups/",
+          "title": "Nvidia posts another record quarter, reveals $43B of holdings in startups",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T22:03:51+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "cd540d4f99"
+    },
+    {
+      "title": "Meta 裁員 8,000 人以應對 AI 轉型",
+      "summary": "Meta 宣布在全球範圍內進行大規模裁員，共計削減約 8,000 個職位，約佔其總員工數的 10%。此次裁員分三波進行，反映出 AI 技術對科技巨頭組織結構的劇烈影響與調整。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "Meta"
+      ],
+      "what": "裁員 8,000 人",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tiosgg/mark_zuckerbergs_meta_kicks_off_major_bloodbath/",
+          "title": "Mark Zuckerberg’s Meta kicks off major bloodbath with 8,000 layoffs (about 10% of its workforce) as AI roils tech giant",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T15:17:16+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "28be08173a"
+    },
+    {
+      "title": "輝達發布優於預期的財務報告",
+      "summary": "輝達（NVIDIA）公布最新財報，業績表現優於市場預期，直接帶動全球 AI 相關股票及台灣 AI 供應鏈公司股價大幅上漲。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "輝達",
+        "NVIDIA"
+      ],
+      "what": "發布財報",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMi3gNBVV95cUxNOUdrWFp3aTY4R0JxWG44Y1RHRUttNTA5WDFnX1lHcTlHR3k4ZEdodUZfc252SmxNRktHcGt1STRxaWFsY3Z6eXhGbW1iTXpPU3JuT3QzVk1WTnRyVlUzS0Jsancxc2J4Vy1kTHdyb2gtRFR4S29UV2IxYmNPVzNYTkxHLVhSckhZeEgwT19WUDlXTkhoUDRaQjZ1WC1FU1g2dzJybkVhUFNHUzRqR25weFR1clAzcjUydUJ6SUozcGRoNWRnQTNEdUl5SGwwLUFBY0xBbnV4Z180QjNyRDUtaEl6dXVILXdobnA0RXhpQ2d4VXVBNHJTZmlWdVFxR2gtZndXN3M0cFdGUHhMMDhrLVdHYnF3NVE5VG8wQzVBUFdGeWhJbjQycE5YQXpkNEZrZzVKOG9yaUxkLUIycFUyd3JtUnoxMHRtQ0hQTmViRVl3OFVfbVRxNzJ6YUw3anVBTHB6SV9rLW9wbmxWT1FTd3BMQ25PNEpHenA1VlpQeHJfWC1nZk5mTm04TVE5Mlcxd0Y3VVNMMVFfM1NaeElpQldBTjhEZHQ2akhzLW5VMUZJVXNFWFB5bkN1TjRiS3FHcEhjc2hHaW1xdE5hbFJfVFFDZEhNZTNsc0FhVkp3?oc=5",
+          "title": "輝達財報優預期！AI股5檔飆漲停、信驊19檔強彈逾5% 聯發科猛虎出閘「4千張排隊搶買」 - Yahoo股市",
+          "source_name": "GoogleNews:Yahoo股市",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T05:06:37+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "7a9728fa2c"
+    },
+    {
+      "title": "輝達公布營收816億美元創新高",
+      "summary": "NVIDIA 在法說會中公布營收達到 816 億美元，創下歷史新高。此成長主因於全球對 AI 算力需求的強勁增長，推動其數據中心業務大幅擴張。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "NVIDIA"
+      ],
+      "what": "公布財報營收",
+      "when": "2026-05",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMi4gNBVV95cUxNNkVScXlQejA0emVQT3pyQmFQRzlqT2hweTJSWVRHRllsOHJmbmFaV2l5ajkwT3UzanhBMTJGRzJaOWh0VWl4SWdRX0htOG9DSkFaWkRvZWVKaVhhdUhSeFVwTDhJbFV3eGVMVnpEdV94aWlUa3JHNi1JSE5rYk5NSnlXc05xQlhsMmMyRE82SERKaVZpa1NONkRGWmR0UmtjYmdpVFkxTDJuMERWQmVpZjI2Q2NDSktNei0wX1VPMW9ZckJnOVdrVkpvRGRQT3ByaFh2UnpuTUtaYWo1aXI1M3QxT3BZSk83OVF5ZS1QV194RkhnSEZiNXpnc21Oc2RGazU2Z1pqSnFhQ1lUSEdlWmFKUnlKWjdqVjZReXFPMTQwZXdZb2VlaUlISjRuVWNON0h5b1AyM29TMlFMd3I3WEZzajRhNXVyUWpZbUlmbjdILV9JVW1XaVlXX1FpdlUzZzlZbjk1YzJTRUFmT3hNelhLQXpKS0JCaFRseUhtZE9nQ2dzTU9lUzVNNHNNN1ViSktRZ3EzbUZVNXdla2dMVm4yX2VQSkdackxOamxtWXQtMjBEYzZSMDI4SV9JXzF1d1g3Z256YjI2bDZKTVd5MzUyZ2Y1RThfX2RTMjJHMzFlUQ?oc=5",
+          "title": "美股法說NVDA｜輝達營收816 億美元創新高，AI 算力需求強勁但股價盤後震盪(NVDA US)｜豐雲學堂2026 年 05 月 - sinotrade.com.tw",
+          "source_name": "GoogleNews:sinotrade.com.tw",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T02:01:17+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b3d49daab0"
+    },
+    {
+      "title": "Anthropic 第二季度營收預計達 109 億美元",
+      "summary": "根據消息來源，Anthropic 在第二季度的營收預計將達到 109 億美元，展現出極其強勁的營收成長動能。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "Anthropic"
+      ],
+      "what": "營收達 109 億美元",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNWjBGMXlvandTQTFWaHdfRVBxNXVIRVczYV8tbExMXzNRQ3dFM09qeTE2NnluWnZ2bXoxVG5mQ00tYnBRRnpSNnlkQlhJV3k2aDU3SGNRLVBqVzhvMktIeTVHZXNmWThHalVSNTd1Zk5IcjdZRkJYaU1VSWxWeW5Uc3F3X3dXX0pPSVJMWmp1dVliSy16cFZJQ1h30gGfAUFVX3lxTE0teWVONzJqY3U2Z1l5MTA2dDBSZmJLaW1iZURyQVB4T1htNHBBSVc5Y2h4c29CTDhGV1ZIYTB0VkFlMzRSSDdDS2hDaWJtYkVvVU9NTHRFUnZGQ2NJaE9RVGN5NV9wQmZLRG9xWUNJMUtwejFFMU44R3pkQ1VHSDRkaDNxYXJ6Mm1DUlpDclM5TTZUOVRLXzVPaTA3NGpqdw?oc=5",
+          "title": "Anthropic set to hit $10.9 billion in revenue during second quarter, source says - CNBC",
+          "source_name": "GoogleNews:CNBC",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T23:25:28+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "fe857ddf9e"
+    },
+    {
+      "title": "Anthropic 預告將實現首個季度獲利",
+      "summary": "AI 實驗室 Anthropic 告知投資者，公司在第二季度的營收將翻倍至約 109 億美元。這將使該公司在營運以來首次實現單季獲利。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Anthropic"
+      ],
+      "what": "預告首個獲利季度",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/anthropic-says-its-about-to-have-its-first-profitable-quarter/",
+          "title": "Anthropic says it’s about to have its first profitable quarter",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-21T00:21:21+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQR2NoS2RrWHg1NUpwVkRrd3hyTzFHRGNSdWYtWElOS3JXV2czY19mYTltdkl5NW91OG5zZ3dndFVKZVoxMzc1dzVleEZyeVJDcTVwMlF2OXFiV0ZMcVU2NFFoTXVlUURwaW50ZmZybUNHYnM3bTVqci11cjM5U3Z5ejJ0ckgyUEU0ZmVVYXdoemx3c3Q0blEzSE44b1Qzc0ktZmVJQXRFUVc3YzVBSFBrUkJiOWFTdjAxTWtR?oc=5",
+          "title": "Exclusive | Mind-Blowing Growth Is About to Propel Anthropic Into Its First Profitable Quarter - WSJ",
+          "source_name": "GoogleNews:WSJ",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T20:54:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPNGQ0bFozOXREOEF4NElNX2plREJjUC1EQ3BYWEtqQXFlaXBiVWNIb1psTU1PeVFicGVCTjY1NjlhU3FhLVdkNUdYaVd6cTJKaVZ2ZkFDQ21LMklieml0OGY1U1pjbm45Z2tBQ29ZTE9uMWJnNnh5b0laRkp0bTdmRy0zSzkzS3lfd1k4dDF3ZUZOOVpVdFY1a011QU8?oc=5",
+          "title": "Anthropic says it’s about to have its first profitable quarter - TechCrunch",
+          "source_name": "GoogleNews:TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-21T00:21:21+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "c0e5d9b712"
+    },
+    {
+      "title": "OpenAI 提議以 AI Token 換股投資 YC 創業公司",
+      "summary": "Sam Altman 提議 OpenAI 向本屆 Y Combinator 的創業公司提供價值 200 萬美元的 AI Token，以換取其公司股權。此創新投資模式旨在將更多創業資源與 OpenAI 生態系統深度結合。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "OpenAI",
+        "Sam Altman",
+        "Y Combinator"
+      ],
+      "what": "提議以 AI Token 換股投資 YC 創業公司",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/sam-altman-makes-mic-drop-offer-to-every-y-combinator-startup/",
+          "title": "Sam Altman makes ‘mic drop’ offer to every Y Combinator startup",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T21:23:02+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1titl6z/sam_altman_offers_yc_founders_2_million_in_openai/",
+          "title": "Sam Altman Offers YC Founders $2 Million in OpenAI Tokens For Equity",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T18:01:24+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "082cab98f3"
+    },
+    {
+      "title": "OpenAI 推出企業算力保證方案",
+      "summary": "OpenAI 為企業客戶推出「算力保證」（Guaranteed Capacity）方案，允許客戶預先鎖定 1 至 3 年的 AI 運算資源，以確保 AI 代理及工作流程的穩定運行，協助企業提前規劃算力需求。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "OpenAI"
+      ],
+      "what": "推出算力保證方案",
+      "when": "近期",
+      "where": "全球",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755983_MPT8FU9P9A48LG2BX3JMG",
+          "title": "預購算力享折扣　OpenAI祭出長約方案搶企業訂單",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T18:57:52+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "adac310615"
+    },
+    {
+      "title": "Google DeepMind 採取人才收購策略聘用 Contextual AI 員工",
+      "summary": "市場傳聞 Google DeepMind 透過一份授權協議，將 Contextual AI 的員工納入其團隊，採取類似人才收購的策略以強化 AI 能力。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Google DeepMind",
+        "Contextual AI"
+      ],
+      "what": "聘用 Contextual AI 員工",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPUndjb2JDRzlnTVNXQVZiVmNTVEhvaDRjYlJHa24zaXgzbFl5LVFYR3k1WmhJNUtpZWNfT2VCQno2M0Jld3FjS2FIRVktNE5WeWQxUVJmUl9RQmZWRzh3bFoybjJqaHNFUTVTRWVhUlBfRXFtbWRyZXd3SnBuVkhTUXVMbmZZNTRpMVJUWUNwWl8?oc=5",
+          "title": "市場傳聞：Google DeepMind於授權協議下聘用Contextual AI員工 - AASTOCKS.com",
+          "source_name": "GoogleNews:AASTOCKS.com",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-20T08:18:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5667ac2b71"
+    },
+    {
+      "title": "Meta 啟動 AI 組織重整",
+      "summary": "Meta 進行大規模組織調整，裁撤及取消約 1.4 萬個職位，並將 7,000 名員工重新分派至 AI 相關新職務，旨在強化 AI 研發能力。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Meta"
+      ],
+      "what": "組織重整並分派 AI 人力",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756076_9MALJNOO8UH6HO5CLDY5M",
+          "title": "Meta啟動新一輪AI重組　Mark Zuckerberg承諾年內不再大裁員",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:19:04+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "561968d803"
+    },
+    {
+      "title": "俄羅斯聯儲銀行擬採用中國 AI 晶片",
+      "summary": "俄羅斯聯邦儲蓄銀行（Sberbank）執行長 German Gref 表示，有意採用中國製造的 AI 處理器，用以運行該行研發的旗艦 AI 模型。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Sberbank"
+      ],
+      "what": "擬採用 AI 晶片",
+      "when": "近期",
+      "where": "俄羅斯",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756071_7XR1UPQZ6N1OFL2L1HB08",
+          "title": "俄羅斯聯儲銀行擬採用中國AI晶片　恐先面臨華為產能荒",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:40:36+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5539122669"
+    },
+    {
+      "title": "Anthropic 公開 2026 年財務營收數據",
+      "summary": "根據財務文件，Anthropic 2026 年第一季營收為 48 億美元，第二季預計將增長至 109 億美元，季增幅超過 130%，有望實現單季獲利。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Anthropic"
+      ],
+      "what": "公開財務數據",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756074_T51L8NEB8EENGT326F8WM",
+          "title": "Anthropic 2Q26營收季增逾1倍　拚首度單季轉盈",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T04:31:07+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "9ae60900a1"
+    },
+    {
+      "title": "Intuit 裁員 17% 以推動 AI 轉型",
+      "summary": "金融稅務軟體商 Intuit Inc. 宣布將裁員約 17% 的員工，旨在調整組織結構並將資源集中於 AI 轉型，同時調降了主力產品 TurboTax 的營收預測。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Intuit Inc."
+      ],
+      "what": "裁員並轉型 AI",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://finance.technews.tw/2026/05/21/intuit-reports-strong-third-quarter-results-and-raises-full-year-revenue-guidance/",
+          "title": "報稅軟體商 Intuit 擬裁員 17%、專注 AI 轉型",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T07:20:51+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ea91544293"
+    },
+    {
+      "title": "xAI 2025 年虧損 64 億美元",
+      "summary": "根據 SpaceX 的 IPO 申請文件揭露，Elon Musk 旗下的 AI 公司 xAI 在 2025 年虧損達 64 億美元。該虧損主因於公司計劃大規模擴展 Grok 模型而投入巨額資金。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "xAI"
+      ],
+      "what": "披露年度虧損",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/xai-burned-6-4b-last-year-spacexs-ipo-filing-shows-why-the-spending-is-far-from-over/",
+          "title": "xAI burned $6.4B last year — SpaceX’s IPO filing shows why the spending is far from over",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T22:26:08+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5f1f3d2e6b"
+    },
+    {
+      "title": "DeepSeek 組建團隊開發 AI 編碼代理",
+      "summary": "DeepSeek 在北京組建新團隊開發名為「Deepseek Code」的 AI 編碼代理，旨在與 Claude Code、Codex 及 Cursor 等產品直接競爭。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "DeepSeek",
+        "Deepseek Code"
+      ],
+      "what": "組建開發團隊",
+      "when": "近期",
+      "where": "北京",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/deepseek-wants-to-take-on-claude-code-and-openais-codex-with-deepseek-code/",
+          "title": "Deepseek wants to take on Claude Code and OpenAI's Codex with \"Deepseek Code\"",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T18:48:47+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "be486a18d7"
+    },
+    {
+      "title": "ARK Invest 加碼 Cerebras",
+      "summary": "ARK Invest 的執行長 Cathie Wood 增加對 AI 晶片新創公司 Cerebras 的投資持倉，顯示其看好 AI 硬體新興勢力的成長潛力。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Cerebras",
+        "ARK Invest",
+        "AMD"
+      ],
+      "what": "加碼投資",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5kSEplcUxkQlpjR1I1eU1nY1Uzdk1KMWxTN2VnODBpUzhfYkJ4RlpNQXlzd0pIT01CV29mZjFOZXhBM3BYZFBXUjByVGsydGs?oc=5",
+          "title": "木頭姐重押AI新創：Cerebras加碼、AMD持續遭減持 - news.cnyes.com",
+          "source_name": "GoogleNews:news.cnyes.com",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T02:40:06+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6871d8425d"
+    },
+    {
+      "title": "Mercury 估值達到 52 億美元",
+      "summary": "專為 AI 創業公司提供金融服務的 Mercury 估值攀升至 52 億美元，在過去 14 個月內增長 49%，顯示 AI 創業潮對金融基礎設施的需求強勁。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "Mercury"
+      ],
+      "what": "估值上升",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9mS1pqazRaWUxjLV9NS1hIOEhCeHJ1RHZlWkh1NzFvMjllemJtbW5rT1V2NE5MVUFPYnpzcFVuOVdxWmhXa3VFXy1qbFE3dVk?oc=5",
+          "title": "Mercury估值衝上52億美元 AI創業潮助14個月飆升49% - news.cnyes.com",
+          "source_name": "GoogleNews:news.cnyes.com",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-20T20:00:16+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQR1dvNDRMUktvRlRpYW5OcEM2RGtRNnVjWDFJRGVKN3hJaWd5ZjIwOERYN2pBSXU4Ukc3cWp0eTdZOURtN2JMWDhvTDJVMFhsdWFpd0hvZzBUbEs4a3dGbHg2Rk10ejFycjZzMXN0VFI4M1ZwMVBRRmJZVGZLdWUxYi1GWFU3ZWcySG80MDhLNDItdzVYZ2NOTnVLVEkydw?oc=5",
+          "title": "Mercury reaches $5.2 billion valuation on AI startup push - The News International",
+          "source_name": "GoogleNews:The News International",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T18:38:23+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "36f64b954d"
+    },
+    {
+      "title": "OpenAI 招募中文人才",
+      "summary": "OpenAI 啟動中文人才招募計畫，旨在服務廣大的中文開發者社群，以強化其在亞太地區的影響力與技術支持。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "OpenAI"
+      ],
+      "what": "招募中文人才",
+      "when": "近期",
+      "where": "亞太地區",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756097_8I616R6P83S2CF86W0C3L",
+          "title": "中國開發者佔3分之1　OpenAI啟動中文人才招募強攻亞太地區",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:06:24+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "90f56afca2"
+    },
+    {
+      "title": "味之素調漲 ABF 膜材價格 30%",
+      "summary": "日本材料大廠味之素宣布將 ABF 膜材價格調漲 30%，主因是 AI 浪潮推升 GPU 與先進封裝需求，導致上游封裝載板材料全面漲價。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "味之素"
+      ],
+      "what": "調漲產品價格",
+      "when": "近期",
+      "where": "日本",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756109_8FO2TFJELN6RLULHEA6K2",
+          "title": "《科技聽IC》AI狂潮進入材料戰，為什麼做味精的也受惠漲價了？",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:43:54+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6e20973e84"
+    },
+    {
+      "title": "詮鼎集團攜手此芯科技推動 AI Agent 應用",
+      "summary": "大聯大控股旗下詮鼎集團宣布與此芯科技合作，針對生成式 AI 邊緣裝置部署，解決百億參數模型對晶片效能與記憶體頻寬的高要求，加速 AI Agent 終端應用。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "詮鼎集團",
+        "此芯科技"
+      ],
+      "what": "建立合作夥伴關係",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756088_4JWLGI3B97JIX77FDYHPI",
+          "title": "異質算力推動  大聯大詮鼎攜手此芯科技加速AI Agent終端應用",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:27:05+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5d3950a898"
+    },
+    {
+      "title": "雙鴻上修 2026 年營收成長預測",
+      "summary": "散熱模組廠雙鴻因 AI 伺服器需求強勁，將 2026 年全年營收成長預估從 5 成上修至 7 成，並看好液冷散熱需求將持續成長至 2028 年。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "雙鴻"
+      ],
+      "what": "上修營收預測",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756124_A3B233421MI4NC5X3292C",
+          "title": "雙鴻：液冷需求擴大　散熱還有數年好光景",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T04:23:07+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "34f827d895"
+    },
+    {
+      "title": "AMD 承諾向台灣 AI 投資逾 100 億美元",
+      "summary": "AMD 宣布將在台灣投資 100 億美元，旨在強化 AI 晶片相關的合作夥伴關係並提升供應鏈能力，以加速其在 AI 硬體市場的佈局。",
+      "category": "hardware_infra",
+      "importance": 9,
+      "who": [
+        "AMD",
+        "台灣"
+      ],
+      "what": "投資 AI 基礎設施",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-21/amd-commits-more-than-10-billion-to-taiwan-ai-investments",
+          "title": "AMD Commits More Than $10 Billion to Taiwan AI Investments",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-21T06:14:37+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOaDNEaVVXMUVpR0txTzNVUmhFRmlNRDRpcFV3aUduLXU4cERuOWxLRkJVS09LY19sMzJNT1F0a1NpTzdQWEFfb2N2WVFmOHhVMnNWLXVsSDdtR2dwUDA1eDdMcVAzSnpuNFNoWHV5eUxFSmxTNV9yME5xenJNOEZnamRzWEdjQjh1LUI5RUI2cG1mcGxhSWphQWdUNA?oc=5",
+          "title": "AMD to invest $10B in Taiwan to boost AI chip partnerships (AMD:NASDAQ) - Seeking Alpha",
+          "source_name": "GoogleNews:Seeking Alpha",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-21T05:52:41+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "1b182e4e90",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-21/amd-commits-more-than-10-billion-to-taiwan-ai-investments",
+      "cover_image": {
+        "kind": "fallback",
+        "category": "hardware_infra"
+      }
+    },
+    {
+      "title": "Google 與黑石合資成立 AI 基礎架構公司",
+      "summary": "Google 與黑石集團合資成立 AI 基礎架構公司，黑石初期投入 50 億美元，預計 2027 年提供 500MW 運算容量，讓企業能透過非 Google Cloud 管道獲取 TPU 資源。",
+      "category": "hardware_infra",
+      "importance": 9,
+      "who": [
+        "Google",
+        "黑石"
+      ],
+      "what": "合資成立公司",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175959",
+          "title": "Google、黑石合資成立AI基礎架構公司，跨入運算雲服務",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T12:06:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "83d05f4490",
+      "url": "https://www.ithome.com.tw/news/175959",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0520-google_blackstone-960.jpg"
+      }
+    },
+    {
+      "title": "阿里巴巴推出新款 AI 晶片",
+      "summary": "阿里巴巴正式發布新款 AI 晶片，旨在強化其在中國國內半導體產業的競爭力，並提升其自主研發能力以支持 AI 業務發展。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "新款 AI 晶片",
+        "阿里巴巴"
+      ],
+      "what": "推出新 AI 晶片",
+      "when": "近期",
+      "where": "中國",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNWHFCOWNBdnZFS1NFREhxQmNYY2Jyb1V3dlhBZDQweVlUbE9tZFJ3dmJta1NzYmJlV3ZGNlNvS244TEZHS1pVcWdtRWNsaUlKdmp4UlFYQ3RrNmxLWXJzelJwc3I4YXp1bmJZb0dkZkRaajdadDg4RWRjUlJVamtfT3BJSXEydlFyUjJMMS12eXFweXhCTHZTZGNzREJFcXRVQzdIT2NIWQ?oc=5",
+          "title": "Alibaba launches new AI chip to strengthen domestic semiconductor ambitions (BABA) - Yahoo Finance",
+          "source_name": "GoogleNews:Yahoo Finance",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T10:29:49+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPTWhqaE16aTkyMG14RG54VmpxWVUtS1JYTnAzZ0RTNTRidGVyZUt3TU5HWko2R2tIandXUUJOVV9YcDJjQ0diSFJsM1N0bmg5UlhTUkdJMk03ZUoxM2UxeWd1OHhVR3kxV1lKejlHbGpERU1sdWYxazJoc0JuaXd2TDJfT09DOV9uNnVWZVRHckJ2d0RtUnJKdElXb2xIaExY?oc=5",
+          "title": "Alibaba unveils new AI chip as Nvidia access remains stalled - Yahoo Finance",
+          "source_name": "GoogleNews:Yahoo Finance",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T11:58:14+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "c884490b5e",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNWHFCOWNBdnZFS1NFREhxQmNYY2Jyb1V3dlhBZDQweVlUbE9tZFJ3dmJta1NzYmJlV3ZGNlNvS244TEZHS1pVcWdtRWNsaUlKdmp4UlFYQ3RrNmxLWXJzelJwc3I4YXp1bmJZb0dkZkRaajdadDg4RWRjUlJVamtfT3BJSXEydlFyUjJMMS12eXFweXhCTHZTZGNzREJFcXRVQzdIT2NIWQ?oc=5",
+      "cover_image": {
+        "kind": "fallback",
+        "category": "hardware_infra"
+      }
+    },
+    {
+      "title": "英特爾提前啟動 10A 與 7A 節點研發",
+      "summary": "英特爾宣布提前啟動 10A 與 7A 等次世代製程節點研發，旨在透過更長期的製程藍圖重塑工程文化，並與台積電競爭晶圓代工市場。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "Intel"
+      ],
+      "what": "啟動製程研發",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756096_D4C1O9ME81XLT378QHXA0",
+          "title": "陳立武重塑英特爾工程文化　10A、7A提前啟動迎戰台積電",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:34:54+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e836a202cb"
+    },
+    {
+      "title": "ASML 確認與 Elon Musk 討論 Terafab 計畫",
+      "summary": "ASML 執行長 Christophe Fouquet 首度證實，公司曾與 Tesla 執行長 Elon Musk 就 Terafab 計畫進行討論，以應對強勁的 AI 晶片需求與產能壓力。",
+      "category": "hardware_infra",
+      "importance": 7,
+      "who": [
+        "ASML",
+        "Elon Musk"
+      ],
+      "what": "確認合作討論",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756077_PDN1E37J61N8J38PVHUTR",
+          "title": "ASML CEO：Terafab計畫有可能實現　AI需求強勁恐引發長期產能吃緊",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T04:27:42+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "af0786c191"
+    },
+    {
+      "title": "科林研發於奧地利成立面板級封裝研發中心",
+      "summary": "科林研發（Lam Research）在奧地利薩爾斯堡正式成立「面板級封裝（Panel-Level Packaging）」研發中心，旨在強化先進封裝技術布局，以支持高效能運算與 AI 晶片需求。",
+      "category": "hardware_infra",
+      "importance": 7,
+      "who": [
+        "Lam Research"
+      ],
+      "what": "成立封裝研發中心",
+      "when": "近期",
+      "where": "奧地利",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/21/lam-research-panel%e2%80%91level-packaging-coe/",
+          "title": "科林研發在奧地利成立面板級封裝研發中心，強化先進封裝布局",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T07:14:48+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "68dd1b3a73"
+    },
+    {
+      "title": "xAI 計劃採購 28 億美元天然氣渦輪機",
+      "summary": "根據 SpaceX 的 IPO 文件，xAI 計劃在未來三年內花費 28 億美元採購天然氣渦輪機。此舉旨在為其 AI 資料中心提供穩定的電力供應以支持運算需求。",
+      "category": "hardware_infra",
+      "importance": 7,
+      "who": [
+        "xAI"
+      ],
+      "what": "採購基礎設施",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/musks-xai-is-being-sued-over-its-data-center-generators-now-its-buying-2-8b-more/",
+          "title": "Musk’s xAI is being sued over its data center generators — now it’s buying $2.8B more",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T21:55:49+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "35c023707a"
+    },
+    {
+      "title": "科林研發啟用 PLP 創新卓越中心",
+      "summary": "科林研發（Lam Research）於奧地利啟用面板級封裝（PLP）創新卓越中心，旨在解決 AI 與高效能運算（HPC）在先進封裝設計上逼近晶圓物理極限的問題。",
+      "category": "hardware_infra",
+      "importance": 6,
+      "who": [
+        "科林研發",
+        "Lam Research"
+      ],
+      "what": "啟用創新中心",
+      "when": "近期",
+      "where": "奧地利",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756057_6PG1NIFD4U6WTB8OY9CQO",
+          "title": "「以方代圓」半導體製程進入轉折點　科林研發啟用PLP創新卓越中心",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T01:39:06+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2b3f2c8008"
+    },
+    {
+      "title": "Sberbank 尋求華為晶片支援 GigaChat",
+      "summary": "俄羅斯聯邦儲蓄銀行（Sberbank）計畫採購中國華為晶片，以提供旗下 AI 模型 GigaChat 所需的算力，旨在應對西方國家的晶片禁令，並與字節跳動及阿里巴巴競爭資源。",
+      "category": "hardware_infra",
+      "importance": 6,
+      "who": [
+        "Sberbank",
+        "華為",
+        "GigaChat"
+      ],
+      "what": "尋求晶片算力",
+      "when": "近期",
+      "where": "俄羅斯",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/21/sberbank-seeks-chinese-chips-to-power-russias-gigachat-ai-model/",
+          "title": "俄羅斯 Sberbank 尋求華為晶片為 GigaChat 提供算力，得跟字節跳動與阿里巴巴搶貨",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T02:10:13+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a1d9a74754"
+    },
+    {
+      "title": "AMD Ryzen AI Halo PC 定價與記憶體規格曝光",
+      "summary": "市場消息指出，搭載 AMD Ryzen AI 處理器的 Halo PC 將定價 3,999 美元，並配備 128GB 的板載記憶體，旨在提供高規格的本地 AI 運算硬體支持。",
+      "category": "hardware_infra",
+      "importance": 6,
+      "who": [
+        "AMD Ryzen AI Halo PC",
+        "AMD"
+      ],
+      "what": "公開產品定價",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tinl98/amd_ryzen_ai_halo_pc_will_cost_3999_with_128gb/",
+          "title": "AMD Ryzen AI Halo PC will cost 3999$ with 128GB memory on board",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T14:35:47+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a37642d5ed"
+    },
+    {
+      "title": "佳世達宣布將展出液冷 AI 伺服器方案",
+      "summary": "佳世達宣布將在 2026 年的 COMPUTEX 展會中，展示其開發的液冷 AI 伺服器解決方案，旨在透過液冷技術提升 AI 運算設備的散熱效率與整體效能。",
+      "category": "hardware_infra",
+      "importance": 6,
+      "who": [
+        "液冷AI伺服器方案",
+        "佳世達"
+      ],
+      "what": "宣布展出方案",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQZklnVkZ1bjNOSnU0SkxTR2lYUDBIbk1fX24wZTB6M3BSRnBYQjNvMmJVR0M3TkY5bld6SFdIVVFfRkE0cHBqc044N0NYTU90dllXRkJDYnAzOEtIb19yWXVoNjh4cERGalZ5UTJ6UDdFM1p3RHlVdXhpUmFEcWw1aDlXbnFIaVd1N05TdlNpVXc?oc=5",
+          "title": "【即時新聞】佳世達宣布2026 COMPUTEX展出液冷AI伺服器方案 - CMoney投資網誌",
+          "source_name": "GoogleNews:CMoney投資網誌",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-20T23:18:22+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "448d66dc49"
+    },
+    {
+      "title": "AGI 亞奇雷科技將於 COMPUTEX 2026 展出新品",
+      "summary": "AGI 亞奇雷科技計畫在 2026 年 COMPUTEX 展出次世代儲存新品，包含 DDR5 RDIMM 與 PCIe Gen5 SSD 等伺服器記憶體與工控方案。",
+      "category": "hardware_infra",
+      "importance": 5,
+      "who": [
+        "AGI 亞奇雷科技"
+      ],
+      "what": "展出新品",
+      "when": "2026",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755776_N1087W156NBMZO7UFLX3X",
+          "title": "AGI亞奇雷科技2026 COMPUTEX首發DDR5伺服器記憶體與工控方案",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T19:49:39+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2c101417c6"
+    },
+    {
+      "title": "安費諾於 COMPUTEX 2026 亮相資料中心互連技術",
+      "summary": "安費諾（Amphenol）在 COMPUTEX 2026 展示全方位資料中心互連技術，旨在降低 AI 工廠中 GPU 叢集傳輸巨量資料的延遲與功耗。",
+      "category": "hardware_infra",
+      "importance": 5,
+      "who": [
+        "安費諾",
+        "Amphenol"
+      ],
+      "what": "展出技術",
+      "when": "2026",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755988_68K81JRM9BORP37EKBA17",
+          "title": "安費諾於COMPUTEX 2026亮相全方位資料中心互連技術",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T19:41:18+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e03ae041a1"
+    },
+    {
+      "title": "Midjourney 表示使用 TPU 導致研究進度延遲一年",
+      "summary": "Midjourney 公開表示，由於在研究過程中使用了 TPU 而非完全依賴 NVIDIA 設備，導致其研發進度被推遲了一年，對此決定表示遺憾。",
+      "category": "hardware_infra",
+      "importance": 5,
+      "who": [
+        "Midjourney"
+      ],
+      "what": "公開基礎設施經驗",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tiut2d/midjourney_says_their_research_was_set_back_by_a/",
+          "title": "Midjourney says their research was set back by a year by using TPU, regrets not sticking purely with nvidia",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T18:41:55+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "92dd2be4f1"
+    },
+    {
+      "title": "AWS 大量採購 Apple M3 Ultra Mac Studio",
+      "summary": "AWS 採購了大量搭載 M3 Ultra 晶片的 Mac Studio 設備，旨在擴展其雲端基礎設施以支持相關運算需求，而一般消費者目前仍面臨庫存短缺。",
+      "category": "hardware_infra",
+      "importance": 5,
+      "who": [
+        "AWS"
+      ],
+      "what": "採購硬體設備",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tio2i5/aws_secures_rare_mac_studios_while_ordinary_apple/",
+          "title": "\"AWS secures rare Mac Studios while ordinary Apple customers remain completely locked out\"",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T14:52:46+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5559690a15"
+    },
+    {
+      "title": "Anthropic 擴展 Colossus2 並採用 GB200",
+      "summary": "Anthropic 宣布擴展其名為 Colossus2 的基礎設施，並將採用 NVIDIA 的 GB200 晶片以提升運算能力，旨在支持更大規模的模型訓練與推理需求。",
+      "category": "hardware_infra",
+      "importance": 4,
+      "who": [
+        "Anthropic",
+        "NVIDIA"
+      ],
+      "what": "擴展基礎設施",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://twitter.com/nottombrown/status/2057194829986300375",
+          "title": "Anthropic is expanding to Colossus2. Will use GB200",
+          "source_name": "Hacker News (front)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T20:55:52+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "13dda06ddb"
+    },
+    {
+      "title": "IDOM 啟動波浪能海上測試",
+      "summary": "西班牙工程公司 IDOM 啟動波浪能技術海上測試，旨在滿足 AI 資料中心對全天候低碳電力的增加需求。",
+      "category": "hardware_infra",
+      "importance": 4,
+      "who": [
+        "IDOM"
+      ],
+      "what": "啟動波浪能測試",
+      "when": "近期",
+      "where": "西班牙",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/21/marmok-a-5-idom/",
+          "title": "波浪能回歸，西班牙工程公司啟動海上測試",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:05:25+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "8c0fbc635b"
+    },
+    {
+      "title": "致茂開發AI伺服器高功率EDLC量測",
+      "summary": "致茂公司深耕AI伺服器電源測試領域，目前正積極開發並攻克高功率EDLC（超級電容器）量測技術，旨在提供更精準的電源測試方案以滿足AI基礎設施需求。",
+      "category": "hardware_infra",
+      "importance": 4,
+      "who": [
+        "致茂"
+      ],
+      "what": "研發量測技術",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNaVF4UGFrMGcxUmRHcVNfWGdwUVllTlNvTlNxQVEtRmNoa2FPZWJ6U1l5WXk1d09TcElIT1g0VW8xeEZIT2plUmszV1RId0d0Y2pQQzRIYkd2di1mejBoTy1LODBydzEzN0FPZkg0RUdrOWZic1EyZ2RuMXRXVHdfWHo5anJkWVlJd3N0bmZ4Ylg5ZDY3Y3dzMUJxeUIwRFJJNjhpVWRUUmhheUk?oc=5",
+          "title": "致茂深耕AI伺服器電源測試，攻高功率EDLC量測 - 台視全球資訊網",
+          "source_name": "GoogleNews:台視全球資訊網",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T04:12:56+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ffcd328ee3"
+    },
+    {
+      "title": "Google 推出首款多模態 AI 模型",
+      "summary": "Google 揭曉其首款多模態 AI 模型，旨在提升處理文字、影像與音訊的綜合能力，該模型由 DeepMind 團隊主導開發並正式公開亮相。",
+      "category": "products_apps",
+      "importance": 9,
+      "who": [
+        "Google",
+        "DeepMind"
+      ],
+      "what": "推出首款多模態 AI",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756078_KACLYIPO8GSUL07JO803F",
+          "title": "每日椽真：黃欽勇登首爾ALC論壇 | CSP急尋燃料電池緩解電力瓶頸 | 中國記憶體「國家隊」成形 | Google首款多模態AI亮相",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T02:16:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxQWjUxaEszM1ZsSHd5QllqendNNEhndnNlRlgtYnhkQjdqOXJvdFp5dGdmY2x4ZnNJMUgwblpMNTE2dDQxTkI0X18tUkFoSk04bkNnbEU4RWpDbTFoRVlpTndMZ2Q2eUhMQjJobVh3alZ5ZllQUkRnR05EZjhtVHU0OHpqRWw1eFR6eXYxelRR?oc=5",
+          "title": "Google首款多模態AI亮相 DeepMind CEO：我們正站在奇點山腳 - DIGITIMES",
+          "source_name": "GoogleNews:DIGITIMES",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-20T18:42:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "a6478030e5",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756078_KACLYIPO8GSUL07JO803F",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0521/756078-1-o803f.jpg"
+      }
+    },
+    {
+      "title": "Google 發布 Gemini 3.5 Flash 推理模型",
+      "summary": "Google 推出 Gemini 3.5 Flash 推理模型，在 SimpleBench 取得 76.7% 分數並在 Zapier Automation Bench 排名第一，性能表現接近頂尖模型。然而，該模型運行成本較前代增加 5.5 倍，在執行代理任務時的總成本甚至高於 Gemini 3.1 Pro。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Google",
+        "Gemini 3.5 Flash",
+        "Zapier"
+      ],
+      "what": "發布新模型並公布基準測試結果",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175949",
+          "title": "Google公布Gemini 3.5 Flash推理模型，主打代理人開發作業",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:22:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://the-decoder.com/googles-gemini-3-5-flash-follows-anthropic-and-openai-in-making-newer-ai-models-significantly-pricier/",
+          "title": "Google's Gemini 3.5 Flash follows Anthropic and OpenAI in making newer AI models significantly pricier",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T10:40:51+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tir6qk/gemini_35_flash_scores_767_on_simplebench_just_02/",
+          "title": "Gemini 3.5 Flash scores 76.7% on SimpleBench, just 0.2% short of GPT 5.5 Pro's score",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T16:39:32+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tj9sqp/gemini_35_flash_ranks_1_on_automation_bench_from/",
+          "title": "Gemini 3.5 Flash ranks #1 on Automation Bench (from Zapier), beating every other frontier model at a much lower cost",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:35:28+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 4,
+      "event_id": "e91202ee08",
+      "url": "https://www.ithome.com.tw/news/175949",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0520-gemini_3.5_flash-960.jpg"
+      }
+    },
+    {
+      "title": "Google 搜尋整合 Gemini AI 功能",
+      "summary": "Google 搜尋進行 25 年來最大改版，將搜尋框升級為可理解完整需求、接收圖片與檔案的智慧介面，並透過 AI 代理提供全天候資訊追蹤。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Gemini",
+        "Google",
+        "Google 搜尋"
+      ],
+      "what": "整合 AI 搜尋功能",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/21/google-search-ai-evolution-includes-more-ads/",
+          "title": "Google 搜尋的 AI 進化包含更多廣告，提供聰明又實用的建議",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T04:49:51+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/175950",
+          "title": "Google搜尋25年大改版，整合AI打造智慧搜尋框",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:27:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOVVA3MzMwbEJ6SGxNR0dsVlVVcGVzeE5jbzlsU09EWTRiRmZKUEhmUHRLUlBQUVNqeXhWQ00yM0N1czlZOWlTUEVZcXIteUdpLVV2VXFhSlAwNGlLOHBxaEZmY3pQUTJXSkk0cnpDN3NIenlZbGU3LXl3V3NJenh6OEtn?oc=5",
+          "title": "Google 搜尋的 AI 進化包含更多廣告，提供聰明又實用的建議 - TechNews 科技新報",
+          "source_name": "GoogleNews:TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T05:02:33+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "6e594aad6c",
+      "url": "https://technews.tw/2026/05/21/google-search-ai-evolution-includes-more-ads/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.technews.tw/wp-content/uploads/2023/11/10093026/brett-jordan-B_j4LJbam5U-unsplash.jpg"
+      }
+    },
+    {
+      "title": "Google 首秀 AI 智慧眼鏡",
+      "summary": "Google 正式展示其 AI 智慧眼鏡產品，該產品的開發進展帶動台廠 PCB 供應鏈（如臻鼎、華通、達邁及台虹等公司）獲得相關訂單關注。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Google"
+      ],
+      "what": "發表 AI 智慧眼鏡",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9vVTFjZFExMlJVSXptSVY4SE5jM0t0a0RLX2wza3J0Q1NuR2JCLVJEa1VndXBXWWJlVjBHMnM0aU91WGI4ZlJ2cUc5a052WlhGMnF2THNHWU1Uejc0YnFr?oc=5",
+          "title": "Google AI眼鏡首秀臻鼎、華通、達邁、台虹等台廠PCB鏈沾光- 日報 - 工商時報",
+          "source_name": "GoogleNews:工商時報",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-20T19:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "8016276066"
+    },
+    {
+      "title": "OpenAI 發布 AI 生成影像辨識工具",
+      "summary": "OpenAI 發布一款專門用於辨識 AI 生成影像的工具，旨在打擊利用 AI 修圖或造假的行為，提升數位內容的真實性。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "OpenAI"
+      ],
+      "what": "推出 AI 影像辨識工具",
+      "when": "近期",
+      "where": "全球",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOei05Z2o2SlppMEpsSjl6ajhKbEpjcmdiOTFPa09hU0lTeURqeXh5Vkhkekc0SUFydml4ZkNHRmRLdWRyWFRwTFlfVjVleDVQRXQ2eUxNSUZXVUJqLWZpOE1CYTF3LWNfU0pMRTFXZi1xRXlkTjNuMUVqOGw3WU5rYkhidFM1c3A0OW5aUzgtSGpzZk8za0QzcW5MWlM4SWJXcmltSw?oc=5",
+          "title": "OpenAI 推出「AI照辨識工具」，網紅修圖藏不住了 - 動區動趨",
+          "source_name": "GoogleNews:動區動趨",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-20T10:57:51+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "cb8469e1ba"
+    },
+    {
+      "title": "Stability AI 發布 Stable Audio 3.0 音訊模型",
+      "summary": "Stability AI 推出新一代音訊模型 Stable Audio 3.0，其中三款模型採開源權重設計。該模型能生成長達六分鐘的音樂軌道，且公司聲稱所有訓練數據均經過合法授權。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Stable Audio 3.0",
+        "Stability AI"
+      ],
+      "what": "發布新模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/stability-ai-launches-stable-audio-3-0-with-up-to-six-minute-tracks-and-open-weights/",
+          "title": "Stability AI launches Stable Audio 3.0 with up to six-minute tracks and open weights",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T14:59:05+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2566ad0b98"
+    },
+    {
+      "title": "Google AI Studio 推出原生 Android App 生成功能",
+      "summary": "Google AI Studio 現可透過提示詞直接生成以 Kotlin 與 Jetpack Compose 編寫的原生 Android 應用程式，並支援在瀏覽器模擬器中測試。此功能大幅降低了開發簡單工具類 App 的門檻，可能對 Play 商店生態產生影響。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Google AI Studio",
+        "Google"
+      ],
+      "what": "推出原生 Android App 生成功能",
+      "when": "近期",
+      "where": "Google AI Studio",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175964",
+          "title": "Google更新AI Studio，可直接生成原生Android App",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T13:08:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://the-decoder.com/google-tests-the-app-version-of-the-saaspocalypse/",
+          "title": "Google tests the app market version of the SaaSpocalypse",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T15:27:50+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "6cca0a1cf1"
+    },
+    {
+      "title": "Cohere 推出 Command A+ 開源權重模型",
+      "summary": "Cohere 共同創辦人 Nick Frosst 確認推出 Command A+ 模型，這是該公司首個 MoE 模型，旨在提供快速響應並降低幻覺率。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Command A+",
+        "Cohere"
+      ],
+      "what": "推出新模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tj2p2u/cohere_launches_open_weights_model_command_a/",
+          "title": "Cohere launches open weights model Command A+. Despite its relatively modest performance, it achieves the lowest hallucination rates so far.",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T23:23:34+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tizmar/re_what_ever_happened_to_coheres_commanda_series/",
+          "title": "Re. what ever happened to Cohere’s Command-A series of models?",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T21:25:50+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "a996ac471a"
+    },
+    {
+      "title": "Gatsby 人形機器人執行美國首例居家清潔",
+      "summary": "人形機器人 Gatsby 在美國正式投入居家清潔工作，成為美國歷史上首個執行此類任務的人形機器人。該事件標誌著人形機器人在消費級家庭服務領域的實質進展。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Gatsby"
+      ],
+      "what": "執行居家清潔工作",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPVTdmemF0MTJmcVVtQlhBQ3IyeE4zeEIyZTlHUlNMX2pCOG1CTjVJVUo0eFNQbWNIVTRLN1ZjV3RkRTVHSmxqcExiNU9HcGlUNkl4Y3daRm9RLUJEckNxVm9GTWd0cnlSamh2NjhQVVBKQzBTVVd5ZGxJbWVxWndNZXBpUjlrdWdWVXhFNTdlalA?oc=5",
+          "title": "Gatsby makes US history with first humanoid robot home cleaning job - Interesting Engineering",
+          "source_name": "GoogleNews:Interesting Engineering",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T09:50:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c6b7c12130"
+    },
+    {
+      "title": "xAI 推出 Grok Build 0.1 編碼模型",
+      "summary": "xAI 推出專為代理軟體工程工作流設計的快速編碼模型 Grok Build 0.1。該模型支援文本與影像輸入，並在 OpenRouter 上線，旨在優化互動式編碼體驗。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Grok Build 0.1",
+        "xAI"
+      ],
+      "what": "推出新模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://openrouter.ai/models/x-ai/grok-build-0.1",
+          "title": "[OpenRouter 新模型] xAI: Grok Build 0.1",
+          "source_name": "OpenRouter Models",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "2026-05-20T17:28:43+00:00",
+          "is_opensource": true,
+          "stars": "",
+          "pulls": "",
+          "context_length": 256000,
+          "pricing": {
+            "prompt": "0.000001",
+            "completion": "0.000002",
+            "web_search": "0.005",
+            "input_cache_read": "0.0000002"
+          },
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "da92e9c296"
+    },
+    {
+      "title": "Confluent推出MCP與Agent Skills功能",
+      "summary": "Confluent 為其 Intelligence 與 Cloud 平台新增全託管 MCP 伺服器、Agent Skills 及個資偵測遮蔽功能，讓企業能利用 AI 代理管理資料串流並降低外洩風險。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "MCP 與 Agent Skills",
+        "Confluent",
+        "MCP",
+        "Agent Skills"
+      ],
+      "what": "推出新功能",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175999",
+          "title": "Confluent推MCP與Agent Skills，讓AI代理協助管理資料串流作業",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T09:05:43+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE9VM1pFczhaRUdpT2ozNXphUkJhNXJxejBZRlFoT2RxZWxqNGhZb0J4MUR5LVNhdDBmYUVKaGcxQldrTHFJMW9vcU00dlZfdw?oc=5",
+          "title": "Confluent推MCP與Agent Skills，讓AI代理協助管理資料串流作業 - iThome",
+          "source_name": "GoogleNews:iThome",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T01:48:39+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "267203168b"
+    },
+    {
+      "title": "YouTube Shorts 推出 AI 影片混剪功能",
+      "summary": "Google 為 YouTube Shorts 推出新功能，讓使用者能利用 Gemini Omni 模型透過「重新想像」選項與提示詞，重新定義影片風格或將自己插入他人影片中，實現高度靈活的 AI 影片修改。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "YouTube Shorts",
+        "Google"
+      ],
+      "what": "推出 AI 混剪功能",
+      "when": "近期",
+      "where": "YouTube Shorts",
+      "sources": [
+        {
+          "url": "https://www.theverge.com/tech/934704/google-gemini-omni-youtub-shorts-remix-ai",
+          "title": "You can now remix other people’s YouTube Shorts with AI",
+          "source_name": "The Verge",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T16:41:40+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e8d4051cb6"
+    },
+    {
+      "title": "Figure AI 進行人型機器人搬運演示",
+      "summary": "Figure AI 透過 24 小時不間斷的直播，展示其開發的人型機器人處理包裹的實際操作能力，向大眾公開其機器人技術進展。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "Figure AI"
+      ],
+      "what": "進行產品演示",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arstechnica.com/ai/2026/05/the-internet-cant-stop-watching-figure-ais-humanoid-robots-handling-packages/",
+          "title": "The Internet can't stop watching Figure AI's humanoid robots handling packages",
+          "source_name": "Ars Technica",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T11:00:34+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "165475fd24"
+    },
+    {
+      "title": "IrisGo 推出 AI 桌面助手產品",
+      "summary": "由 Andrew Ng 支持的初創公司 IrisGo 推出 AI 桌面助手，該產品能監控用戶桌面操作並自動學習執行相關任務。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "IrisGo",
+        "Andrew Ng"
+      ],
+      "what": "推出 AI 產品",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/irisgo-a-startup-backed-by-andrew-ng-looks-to-become-the-ai-desktop-buddy-you-never-knew-you-needed/",
+          "title": "IrisGo, a startup backed by Andrew Ng, looks to become the AI desktop buddy you never knew you needed",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T19:47:20+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6bea0b074a"
+    },
+    {
+      "title": "Airbnb 擴展 AI 應用於房東入駐與客服",
+      "summary": "Airbnb 宣布將 AI 技術進一步擴展至房東入駐流程（onboarding）以及客戶支援系統，旨在提升平台管理效率。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "Airbnb"
+      ],
+      "what": "擴展 AI 應用",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/20/airbnb-gets-into-hotels-expands-ai-for-host-onboarding-and-customer-support/",
+          "title": "Airbnb gets into hotels, expands AI for host onboarding and customer support",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T18:14:04+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "f3acb427f8"
+    },
+    {
+      "title": "RAMPART開源以強化AI代理安全測試",
+      "summary": "微軟開源名為 RAMPART 的工具，可將 AI 代理在模擬攻擊中發現的風險情境轉化為自動化測試，並整合至持續整合（CI）流程中，避免安全問題重複出現。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "RAMPART",
+        "微軟"
+      ],
+      "what": "開源工具",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/176011",
+          "title": "微軟開源RAMPART，讓代理安全測試CI化",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T02:05:33+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "9d503b6236"
+    },
+    {
+      "title": "OpenShift AI 3.4強化模型即服務功能",
+      "summary": "紅帽 OpenShift AI 3.4 版本強化模型即服務（MaaS），納入 AI 推論閘道與 token 配額控管，以解決企業多部門共用模型時的存取與用量管理課題。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "OpenShift AI 3.4",
+        "紅帽"
+      ],
+      "what": "強化功能",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/176001",
+          "title": "紅帽OpenShift AI 3.4強化模型即服務，納入AI推論閘道與token配額控管",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T06:05:12+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ba6ac94585"
+    },
+    {
+      "title": "Microsoft 推出 Surface 商務版",
+      "summary": "Microsoft 發表全新 Surface 商務版系列產品，專為企業環境設計並針對 AI 加速進行優化，旨在提升商務使用者的 AI 工作效率。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "Surface 商務版",
+        "Microsoft"
+      ],
+      "what": "推出新產品",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxOY0dxM1JsSVRTQnEyRG42aWJEbEV4ZDJ3eDltM212ZlVxY3JCdGpIMk9Fc3RLR3E0RTVocWpLb2ZvYXdnMXRnRWhwNER2OTVaSDRORTJaWW1RNEVsOXRzYTA2TmY5ZHYza2tuQzBWSm9Ubl83dldwUnNSNWlwRURXMXdXMFBSS21MeENRQmJjcjlOZw?oc=5",
+          "title": "全新 Surface 商務版登場，專為企業與 AI 加速打造 - Microsoft Source",
+          "source_name": "GoogleNews:Microsoft Source",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T06:32:42+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e1316821fc"
+    },
+    {
+      "title": "BMS 採用 Claude 提升研發效率",
+      "summary": "製藥公司 BMS 決定在全企業範圍內採用 Anthropic 的 AI 模型 Claude，旨在加速研發流程並優化全球工作流，將生成式 AI 整合至藥物開發中。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "Claude",
+        "BMS"
+      ],
+      "what": "採用 AI 模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNcFNWdnVCeV9sRFRkQ2FxLUZDXzlxQWlObGgyMXlJTkdsN3NtUzFFWlY1ZjgzdUlVdEJQX2Q1d3BYVW1rdDZyZVIzcmNTSy01OExudVZtdXRzU0lkU1NVNjlIN0k4T21Rb0VFelJJY0lza0Vxa1FRaWhxQ3RxaFlCRHJUWjF6a2VYOGJPSHoxRHhKU0FrT0lHSGMzcTM4d1dXSjFLZ1NJaXlsS25LYl91ZHFfeFJoMFh1TVZncw?oc=5",
+          "title": "BMS taps Anthropic’s Claude for enterprise-wide AI adoption to speed R&D, global workflows - Fierce Pharma",
+          "source_name": "GoogleNews:Fierce Pharma",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T14:16:44+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "7484e28897"
+    },
+    {
+      "title": "字節跳動發布 Lance any-to-any 模型",
+      "summary": "字節跳動研究團隊在 Hugging Face 上發布名為 Lance 的 any-to-any 多模態模型，該模型旨在實現靈活的跨模態輸入與輸出，目前已獲得超過 500 次關注。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "Lance",
+        "字節跳動"
+      ],
+      "what": "發布新模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://huggingface.co/bytedance-research/Lance",
+          "title": "[HF Trending] bytedance-research/Lance",
+          "source_name": "HuggingFace Trending",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "2026-05-20T12:40:00+00:00",
+          "is_opensource": true,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "any-to-any",
+          "downloads": 438,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b22465dfb3"
+    },
+    {
+      "title": "CLI-Anything 代理原生框架推出",
+      "summary": "香港大學數據科學團隊 (HKUDS) 推出 CLI-Anything 框架，旨在將所有軟體轉化為 Agent-Native 形式。該工具透過命令行界面，讓 AI 代理能更高效地操作與整合各種軟體工具。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "CLI-Anything",
+        "HKUDS"
+      ],
+      "what": "推出 AI 框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://github.com/HKUDS/CLI-Anything",
+          "title": "[GitHub 今日熱門] HKUDS/CLI-Anything",
+          "source_name": "GitHub Trending",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "",
+          "is_opensource": true,
+          "stars": "890",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "cb88900ab8"
+    },
+    {
+      "title": "agentmemory AI 代理持久化記憶工具開源",
+      "summary": "rohitg00 開源名為 agentmemory 的持久化記憶工具，專為 AI 編碼代理設計。該工具基於真實世界基準測試開發，旨在解決 AI 代理在執行長期任務時缺乏穩定記憶的問題。",
+      "category": "products_apps",
+      "importance": 6,
+      "who": [
+        "agentmemory",
+        "rohitg00"
+      ],
+      "what": "開源記憶管理工具",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://github.com/rohitg00/agentmemory",
+          "title": "[GitHub 今日熱門] rohitg00/agentmemory",
+          "source_name": "GitHub Trending",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "",
+          "is_opensource": true,
+          "stars": "1,080",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "fd1ae6f136"
+    },
+    {
+      "title": "CohereLabs 發布 command-a-plus bf16 模型",
+      "summary": "CohereLabs 在 Hugging Face 上發布了 command-a-plus-05-2026-bf16 模型，同樣針對影像-文本轉文本任務。此版本採用 bf16 精度，提供更高品質的模型權重。",
+      "category": "products_apps",
+      "importance": 5,
+      "who": [
+        "command-a-plus-05-2026-bf16",
+        "CohereLabs",
+        "command-a-plus-05-2026-w4a4"
+      ],
+      "what": "發布模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tiphqe/coherelabscommandaplus052026bf16_hugging_face/",
+          "title": "CohereLabs/command-a-plus-05-2026-bf16 · Hugging Face",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T15:41:41+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://huggingface.co/CohereLabs/command-a-plus-05-2026-w4a4",
+          "title": "[HF Trending] CohereLabs/command-a-plus-05-2026-w4a4",
+          "source_name": "HuggingFace Trending",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "2026-05-20T15:51:04+00:00",
+          "is_opensource": true,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "image-text-to-text",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://huggingface.co/CohereLabs/command-a-plus-05-2026-bf16",
+          "title": "[HF Trending] CohereLabs/command-a-plus-05-2026-bf16",
+          "source_name": "HuggingFace Trending",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "2026-05-20T15:51:30+00:00",
+          "is_opensource": true,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "image-text-to-text",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "53319c715d"
+    },
+    {
+      "title": "llama.cpp 合併 MTP 多標記預測功能並優化性能",
+      "summary": "llama.cpp 在 b9190 版本中將 MTP (Multi-Token Prediction) 功能合併至主線分支，並透過第 23287 號拉取請求將草稿路徑移至後端採樣以提升推理性能。該功能旨在增加生成速度，但在 128k 長上下文環境下對 Qwen3.6 35B 模型的加速效果並不顯著。",
+      "category": "products_apps",
+      "importance": 5,
+      "who": [
+        "llama.cpp",
+        "MTP"
+      ],
+      "what": "合併 MTP 多標記預測功能並優化性能",
+      "when": "近期",
+      "where": "GitHub",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tis73j/move_to_backend_sampling_for_mtp_draft_path_by/",
+          "title": "Move to backend sampling for MTP draft path by gaugarg-nv · Pull Request #23287 · ggml-org/llama.cpp",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T17:14:09+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tiixql/rtx_5080_16gb_qwen36_35b_moe_at_128k_context_56/",
+          "title": "RTX 5080 16GB: Qwen3.6 35B MoE at 128k context — 56 tok/s, and why MTP doesn't help",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T11:33:58+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "e2ef118991"
+    },
+    {
+      "title": "技嘉推出 AI 效能強化 B850 Ari 特仕版主機板",
+      "summary": "技嘉科技推出 B850 AORUS ELITE-P ICE Ari 特仕版主機板，該產品結合動漫美學設計並強化 AI 效能，旨在滿足對 AI 運算有需求的使用者。",
+      "category": "products_apps",
+      "importance": 5,
+      "who": [
+        "B850 AORUS ELITE-P ICE Ari",
+        "技嘉科技"
+      ],
+      "what": "推出新主機板",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/21/gigabyte-b850-aorus-elite-p-ice-ari/",
+          "title": "技嘉推出融合動漫美學與 AI 效能強化 B850 Ari 特仕版主機板",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T06:00:15+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "22190a29d2"
+    },
+    {
+      "title": "數位發展部將公布 AI 風險分類框架",
+      "summary": "數位發展部因應 AI 基本法上路，計畫於近期公布 AI 風險分類框架。該框架旨在建立一套標準化流程與風險評估標準，用以有效管理生成式 AI 技術帶來的潛在風險。",
+      "category": "policy_society",
+      "importance": 8,
+      "who": [
+        "數位發展部"
+      ],
+      "what": "公布 AI 風險分類框架",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/176019",
+          "title": "行政院將設國家AI戰略特別委員會，國科會研擬國家AI發展綱領，數發部近期將公布風險分類框架",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T02:05:12+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTE4yYi13THlUZkM5WE0tMlRVdDhnbTVXeFNuczhweHIwT2RrMUpHNGlSR1FVdzlkQ0RlMGdhM29aeW5Yal9ZdTg5eHo3a2NIQQ?oc=5",
+          "title": "行政院將設國家AI戰略特別委員會，國科會研擬國家AI發展綱領，數發部近期將公布風險分類框架 - iThome",
+          "source_name": "GoogleNews:iThome",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T06:43:52+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE4zckpCSnBOV3NWRXJoNmd0ZTZKem55c19COU5qRy03Nk5mYlNPMk5qTzlXVUFVS1BvcThSeS1KYXZSMW81N3h3SmczNUItdG9P0gFWQVVfeXFMTXVVcTVuNkhoWTdRMXIxZDhwUkpFMGZ2QkUzNkFnc19ZSVdORjRTN0wybGFDSUthQkxxcy1TYkI0U2tPVUFET2NGcWJ5b0tsdXJYaGFRd2c?oc=5",
+          "title": "因應AI基本法上路 數發部將發布風險分類框架、教育部公告學習指引 - UDN",
+          "source_name": "GoogleNews:UDN",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T07:12:24+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "3c6f4ed94e",
+      "url": "https://www.ithome.com.tw/news/176019",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/xie_qu_37.jpg"
+      }
+    },
+    {
+      "title": "中國海關禁止進口 RTX 5090D V2 顯示卡",
+      "summary": "中國政府將專為中國市場設計的 NVIDIA RTX 5090D V2 顯示卡列入海關禁止進口清單，此舉發生在 NVIDIA 執行長黃仁勳訪問北京期間。",
+      "category": "policy_society",
+      "importance": 8,
+      "who": [
+        "RTX 5090D V2",
+        "中國海關",
+        "NVIDIA",
+        "中國"
+      ],
+      "what": "禁止進口",
+      "when": "近期",
+      "where": "中國",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756075_FXSLLPU68HBH1M4RQXBRN",
+          "title": "黃仁勳訪北京期間　中國封殺降規版RTX 5090",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-21T03:23:30+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://arstechnica.com/tech-policy/2026/05/china-banned-rtx-5090d-v2-while-nvidia-ceo-jensen-huang-was-visiting/",
+          "title": "China banned RTX 5090D V2 while Nvidia CEO Jensen Huang was visiting",
+          "source_name": "Ars Technica",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T13:10:15+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "5961a839a6",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000756075_FXSLLPU68HBH1M4RQXBRN",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0521/756075-1-qxbrn_l.jpg"
+      }
+    },
+    {
+      "title": "川普擬簽署 AI 網路安全行政命令",
+      "summary": "美國總統川普預計最快於週四簽署一項行政命令，旨在加強人工智慧的網路安全防護，並邀請科技產業領袖共同參與該活動。",
+      "category": "policy_society",
+      "importance": 8,
+      "who": [
+        "唐納德·川普",
+        "美國政府"
+      ],
+      "what": "簽署 AI 網路安全指令",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-21/trump-set-to-sign-ai-cybersecurity-directive-as-soon-as-thursday",
+          "title": "Trump Set to Sign AI Cybersecurity Directive as Soon as Thursday",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-21T00:44:03+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "d8a0a0b864",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-21/trump-set-to-sign-ai-cybersecurity-directive-as-soon-as-thursday",
+      "cover_image": {
+        "kind": "fallback",
+        "category": "policy_society"
+      }
+    },
+    {
+      "title": "歐盟委員會發布《AI 法案》高風險 AI 分類指南草案",
+      "summary": "歐盟委員會根據《歐盟 AI 法案》（EU AI Act）發布了關於高風險 AI 系統分類的指南草案。該文件旨在提供更明確的判定與合規標準，協助企業與監管機構在管理高風險 AI 應用時擁有統一的參考依據。",
+      "category": "policy_society",
+      "importance": 7,
+      "who": [
+        "歐盟委員會",
+        "歐盟"
+      ],
+      "what": "發布高風險 AI 分類指南草案",
+      "when": "近期",
+      "where": "歐盟",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQZndQVFdUdkdtaDM3SjYwVkZMeE1WSzFwVFItOGdidkFVSnRFVjEwMnc4dFJmQXJCVmNEd2EyWEszZTQ3MEpvTzl0WlV5ckVKSG90UXhKZUVqSVdoOGpjTEV2TUZvbTJLN3ZBV3JIUDZRczRkYWEycWJzX2ZIcDNGUUdCXzNJYWx1UkREUFZfQXZacXoxZU1MWkhfS2NscEQ2QlhYQXFUTEhvcjBwT01ZWnhfM0xXWnloR2g5b2JHZVJKc3ZlZVZyaWQxQk1HQmJfalRyVW13?oc=5",
+          "title": "European Commission Releases Draft Guidelines on High-Risk AI Under the EU AI Act - Hunton Andrews Kurth LLP",
+          "source_name": "GoogleNews:Hunton Andrews Kurth LLP",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T17:48:13+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1xVXFxOEp3WHo4Rno3azVpRUZHNHlMQm5xMGRjTFdlclJ2WFBKa2JqRGFja0pHSEhGM2k3cEpHQVVwU19DdEtCMTBhTUZuOTZQYUkweDNvSnZ6U1dSTlFRYQ?oc=5",
+          "title": "EU publishes draft guidance on high-risk AI classification under AI Act - Digital Watch Observatory",
+          "source_name": "GoogleNews:Digital Watch Observatory",
+          "source_region": "GLOBAL",
+          "source_kind": "search",
+          "published": "2026-05-20T10:06:55+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "249b186520"
+    },
+    {
+      "title": "基隆地檢署聲押 3 名非法出口 AI 伺服器嫌犯",
+      "summary": "基隆地檢署針對 3 名業者涉嫌違反美國出口管制，將搭載輝達（NVIDIA）高階晶片的 AI 伺服器偽報出口至中國大陸一案，採取聲押禁見處分，以查緝非法轉運行為。",
+      "category": "policy_society",
+      "importance": 6,
+      "who": [
+        "基隆地檢署",
+        "NVIDIA AI伺服器",
+        "NVIDIA"
+      ],
+      "what": "聲押涉嫌違法者",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9aRVR2Z1U1a0hfMkNmYzd5ZDBYMDA4YUNLeUVGX2dIOEhUTU45VWE5RVNzd1A3ZVN5em01WGVlSk9FVVFkeExkQTFmSnpFWmF0ZGJDblJrdkFHOUVxN3hrOElnVUl6NzVDTGhrbS1B?oc=5",
+          "title": "高階AI伺服器意圖轉售大陸 基檢約談聲押3被告 - 中時新聞網",
+          "source_name": "GoogleNews:中時新聞網",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T05:53:39+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE9jRGRuZzVIMzF2WTRhS19wd2J3clZ2MjZRUU1zeEdjZmppbDh1MDNXU0kxaXplSElqR3NlSk84Zkdua0ViQVBqcnFWNmEyVmI4eDlGaURWZm1PVnVsNlHSAWhBVV95cUxPSEstdzJqcjhQUm1jOVA5blY1YXQzRkhFdnk1OC05S01RdU43b2dCN21jRE00US1TdXhKM2huc2tPcnBCU2FZTjNsQ29aVEFhOTZSdDd4MTZaaG9FZWhlbXFJaV8wOUtxYQ?oc=5",
+          "title": "偷運輝達高階AI伺服器到中國！基檢12路大搜索　3業者遭聲押 - ETtoday新聞雲",
+          "source_name": "GoogleNews:ETtoday新聞雲",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T07:05:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMingNBVV95cUxQcWVtdk00MFB0bVA3VE5jMlNMa0d1WFl1RkpPbmFZMXZDTUlxeTJBM28ycVFRRFBXWGtFRjlxUzhGQThjMlFNTmhuc1cxZ0NrcEFkclY2NjlOZXBNSml2SkE2V2FiQ1MzYVdSSHprSDVwYm0zNGFWeG1uM1RuSXFyOXY5UXd2ZjNYa0IzRlc3S2Z1OWZMTGVTYUhkQVZJeW5DNnJuMFFwc3hCOVVjQjgyYl9QenBQYlZ6ZFpKdU5HZzg2NDM4cm5DeXhZcEVLWm5EODh1VzY3Z3pDTzR5QlQwVjF3Qkd1WkY5eGkxUFBnZTdjSEZkSEtkMGVYbEdrOHpIOE1vTThEOE5FUW9DN3lCWU1sLUFtd1VvcDMwa0xlR2RScjRLZk1LZ241c3o4cTY3Q0Fnc3Vzdm1uQVgxQzZZemN1TG5udlZudnNMUnBtTjNxN0l1SHZjMWNkVXgyb2J4UVVsdGlwVWJLanJqNlB2UnowYkNKZ1BjaWZDTGZCOUtEck5xUzdHOU05TlRZZm1hcWtndGpHVGRpSW1Qa2c?oc=5",
+          "title": "想賺中國錢慘了！涉偽報出口輝達晶片高階AI伺服器 3嫌遭基檢聲押 - Yahoo新聞",
+          "source_name": "GoogleNews:Yahoo新聞",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T06:49:06+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMi1AJBVV95cUxORkNMLWJ1Q3Z3SGhnQnNMMTJMYnlocTRtcUJBdU80bU5vOGRuOEhYRUxWRDQ5SmxLeGZlZVlwNE9xRlU0Y1EwNHNlNU1YRlh6T01zbTUwbWtkOWVrZmdFZGt6VnJoU3NSS0xnaEhWMHdCN0FhSzgydUgzdTlZd184bEhlVXdSTEFXUlU2RGNOdEVDTzBnR0xfakt2Zk14MWFTa0FUQ2hyUExlWnNONkN0eXVCYWNEcGlaVWhrSFlZRi1MeVRfUXoxOVJTdWVHeDQ1ZGtHa0M2LXV2QlJhel9ocGNWdV9KZ2NtODZaVEVzcWVvYm5XTkhtOWhyT0s0TGtZMHFUYmRBaEFjNFFjNTMtNXZsdU85VTdwd3VoSFhrNHg3VTY2b085ZHRxamd1X1F4UW0wX0RWUl85eTc3M2k0YkxWbVQzYUlseDFfdUdkYnNxaHR4?oc=5",
+          "title": "偷賣輝達高階晶片AI伺服器到大陸 基隆地檢聲押3嫌 - Yahoo新聞",
+          "source_name": "GoogleNews:Yahoo新聞",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T06:57:40+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMihANBVV95cUxNVG1icDcyNWp3ZTFKRmt6UF9IbzJKT19qbFlMTHlIYThHMDFOdEItalAtQTgyM05HaWs0UWg0SGJjc3JCbEJfeG5JTk80NlNISkg1U0tsaGhpci10dkVFTVlUTFNXd0hnXzM3STNxVlVIQWJwVW9qTGp1TS1LalJQbm9PRGh4NVB3dHJ1UHBIZ0JvTk9lbk5SRGFUUlhjZXpDMllUTzlxMnlPclloWDZudjZxNndKdlRkX09aOVVuWVFqUllNVjZONXAtS0tFZVR4bURqV090ZmRybVVkd2FCWmxGS1ROb1VwMzFrNnp5VjVJS0dyOXZVV0J5T1JrNjAwcnF1MnBHY0RHTzMxNV9FREFzUjdGU08ta3o0bnhpWHYxN253WHhUNzU1UHVyb2VnZEFIVWRxdzdRLTF3dFdvQ3NPTEk1VVdvcG5jR3owSWdWNE1TOVhJZ25yMmJUdDZfbWdLN0ZnNndaLXpCaDRIRzJlcEtHMS03czZSSHVDdXNTQ0M0?oc=5",
+          "title": "輝達晶片高階AI伺服器遭偽報出口中國！ 3業者遭基檢聲押禁見 - Yahoo新聞",
+          "source_name": "GoogleNews:Yahoo新聞",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T06:32:38+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiyAJBVV95cUxPZTBLQ01HaGtTX0NYSlhJdVBsN0RWeTIwd0hfSWtwYy1NdnotX2ZBQXV2czhvc1o5ck5XZEo3ckZ1RVRoak9xZWRhalhEQ1plTnA4c2o0alRIcEp6M2JXX1JYRFZQcXV1UURlSDFQTlJ1c0RHUkl2Y1ZfZXU3TEdmdDlzd2dpMWRuQXkxRUF1cGJNaDdtMTZGVTRmcXlzNTIxd21tZFJIQWxGdG5YMkI1S2ZVV1VjRlcxVW02QVltZXlXUW0wLTQ0NnZmUU04Q3hGU1h5cVp4ci1aZ0V3bV9RZE1NMXZlS2xqZGo0LVFLLS13MVlRSGlpN1NZT1dHelFfQW0yU1BuSXlFZTdUNXVuMEt4TlpYZkx6QThkdzZRQTc0TEdmU3JaZk5LQjVPaVFUWFB3dHZmU2JwTzR5aUxpQTY4UmVXSG9z?oc=5",
+          "title": "不顧美國管制銷大陸高階AI伺服器 基檢聲押3被告 - Yahoo新聞",
+          "source_name": "GoogleNews:Yahoo新聞",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T06:50:58+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 6,
+      "event_id": "8b7d8764c4"
+    },
+    {
+      "title": "台灣行政院通過並啟動 AI 人才方舟計畫",
+      "summary": "台灣行政院通過並啟動「AI 人才方舟計畫」，旨在打造 AI 智慧教育新生態並完善數位教育環境，透過系統性的人才培育計畫，提升國民的 AI 應用與開發能力以應對產業需求。",
+      "category": "policy_society",
+      "importance": 6,
+      "who": [
+        "行政院",
+        "台灣政府",
+        "AI 人才方舟計畫"
+      ],
+      "what": "通過並啟動 AI 人才方舟計畫",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOb0E0MS03Vnlmck1WZXdXQXZkR2hoWngzX1pMZzBfck1ZbWFMNGhTcFZxeFJSRzJXOTVLM1BvTE1iYlpmNXY3U0sxbjFlNXNNQ0MydkhVMklSRzB1a2ROZk4zdThndmVKU3Q5RUJGbmJVS1J2dGZTVU5aNkI4VHBpWVpPUmpZdk0?oc=5",
+          "title": "打造AI智慧教育新生態─AI人才方舟計畫 - ey.gov.tw",
+          "source_name": "GoogleNews:ey.gov.tw",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T02:40:55+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5qX3hZTmRKb3RhYXdhYmhONWtpYnlPeHp0WS1XelVUTjhLM0JZVUQ3a041a3h6UUFQVHJETjBrM0NKZURDWkVHUWNfU0QtWWdh0gFWQVVfeXFMT1lQU3ZzS2NFTXBaUFU2X25Ld3NLTTMzZjhkTFFDUWV2bTRaMGpZTU02ZS1jWlBudE1KUFoxX0labXRfVnVtbXRTeFdRQ0dEa2d5QXdZYVE?oc=5",
+          "title": "政院通過「AI 人才方舟計畫」 完善數位教育健全環境 - UDN",
+          "source_name": "GoogleNews:UDN",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T05:49:25+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "0fc5190500"
+    },
+    {
+      "title": "法院駁回馬斯克對 OpenAI 的訴訟",
+      "summary": "法官駁回了 Elon Musk 對 OpenAI 提出的法律訴訟，使該 AI 公司在法律爭議中取得勝利。",
+      "category": "policy_society",
+      "importance": 6,
+      "who": [
+        "OpenAI",
+        "Elon Musk"
+      ],
+      "what": "駁回訴訟",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/newsletters/2026-05-20/openai-faces-ipo-unknowns-even-after-victory-over-musk",
+          "title": "OpenAI Faces IPO Unknowns Even After Victory Over Musk",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T22:09:47+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6bc16106e5"
+    },
+    {
+      "title": "LinkedIn 推出 AI 垃圾內容偵測機制",
+      "summary": "LinkedIn 採取行動打擊 AI 生成的低質量內容（AI slop），初步測試顯示其偵測通用 AI 貼文的準確率達 94%，以恢復饋送流的控制權。",
+      "category": "policy_society",
+      "importance": 6,
+      "who": [
+        "LinkedIn"
+      ],
+      "what": "打擊 AI 垃圾內容",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/linkedins-war-on-ai-slop-is-not-just-a-policy-update-it-is-an-admission-that-the-platform-lost-control-of-its-feed/",
+          "title": "LinkedIn's war on AI slop is not just a policy update—it is an admission that the platform lost control of its feed",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T18:21:23+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2682454817"
+    },
+    {
+      "title": "教育部公告 AI 學習指引",
+      "summary": "教育部針對 AI 基本法之施行，正式公告 AI 學習指引，旨在指導教育體系如何正確且安全地將 AI 整合至教學與學習中。",
+      "category": "policy_society",
+      "importance": 6,
+      "who": [
+        "教育部"
+      ],
+      "what": "公告學習指引",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE4zckpCSnBOV3NWRXJoNmd0ZTZKem55c19COU5qRy03Nk5mYlNPMk5qTzlXVUFVS1BvcThSeS1KYXZSMW81N3h3SmczNUItdG9P0gFWQVVfeXFMTXVVcTVuNkhoWTdRMXIxZDhwUkpFMGZ2QkUzNkFnc19ZSVdORjRTN0wybGFDSUthQkxxcy1TYkI0U2tPVUFET2NGcWJ5b0tsdXJYaGFRd2c?oc=5",
+          "title": "因應AI基本法上路 數發部將發布風險分類框架、教育部公告學習指引 - UDN",
+          "source_name": "GoogleNews:UDN",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T07:12:24+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2d43756371"
+    },
+    {
+      "title": "檢方聲押非法轉賣輝達 AI 伺服器三嫌",
+      "summary": "台灣檢方聲押三名嫌疑人，指控其在台灣購買搭載 NVIDIA 高階 AI 晶片的伺服器，隨後非法轉賣至中國、香港及澳門以牟取暴利。",
+      "category": "policy_society",
+      "importance": 5,
+      "who": [
+        "台灣檢方",
+        "三名嫌犯",
+        "基檢"
+      ],
+      "what": "聲押非法轉賣AI伺服器嫌犯",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMinANBVV95cUxOdHh4eEVEUk1fS3BjVHBIWGw3RGhHd20tUlc5X2NVd2Z1OTFmaHVYRTBfakFLT25aNWF3RjZjNWMzT01CSjJPdlRSWTZXMXdRaVpvdzFHZjF4ZmhLRzRnMGNXYXRWSHJEenlwaWRVa0ZrRjU3OHhhbGNBTlBtRnI3WEozdjNPMVhDYml2dmp4cTZWRFZBTE4tSzNaMG1aYXd1elA4ZUFodWYwQk1wVFAwRDExNk84NC16U2ptaHdiOWI0WEpGaUhCT0M0Q2I3SXRPTUhqbUZxRlZHVElfb0xGc0pGRTV1VVBUTUNuQTR5VXkzZ0ROTzdmcGM2cjhnQUFpeE9IYzFadUlNX3hGQ2RkZlBrWWpHNDdvbHRsWTEzejZhMzBSOW90M0hnOWJHVjlnc0pLbTlQZzVXYUNxam9ncjhVeGhjVVVVaUNFUEJEVHQ2ZzduOXBnbE1WUjlqcEM0ZVJxZEZialdPRmUyNE9ZTU9KQ2otejdoOGZfME1UcmNaTTFHaFJqRjB5MW45MDNVU1ZlbGtQMW1wU1RW?oc=5",
+          "title": "在台買搭載輝達高階AI晶片伺服器 欲轉賣中港澳牟利 檢聲押三嫌 - Yahoo新聞",
+          "source_name": "GoogleNews:Yahoo新聞",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T06:46:32+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        },
+        {
+          "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9mZEphSW8yczBfRklQWEtsLWliM1ktTW5UUllLM0swbFNhT3BKREh3U0lrYmc5WnREWW5HZ25OQnBSZ2xDbG9GeFROR2loLXdV0gFWQVVfeXFMTWlNS3ZLQ0hrREZ3blpBYXg0eDlXbG5odU84V0dXQUNCR3I5d01qU190N25TUmFrLUp5RDYzQkJUdnU1cjJlalI5YWtrcjdsbHZQdUxXbFE?oc=5",
+          "title": "在台買搭載輝達高階AI晶片伺服器再轉賣中港澳 基檢聲押3嫌 - UDN",
+          "source_name": "GoogleNews:UDN",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T05:30:13+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "c5a3fe65e1"
+    },
+    {
+      "title": "Google DeepMind 與英國工會就 AI 倫理及權益談判",
+      "summary": "針對員工對 AI 在美國與以色列應用之倫理擔憂，Google DeepMind 目前正與英國工會進行相關談判，處理勞工權益問題。",
+      "category": "policy_society",
+      "importance": 5,
+      "who": [
+        "Google DeepMind",
+        "英國工會"
+      ],
+      "what": "進行勞工權益談判",
+      "when": "近期",
+      "where": "英國",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiggNBVV95cUxNdEZQTU1OWW1NS1VRbkxFSFhGMGxiRFpmTHpnVUtwYXFwVFM5d2lUbFRkZC15Y0FOSkMwdlNkNHFVWHItd1h3cmhKOERTTEIyaWtlWXJaaHdRQjRWY1Q2Ul9nbUkxUXUtUjhmajNwVjN2Vl9tSHdsNzlRaTBaLWN4YWdGRElja3NhdUhKV2VjaGYzSGE5bTBVU3lFOHprWHF0em5ibnZQd1RhV2lSZUc3R0Mya0ZLdkE3WDVfQnpJeWNJYlNMWWN3QjF6ai0yM21ZV3o3a1pfaGxqM294NnZFN0pzS0huNzZUMWVtallrWGJwZjJFQmxUcEFBcnRWUk5HVmhiWGstWnJKZDhzSlE4YnNwN3otNF9mMS1aZVFmXzdKV203bXlzTzVsYkJ1M3AxdXVaNURZYVZxaTJrRkdsOGtMQ19EbEhYV09OY0hCQ05XVDlZM1lPeWdzYjc5dkVWRkNLZk9sbzZZWjQxaDBTVUpwNUxqcXFnbTRlanZrVm1FUQ?oc=5",
+          "title": "員工對美國和以色列使用人工智慧表示擔憂，Google DeepMind 正在與英國工會進行談判谷歌 - arch-web.com.tw",
+          "source_name": "GoogleNews:arch-web.com.tw",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-20T14:23:21+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "96d87b5e87"
+    },
+    {
+      "title": "研究指 AI 企業使用操縱性退出表單",
+      "summary": "一項新研究發現，包括 AI 公司在內的 38 家數據收集者，被指控在設計「退出（Opt-out）」表單時使用操縱性設計，意圖混淆用戶以持續收集個人數據。",
+      "category": "policy_society",
+      "importance": 5,
+      "who": [
+        "AI 企業"
+      ],
+      "what": "被指控操縱數據退出機制",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.wired.com/story/data-brokers-and-ai-firms-opt-out-forms-are-built-to-fail-report-finds/",
+          "title": "Data Brokers’ and AI Firms’ Opt-Out Forms Are Built to Fail, Report Finds",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T09:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c23e470dce"
+    },
+    {
+      "title": "資安署提出 AI 漏洞應對三項作為",
+      "summary": "數位發展部資安署針對新興 AI 模型挖掘漏洞的能力，提出掌握 AI 防禦工具、研商國家級因應策略及強化中小微企業防護支持等三項應對措施，以提升數位安全韌性。",
+      "category": "policy_society",
+      "importance": 5,
+      "who": [
+        "資安署"
+      ],
+      "what": "提出資安應對作為",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175978",
+          "title": "面對AI漏洞風暴！資安署籲企業重視基本功，並強調資安實務已從「預防被打」轉向「迅速復原」",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T16:40:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "df87825725"
+    },
+    {
+      "title": "研究 LLM 對身心障礙者的表徵偏見",
+      "summary": "研究人員調查大型語言模型（LLM）在模擬身心障礙者人格時的表徵方式，分析模型是否會強化對邊緣化群體的偏見，或因去偏見努力而產生過度正向的刻板印象。",
+      "category": "policy_society",
+      "importance": 5,
+      "who": [
+        "LLM disability representation study"
+      ],
+      "what": "發表 LLM 偏見研究",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.20191",
+          "title": "Shiny Stories, Hidden Struggles: Investigating the Representation of Disability Through the Lens of LLMs",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-21T04:00:00+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "176c090719"
+    },
+    {
+      "title": "數發部發布 AI 人才指引 3.0",
+      "summary": "數發部預計於 6 月推出公務版 AI 指引，旨在強化公務人員的 AI 治理能力，提升政府行政效率與數位轉型。",
+      "category": "policy_society",
+      "importance": 5,
+      "who": [
+        "AI 人才指引 3.0",
+        "數發部"
+      ],
+      "what": "發布指引",
+      "when": "2024-06",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE8xVTkxc2NrbHJiT2JwRFlXOERXTkV4bjY2VHQtTk9wYVdPeGtmOVR5RXVMQXliUm5OTFVjTkVzT1o5R2lGQWtIMFlHOW9KMjl10gFWQVVfeXFMT0kwQzk1ZzJ0dWtSeHY3bzdNMWlVa2IxR3BBTTlhZXlaUkdHdkpqWXZtUlR0VzYyVVVDTzVOZmNXR2RVQVllTnlvbnFFTzFEWlMwWE5LLXc?oc=5",
+          "title": "AI 人才指引3.0上路 數發部6月推公務版指引強化治理能力 - UDN",
+          "source_name": "GoogleNews:UDN",
+          "source_region": "TW",
+          "source_kind": "search",
+          "published": "2026-05-21T05:37:13+00:00",
+          "is_opensource": false,
+          "stars": "",
+          "pulls": "",
+          "context_length": 0,
+          "pricing": {},
+          "task": "",
+          "downloads": 0,
+          "upvotes": 0
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "3c4cacd9b3"
+    }
+  ]
+}

@@ -1,0 +1,598 @@
+{
+  "date": "2026-05-20",
+  "generated_at": "2026-05-20T16:42:14",
+  "total": 15,
+  "events": [
+    {
+      "title": "Cloudflare 測試 Claude Mythos 模型",
+      "summary": "Cloudflare 對 Anthropic 的資安模型 Claude Mythos Preview 進行測試，發現該 AI 能將多個低風險漏洞串聯成完整攻擊鏈，並能自行撰寫與執行 PoC 程式。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "Claude Mythos",
+        "Cloudflare",
+        "Anthropic",
+        "Mythos Preview"
+      ],
+      "what": "進行模型評測",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175929",
+          "title": "Cloudflare測試Claude Mythos，能串聯多個低風險漏洞形成攻擊鏈",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-19T13:48:00+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/cloudflare-says-anthropics-mythos-preview-finds-exploit-chains-that-earlier-frontier-models-missed/",
+          "title": "Cloudflare says Anthropic's Mythos Preview finds exploit chains that earlier frontier models missed",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T11:13:48+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "2c3ce1382f",
+      "url": "https://www.ithome.com.tw/news/175929",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0415-claude_mythos-9601.jpg"
+      }
+    },
+    {
+      "title": "Google DeepMind 將 Street View 整合至 Project Genie",
+      "summary": "Google DeepMind 將 Street View 數據整合至 Project Genie 世界模型中，旨在為機器人、遊戲及旅遊創造沉浸式且可互動的環境模擬，讓使用者能探索天氣變化與罕見場景。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "Project Genie",
+        "Google DeepMind"
+      ],
+      "what": "整合 Street View",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/googles-genie-world-model-can-now-simulate-real-streets-with-street-view/",
+          "title": "Google’s Genie world model can now simulate real streets with Street View",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:51:39+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "95e90acd05",
+      "url": "https://techcrunch.com/2026/05/19/googles-genie-world-model-can-now-simulate-real-streets-with-street-view/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2026/05/Genie-Street-View-NYC.png?resize=1200,662"
+      }
+    },
+    {
+      "title": "推出 OpenCompass LLM 通用評估平台",
+      "summary": "針對大語言模型快速迭代的需求，研究團隊推出 OpenCompass 評估平台。該平台旨在提供客觀、定量且全面的能力評估，以解決目前主流靜態基準數據集在任務多樣性與評估標準一致性上的挑戰。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "OpenCompass"
+      ],
+      "what": "推出評估平台",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19276",
+          "title": "OpenCompass: A Universal Evaluation Platform for Large Language Models",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "4cadbc689b",
+      "url": "https://arxiv.org/abs/2605.19276",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+      }
+    },
+    {
+      "title": "AI 研究員 Andrej Karpathy 加入 Anthropic",
+      "summary": "OpenAI 共同創辦人 Andrej Karpathy 宣布加入 AI 公司 Anthropic。Karpathy 為深度學習與電腦視覺領域的頂尖研究者，此舉被視為 AI 人才流動的重要指標。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "Andrej Karpathy",
+        "Anthropic"
+      ],
+      "what": "加入公司",
+      "when": "2026-05-19",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175960",
+          "title": "知名AI研究人員Andrej Karpathy加入Anthropic",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T12:05:26+00:00"
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tht4s0/andrej_karpathy_joins_anthropic/",
+          "title": "Andrej Karpathy Joins Anthropic !",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T17:02:14+00:00"
+        },
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755920_0U8LYRAZ1PRRD910LGDPE",
+          "title": "Andrej Karpathy加入Anthropic　加速AI自我進化研究",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:22:28+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/prominent-ai-researcher-andrej-karpathy-picks-anthropic-over-former-home-openai-to-get-back-into-frontier-llm-research/",
+          "title": "Prominent AI researcher Andrej Karpathy picks Anthropic over former home OpenAI to get back into frontier LLM research",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T18:23:27+00:00"
+        }
+      ],
+      "mention_count": 4,
+      "event_id": "a3b958488d",
+      "url": "https://www.ithome.com.tw/news/175960",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0303-claude_app-anthropic_0.jpg"
+      }
+    },
+    {
+      "title": "NVIDIA 投資 900 億美元布局 AI 生態系",
+      "summary": "NVIDIA 執行長黃仁勳推動規模約 900 億美元的策略投資，旨在為 AI 基礎設施注入資金，以鞏固其與客戶及供應鏈的合作關係。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "NVIDIA"
+      ],
+      "what": "投資 AI 生態系",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://finance.technews.tw/2026/05/20/nvidias-jensen-huang-bankrolls-ai-boom-with-90bn-deal-spree/",
+          "title": "輝達豪擲 900 億美元布局 AI 生態系，欲以投資「固樁」客戶與供應鏈",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T06:20:13+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a350f6b2ff",
+      "url": "https://finance.technews.tw/2026/05/20/nvidias-jensen-huang-bankrolls-ai-boom-with-90bn-deal-spree/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.technews.tw/wp-content/uploads/2026/03/25142037/NVIDIA-GTC-2026_Jensen-Huang1.jpg"
+      }
+    },
+    {
+      "title": "SoftBank 投資 OpenAI 600 億美元",
+      "summary": "SoftBank 創辦人孫正義向 OpenAI 投資 600 億美元，此舉在 SoftBank 內部引起關注與擔憂，顯示其對 AI 領域的重大押注。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "SoftBank",
+        "OpenAI"
+      ],
+      "what": "投資 600 億美元",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-19/masayoshi-son-s-60-billion-bet-on-openai-raises-red-flags",
+          "title": "SoftBank Insiders Worry About Masayoshi Son’s Bet on OpenAI",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:01:12+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b8470237c1",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-19/masayoshi-son-s-60-billion-bet-on-openai-raises-red-flags",
+      "cover_image": {
+        "kind": "fallback",
+        "category": "industry_business"
+      }
+    },
+    {
+      "title": "Analog Devices 收購 Empower Semiconductor",
+      "summary": "Analog Devices 同意以 15 億美元現金收購 Empower Semiconductor，旨在滿足 AI 資料中心對高效能晶片的需求。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "Analog Devices",
+        "Empower Semiconductor",
+        "ADI",
+        "Empower"
+      ],
+      "what": "收購",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-19/analog-devices-to-acquire-empower-in-1-5-billion-transaction",
+          "title": "Analog Devices to Acquire Empower in $1.5 Billion Transaction",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:56:57+00:00"
+        },
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755926_TU3LQA3F1PMKRG795M9ZX",
+          "title": "ADI斥資15億美元收購半導體業者Empower　強化AI電力布局",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T03:21:58+00:00"
+        },
+        {
+          "url": "https://technews.tw/2026/05/20/analog-devices-to-acquire-empower-semiconductor/",
+          "title": "ADI 砸 15 億美元現金收購 Empower，看準 AI 電力瓶頸加速布局",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:57:32+00:00"
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "43ea21b2da",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-19/analog-devices-to-acquire-empower-in-1-5-billion-transaction",
+      "cover_image": {
+        "kind": "fallback",
+        "category": "hardware_infra"
+      }
+    },
+    {
+      "title": "Google 發表 AI 音訊眼鏡",
+      "summary": "Google 在 I/O 2026 上發表新款「音訊眼鏡」（Audio Glasses），使用者可透過語音指令操作 Gemini 及 Google 生態系應用。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "Audio Glasses",
+        "Google",
+        "Smart Glasses"
+      ],
+      "what": "發表 AI 音訊眼鏡",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/google-takes-a-page-out-of-metas-book-announces-new-audio-powered-smart-glasses-at-io-2026/",
+          "title": "Google takes a page out of Meta’s book, announces new audio-powered smart glasses at IO 2026",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T19:15:31+00:00"
+        },
+        {
+          "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+          "title": "Everything Announced at Google I/O 2026: Gemini, Search, Smart Glasses",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:00:48+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "3ce9418ea9",
+      "url": "https://techcrunch.com/2026/05/19/google-takes-a-page-out-of-metas-book-announces-new-audio-powered-smart-glasses-at-io-2026/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2026/05/IMG_1421.jpg?resize=1200,900"
+      }
+    },
+    {
+      "title": "微軟投資175億美元於印度建設資料中心",
+      "summary": "微軟計畫在印度投資175億美元，其規模最大的資料中心預計將於2026年中啟用，旨在滿足印度市場對Azure雲端服務及Copilot人工智慧服務的需求。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "微軟"
+      ],
+      "what": "投資建設資料中心",
+      "when": "近期",
+      "where": "印度",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755931_VE6L1HZA2I4CRN2ESSM9T",
+          "title": "微軟175億美元布局印度　最大資料中心2026年中投運",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:39:37+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "17b9fc8ee3",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755931_VE6L1HZA2I4CRN2ESSM9T",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0520/755931-1-ssm9t_l.jpg"
+      }
+    },
+    {
+      "title": "Gemini 3.5 Flash 正式發布",
+      "summary": "Google 在 2026 年 Google I/O 開發者大會上推出 Gemini 3.5 Flash 模型，主打在不犧牲效能的前提下大幅降低 token 消耗，旨在解決企業 AI 預算飆升的痛點。",
+      "category": "products_apps",
+      "importance": 9,
+      "who": [
+        "Gemini 3.5 Flash",
+        "Google",
+        "Gemini Omni"
+      ],
+      "what": "推出新模型",
+      "when": "2026",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755922_EY08YJHS3VAZC81EE1TZT",
+          "title": "Sundar Pichai點名AI預算為企業痛點　Gemini 3.5 Flash應運而生",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T03:39:57+00:00"
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/19/with-gemini-3-5-flash-google-bets-its-next-ai-wave-on-agents-not-chatbots/",
+          "title": "With Gemini 3.5 Flash, Google bets its next AI wave on agents, not chatbots",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:51:30+00:00"
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/19/googles-gemini-omni-turns-images-audio-and-text-into-video-and-thats-just-the-start/",
+          "title": "Google’s Gemini Omni turns images, audio, and text into video — and that’s just the start",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/175949",
+          "title": "Google公布Gemini 3.5 Flash推理模型，主打代理人開發作業",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:05:47+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/googles-i-o-announcements-new-models-a-cloud-agent-that-never-sleeps-and-a-redesigned-gemini-app/",
+          "title": "Google's I/O announcements: new models, a cloud agent that never sleeps, and a redesigned Gemini app",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:44:17+00:00"
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1thtxs8/behold_gemini_35_flash/",
+          "title": "Behold, Gemini 3.5 Flash!",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T17:29:27+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/google-overhauls-its-ai-subscriptions-at-i-o-2026-with-three-tiers-starting-at-10-a-month/",
+          "title": "Google overhauls its AI subscriptions at I/O 2026 with three tiers starting at $10 a month",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T19:33:12+00:00"
+        },
+        {
+          "url": "https://openrouter.ai/models/google/gemini-3.5-flash",
+          "title": "[OpenRouter 新模型] Google: Gemini 3.5 Flash",
+          "source_name": "OpenRouter Models",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "2026-05-19T12:30:00+00:00"
+        },
+        {
+          "url": "https://arstechnica.com/google/2026/05/google-announces-agent-optimized-gemini-3-5-flash-and-a-do-anything-model-called-omni/",
+          "title": "Gemini 3.5 Flash might be fast enough for gen AI to make sense",
+          "source_name": "Ars Technica",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T18:11:50+00:00"
+        }
+      ],
+      "mention_count": 9,
+      "event_id": "58930e1aa4",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755922_EY08YJHS3VAZC81EE1TZT",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0520/755922-1-e1tzt1154_l.jpg"
+      }
+    },
+    {
+      "title": "Google 推出 AI 智慧搜尋框改版",
+      "summary": "Google 於 I/O 2026 大會宣布對搜尋框進行 25 年來最大規模改版，將 AI 直接整合至搜尋入口並加入 AI 代理能力，支援文字、圖片、影片及 Chrome 分頁輸入。",
+      "category": "products_apps",
+      "importance": 9,
+      "who": [
+        "Google 搜尋",
+        "Google",
+        "Google AI Studio"
+      ],
+      "what": "推出新功能",
+      "when": "2026-05-19",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175950",
+          "title": "Google搜尋25年大改版，整合AI打造智慧搜尋框",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:05:53+00:00"
+        },
+        {
+          "url": "https://venturebeat.com/technology/google-just-redesigned-the-search-box-for-the-first-time-in-25-years-heres-why-it-matters-more-than-you-think",
+          "title": "Google just redesigned the search box for the first time in 25 years — here’s why it matters more than you think.",
+          "source_name": "VentureBeat AI",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/175964",
+          "title": "Google更新AI Studio，可直接生成原生Android App",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T01:05:49+00:00"
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "20d4e7b606",
+      "url": "https://www.ithome.com.tw/news/175950",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0520-ai_search-google.jpg"
+      }
+    },
+    {
+      "title": "Google 推出 AI 代理人功能",
+      "summary": "Google 計劃在旗下多項產品中啟用 AI 代理人（AI Agents），使其能自動執行複雜任務，將 AI 從對話工具轉化為可操作的助手。",
+      "category": "products_apps",
+      "importance": 9,
+      "who": [
+        "AI Agents",
+        "Google"
+      ],
+      "what": "啟用 AI 代理人",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+          "title": "Everything Announced at Google I/O 2026: Gemini, Search, Smart Glasses",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:00:48+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "88364c7093",
+      "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://media.wired.com/photos/6a047ecbec98d3bd8037fdbe/191:100/w_1280,c_limit/GettyImages-2215577882.jpg"
+      }
+    },
+    {
+      "title": "法院駁回馬斯克對 OpenAI 與微軟之訴訟",
+      "summary": "陪審團迅速裁定駁回 Elon Musk 對 OpenAI 創始人及微軟提出的訴訟，確認其指控缺乏足夠證據且提起訴訟過晚。",
+      "category": "policy_society",
+      "importance": 8,
+      "who": [
+        "Elon Musk",
+        "OpenAI",
+        "Microsoft"
+      ],
+      "what": "訴訟被法院駁回",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/elon-musk-said-sam-altman-stole-a-non-profit-but-the-trial-showed-he-had-similar-aims/",
+          "title": "Elon Musk said Sam Altman ‘stole’ a non-profit — but the trial showed he had similar aims",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:11:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5645ece441",
+      "url": "https://techcrunch.com/2026/05/19/elon-musk-said-sam-altman-stole-a-non-profit-but-the-trial-showed-he-had-similar-aims/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2026/04/musk-court-2273245544.jpg?resize=1200,801"
+      }
+    },
+    {
+      "title": "越南頒布 AI 監管法規",
+      "summary": "越南政府頒布第 142 號法令，要求 OpenAI 與 Anthropic 等 AI 公司必須在 2027 年 3 月前指派政府溝通代表，以確保相關企業符合當地的人工智慧監管合規要求。",
+      "category": "policy_society",
+      "importance": 7,
+      "who": [
+        "越南政府",
+        "OpenAI",
+        "Anthropic"
+      ],
+      "what": "發布 AI 監管法規",
+      "when": "近期",
+      "where": "越南",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755965_Q34876IX7QU0AH4GOW01U",
+          "title": "越南發布AI法規　OpenAI、Anthropic須設溝通窗口",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T04:03:50+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ada03058ee",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755965_Q34876IX7QU0AH4GOW01U",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0520/755965-1-ow01u_l.jpg"
+      }
+    },
+    {
+      "title": "美國執行刪除非合意親密影像法打擊 AI 深偽",
+      "summary": "美國正式執行「刪除非合意親密影像法」，要求科技平台必須移除由 AI 生成的非合意情色深偽影像及其他未經同意的私密影像。",
+      "category": "policy_society",
+      "importance": 7,
+      "who": [
+        "美國政府"
+      ],
+      "what": "執行法律",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/20/ai-deepfake-images-proliferate-us-enforces-non-consensual-intimate-image-removal-act/",
+          "title": "AI 深偽影像氾濫，美執行《刪除非合意親密影像法》",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T06:50:44+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6f847205d3",
+      "url": "https://technews.tw/2026/05/20/ai-deepfake-images-proliferate-us-enforces-non-consensual-intimate-image-removal-act/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.technews.tw/wp-content/uploads/2024/09/02111814/portrait-hacker-with-mask.jpg"
+      }
+    }
+  ]
+}

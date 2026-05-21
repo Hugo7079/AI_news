@@ -1,0 +1,2652 @@
+{
+  "date": "2026-05-20",
+  "generated_at": "2026-05-20T16:42:14",
+  "total": 94,
+  "by_category_label": {
+    "技術突破與研究": 25,
+    "產業動態與商業": 21,
+    "硬體與基礎建設": 14,
+    "產品與應用": 25,
+    "政策法規與社會影響": 9
+  },
+  "events": [
+    {
+      "title": "Cloudflare 測試 Claude Mythos 模型",
+      "summary": "Cloudflare 對 Anthropic 的資安模型 Claude Mythos Preview 進行測試，發現該 AI 能將多個低風險漏洞串聯成完整攻擊鏈，並能自行撰寫與執行 PoC 程式。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "Claude Mythos",
+        "Cloudflare",
+        "Anthropic",
+        "Mythos Preview"
+      ],
+      "what": "進行模型評測",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175929",
+          "title": "Cloudflare測試Claude Mythos，能串聯多個低風險漏洞形成攻擊鏈",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-19T13:48:00+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/cloudflare-says-anthropics-mythos-preview-finds-exploit-chains-that-earlier-frontier-models-missed/",
+          "title": "Cloudflare says Anthropic's Mythos Preview finds exploit chains that earlier frontier models missed",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T11:13:48+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "2c3ce1382f",
+      "url": "https://www.ithome.com.tw/news/175929",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0415-claude_mythos-9601.jpg"
+      }
+    },
+    {
+      "title": "Google DeepMind 將 Street View 整合至 Project Genie",
+      "summary": "Google DeepMind 將 Street View 數據整合至 Project Genie 世界模型中，旨在為機器人、遊戲及旅遊創造沉浸式且可互動的環境模擬，讓使用者能探索天氣變化與罕見場景。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "Project Genie",
+        "Google DeepMind"
+      ],
+      "what": "整合 Street View",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/googles-genie-world-model-can-now-simulate-real-streets-with-street-view/",
+          "title": "Google’s Genie world model can now simulate real streets with Street View",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:51:39+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "95e90acd05",
+      "url": "https://techcrunch.com/2026/05/19/googles-genie-world-model-can-now-simulate-real-streets-with-street-view/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2026/05/Genie-Street-View-NYC.png?resize=1200,662"
+      }
+    },
+    {
+      "title": "推出 OpenCompass LLM 通用評估平台",
+      "summary": "針對大語言模型快速迭代的需求，研究團隊推出 OpenCompass 評估平台。該平台旨在提供客觀、定量且全面的能力評估，以解決目前主流靜態基準數據集在任務多樣性與評估標準一致性上的挑戰。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "OpenCompass"
+      ],
+      "what": "推出評估平台",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19276",
+          "title": "OpenCompass: A Universal Evaluation Platform for Large Language Models",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "4cadbc689b",
+      "url": "https://arxiv.org/abs/2605.19276",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://arxiv.org/static/browse/0.3.4/images/arxiv-logo-fb.png"
+      }
+    },
+    {
+      "title": "開發 AgentNLQ 自然語言轉 SQL 代理",
+      "summary": "研究團隊提出一種名為 AgentNLQ 的多代理方法，用於將自然語言轉換為 SQL 查詢。該方法在 BIRD 基準測試中達到了 78.1% 的語義準確率，顯著提升了 NL2SQL 任務的精準度。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "AgentNLQ"
+      ],
+      "what": "提出多代理方法",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19010",
+          "title": "AgentNLQ: A General-Purpose Agent for Natural Language to SQL",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "367178099c"
+    },
+    {
+      "title": "推出 ResearchArena 自動研究評測平台",
+      "summary": "研究人員推出 ResearchArena 框架，用於評估 Claude Code、Codex 及 Kimi Code 等代理在自動研究全週期（構思、實驗、寫作、精煉）中的實際產出品質。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "ResearchArena"
+      ],
+      "what": "推出評測平台",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19156",
+          "title": "How Far Are We From True Auto-Research?",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "702f64e982"
+    },
+    {
+      "title": "研究顯示 Guardrails 顯著提升 8B 模型代理任務表現",
+      "summary": "根據 ACM CAIS '26 預印本研究，透過導入 Guardrails 機制，可將 8B 參數模型在代理任務（agentic tasks）中的準確率從 53% 提升至 99%。",
+      "category": "tech_research",
+      "importance": 7,
+      "who": [
+        "Guardrails",
+        "ACM CAIS '26"
+      ],
+      "what": "發布研究成果",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1ticykd/guardrails_take_an_8b_model_from_53_to_99_on/",
+          "title": "Guardrails take an 8B model from 53% to 99% on agentic tasks [ACM CAIS '26 preprint]",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T06:13:25+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "aa28743d77"
+    },
+    {
+      "title": "發布 FormalASR 中文口語轉正式文本模型",
+      "summary": "研究人員推出 FormalASR，包含 0.6B 與 1.7B 兩種輕量化端到端模型。該模型能直接將中文口語轉譯為正式書面文本，避免了傳統 ASR 搭配 LLM 後處理的高延遲與高記憶體成本。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "FormalASR"
+      ],
+      "what": "發布端到端模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19266",
+          "title": "FormalASR: End-to-End Spoken Chinese to Formal Text",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "66418319ee"
+    },
+    {
+      "title": "評測多款 LLM 的跨語言診斷推理能力",
+      "summary": "研究人員比較 o3、DeepSeek-R1 等五款 LLM 在英文與法文提示下的診斷推理準確度，分析提示語言對臨床決策支援可靠性的影響。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "o3",
+        "DeepSeek-R1",
+        "GPT-4-Turbo",
+        "Llama-3.1-405B-Instruct",
+        "BioMistral-7B"
+      ],
+      "what": "評測 LLM 推理能力",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19173",
+          "title": "Prompting language influences diagnostic reasoning and accuracy of large language models",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "d425b0456e"
+    },
+    {
+      "title": "提出 Document AI 微服務生產架構",
+      "summary": "研究人員提出一種微服務架構，將分類、光學字元識別 (OCR) 與 LLM 結構化欄位提取管線進行封裝。該架構已在每小時處理數千份多頁文件的生產環境中得到驗證，旨在縮小模型定義與大規模運行之間的差距。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "研究人員"
+      ],
+      "what": "提出微服務架構",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.18818",
+          "title": "Operationalizing Document AI: A Microservice Architecture for OCR and LLM Pipelines in Production",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "87aa2f6490"
+    },
+    {
+      "title": "評估 Gemini 3.0 Flash 個人健康 AI 效能",
+      "summary": "研究人員測試 Gemini 3.0 Flash 在提供個人健康記錄 (PHR) 作為上下文時，回答使用者健康查詢的潛力。研究使用了 2,257 個來自不同分布的使用者查詢，評估模型在個人化健康 AI 應用中的實用性。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Gemini 3.0 Flash",
+        "Google"
+      ],
+      "what": "評估模型效能",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.18937",
+          "title": "Evaluating the Utility of Personal Health Records in Personalized Health AI",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "94e1d27bab"
+    },
+    {
+      "title": "推出 LBW-Guard 訓練控制治理層",
+      "summary": "為解決 LLM 訓練中的不穩定與計算浪費問題，研究者推出 LBW-Guard 治理層。該工具在 AdamW 優化器之上運行，透過監控訓練遙測數據來應用有界控制，在不改變訓練目標的情況下提升穩定性與效率。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "LBW-Guard"
+      ],
+      "what": "推出訓練控制層",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19008",
+          "title": "Learn-by-Wire Training Control Governance: Bounded Autonomous Training Under Stress for Stability and Efficiency",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a0a408e656"
+    },
+    {
+      "title": "推出 ReElicit 提示詞優化框架",
+      "summary": "研究人員推出基於「elicit 嵌入」的貝葉斯優化框架 ReElicit，旨在解決在僅有聚合指標而缺乏單樣本標記的情況下，難以調校 AI 系統提示詞的黑盒優化問題。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "ReElicit"
+      ],
+      "what": "推出優化框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19093",
+          "title": "Embedding by Elicitation: Dynamic Representations for Bayesian Optimization of System Prompts",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c96b7f80ad"
+    },
+    {
+      "title": "發布 DecisionBench 代理基準測試",
+      "summary": "研究人員推出 DecisionBench，用於評估長週期代理工作流中的湧現委派能力。該基準涵蓋 GAIA 等任務集與 11 個模型，提供品質、成本、延遲等多維度評測指標。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "DecisionBench"
+      ],
+      "what": "發布基準測試",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19099",
+          "title": "DecisionBench: A Benchmark for Emergent Delegation in Long-Horizon Agentic Workflows",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b2a4217c16"
+    },
+    {
+      "title": "發布 POLAR-Bench 隱私基準測試",
+      "summary": "研究人員推出 POLAR-Bench，旨在診斷 LLM 代理在處理私有用戶數據與第三方系統互動時的隱私-效用權衡，透過對抗性探測評估代理遵循隱私政策的能力。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "POLAR-Bench"
+      ],
+      "what": "發布基準測試",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19127",
+          "title": "POLAR-Bench: A Diagnostic Benchmark for Privacy-Utility Trade-offs in LLM Agents",
+          "source_name": "arXiv cs.AI (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "82ff5f35df"
+    },
+    {
+      "title": "Odyssey 發布世界模型 Agora-1",
+      "summary": "Odyssey 推出名為 Agora-1 的世界模型，能將經典遊戲 GoldenEye 轉化為可供四人同時操作的 AI 模擬環境。該系統由兩個獨立模型分別處理遊戲狀態模擬與即時渲染。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Agora-1",
+        "Odyssey"
+      ],
+      "what": "發布世界模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/agora-1-turns-the-n64-classic-goldeneye-into-a-playable-ai-simulation-for-four-players/",
+          "title": "Agora-1 turns the N64 classic GoldenEye into a playable AI simulation for four players",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T13:57:38+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "aa39464971"
+    },
+    {
+      "title": "Artificial Analysis 評測 Qwen 3.7 Max",
+      "summary": "評測機構 Artificial Analysis 對 Qwen 3.7 Max 進行效能評分，結果顯示其表現與 GPT 5.4 相當，且略高於近期發布的 Gemini 3.5 Flash。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Artificial Analysis",
+        "Qwen 3.7 Max"
+      ],
+      "what": "進行效能評測",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1tie6gy/qwen37_max_scored_by_artificial_analysis_27b35b/",
+          "title": "Qwen3.7 Max scored by Artificial Analysis, 27B/35B waiting room",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T07:18:51+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "9a6dd61f09"
+    },
+    {
+      "title": "分析 Llama 3.1 與 Gemma 2 的文學原語特徵",
+      "summary": "研究人員利用稀疏自編碼器（SAE）分析 Llama 3.1 8B-Instruct 與 Gemma 2 9B-IT 的殘差流。研究識別出包含命名門、第一人稱暫存器及風格調節器在內的四類文學原語特徵，揭示模型如何處理情感與風格。",
+      "category": "tech_research",
+      "importance": 6,
+      "who": [
+        "Llama 3.1 8B-Instruct",
+        "Gemma 2 9B-IT"
+      ],
+      "what": "進行模型分析",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.18808",
+          "title": "Compositional Literary Primitives in Instruction-Tuned LLMs: Cross-Architectural SAE Features for Self, Style, and Affect",
+          "source_name": "arXiv cs.LG (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "178c4cbb2d"
+    },
+    {
+      "title": "AI 科學助手成功完成藥物重新定位任務",
+      "summary": "兩款 AI 科學助手在藥物重新定位任務中取得成功，其中一款工具能生成假設並分析相關數據，展現 AI 在生物醫學研究的潛力。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "AI 科學助手"
+      ],
+      "what": "完成藥物重新定位任務",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arstechnica.com/science/2026/05/two-ai-based-science-assistants-succeed-with-drug-retargeting-tasks/",
+          "title": "Two AI-based science assistants succeed with drug-retargeting tasks",
+          "source_name": "Ars Technica",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T18:55:56+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2717307514"
+    },
+    {
+      "title": "提出 MMoA 遞迴 AI 代理框架",
+      "summary": "研究人員提出 MMoA 框架，透過在代理選擇過程中整合基於 LSTM 的門控機制，建立遞迴的 Mixture-of-Agents 架構。該框架旨在解決現有 MoA 系統依賴靜態路由，無法捕捉跨聚合層的時間與上下文依賴問題。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "MMoA"
+      ],
+      "what": "提出新框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19194",
+          "title": "MMoA: An AI-Agent framework with recurrence for Memoried Mixure-of-Agent",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "4fa676be58"
+    },
+    {
+      "title": "利用 fMRI 提升 ECoG 語言編碼模型",
+      "summary": "研究人員提出一種新方法，利用非侵入性的 fMRI 數據來彌補訓練數據不足，對語言編碼模型進行微調。實驗結果顯示，經 fMRI 微調後的表示法能有效提升對快速皮質電圖（ECoG）記錄的預測能力。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "語言編碼模型"
+      ],
+      "what": "提出訓練方法",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19224",
+          "title": "Fine-tuning language encoding models on slow fMRI improves prediction for fast ECoG",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "483d2c50f0"
+    },
+    {
+      "title": "推出 SCA 黑盒 LLM 推理診斷框架",
+      "summary": "研究人員推出 Stepwise Confidence Attribution (SCA) 框架，專為閉源 LLM 設計。該框架僅依據生成的推理軌跡來分配步驟級的置信度，用以診斷多步推理過程中具體在哪個環節發生失敗。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "Stepwise Confidence Attribution (SCA)"
+      ],
+      "what": "推出診斷框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19228",
+          "title": "Diagnosing Multi-step Reasoning Failures in Black-box LLMs via Stepwise Confidence Attribution",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "39d273e2ed"
+    },
+    {
+      "title": "推出 DECOR LLM 欺騙審計框架",
+      "summary": "研究人員基於資訊操縱理論推出 DECOR 多代理框架，用於對 LLM 的策略性欺騙進行細粒度審計。DECOR 能將輸入上下文分解為原子資訊單元，精確定位模型如何透過省略事實或模糊含義來誤導用戶。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "DECOR"
+      ],
+      "what": "推出審計框架",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19270",
+          "title": "DECOR: Auditing LLM Deception via Information Manipulation Theory",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "9cdaebb45a"
+    },
+    {
+      "title": "發布商用 ASR 碼切換語音評測基準",
+      "summary": "研究人員針對五家商用自動語音辨識（ASR）提供商，就阿拉伯語、波斯語與德語的碼切換（Code-switching）語音表現建立評測基準，以衡量真實多語言環境性能。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "arXiv"
+      ],
+      "what": "發布 ASR 評測基準",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19069",
+          "title": "Benchmarking Commercial ASR Systems on Code-Switching Speech: Arabic, Persian, and German",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c7c3f69733"
+    },
+    {
+      "title": "提出 ReacTOD 零樣本對話狀態追蹤架構",
+      "summary": "研究人員提出 ReacTOD 邊界神經符號架構，將自然語言理解（NLU）定義為 ReAct 迴圈中的離散工具調用，以減少 LLM 在對話系統中的幻覺與格式錯誤。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "ReacTOD"
+      ],
+      "what": "提出新模型架構",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19077",
+          "title": "ReacTOD: Bounded Neuro-Symbolic Agentic NLU for Zero-Shot Dialogue State Tracking",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "8c0435d933"
+    },
+    {
+      "title": "定義 AI 代理「意外崩潰」失效模式",
+      "summary": "研究人員在 arXiv 提出並衡量 AI 代理的「意外崩潰」（accidental meltdown）現象，描述代理在面對良性環境錯誤時，可能產生的不安全或有害行為。",
+      "category": "tech_research",
+      "importance": 5,
+      "who": [
+        "arXiv"
+      ],
+      "what": "定義 AI 失效模式",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arxiv.org/abs/2605.19149",
+          "title": "Agent Meltdowns: The Road to Hell Is Paved with Helpful Agents",
+          "source_name": "arXiv cs.CL (新論文)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T04:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "8d3c115b69"
+    },
+    {
+      "title": "AI 研究員 Andrej Karpathy 加入 Anthropic",
+      "summary": "OpenAI 共同創辦人 Andrej Karpathy 宣布加入 AI 公司 Anthropic。Karpathy 為深度學習與電腦視覺領域的頂尖研究者，此舉被視為 AI 人才流動的重要指標。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "Andrej Karpathy",
+        "Anthropic"
+      ],
+      "what": "加入公司",
+      "when": "2026-05-19",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175960",
+          "title": "知名AI研究人員Andrej Karpathy加入Anthropic",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T12:05:26+00:00"
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1tht4s0/andrej_karpathy_joins_anthropic/",
+          "title": "Andrej Karpathy Joins Anthropic !",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T17:02:14+00:00"
+        },
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755920_0U8LYRAZ1PRRD910LGDPE",
+          "title": "Andrej Karpathy加入Anthropic　加速AI自我進化研究",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:22:28+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/prominent-ai-researcher-andrej-karpathy-picks-anthropic-over-former-home-openai-to-get-back-into-frontier-llm-research/",
+          "title": "Prominent AI researcher Andrej Karpathy picks Anthropic over former home OpenAI to get back into frontier LLM research",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T18:23:27+00:00"
+        }
+      ],
+      "mention_count": 4,
+      "event_id": "a3b958488d",
+      "url": "https://www.ithome.com.tw/news/175960",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0303-claude_app-anthropic_0.jpg"
+      }
+    },
+    {
+      "title": "NVIDIA 投資 900 億美元布局 AI 生態系",
+      "summary": "NVIDIA 執行長黃仁勳推動規模約 900 億美元的策略投資，旨在為 AI 基礎設施注入資金，以鞏固其與客戶及供應鏈的合作關係。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "NVIDIA"
+      ],
+      "what": "投資 AI 生態系",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://finance.technews.tw/2026/05/20/nvidias-jensen-huang-bankrolls-ai-boom-with-90bn-deal-spree/",
+          "title": "輝達豪擲 900 億美元布局 AI 生態系，欲以投資「固樁」客戶與供應鏈",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T06:20:13+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a350f6b2ff",
+      "url": "https://finance.technews.tw/2026/05/20/nvidias-jensen-huang-bankrolls-ai-boom-with-90bn-deal-spree/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.technews.tw/wp-content/uploads/2026/03/25142037/NVIDIA-GTC-2026_Jensen-Huang1.jpg"
+      }
+    },
+    {
+      "title": "SoftBank 投資 OpenAI 600 億美元",
+      "summary": "SoftBank 創辦人孫正義向 OpenAI 投資 600 億美元，此舉在 SoftBank 內部引起關注與擔憂，顯示其對 AI 領域的重大押注。",
+      "category": "industry_business",
+      "importance": 9,
+      "who": [
+        "SoftBank",
+        "OpenAI"
+      ],
+      "what": "投資 600 億美元",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-19/masayoshi-son-s-60-billion-bet-on-openai-raises-red-flags",
+          "title": "SoftBank Insiders Worry About Masayoshi Son’s Bet on OpenAI",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:01:12+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b8470237c1",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-19/masayoshi-son-s-60-billion-bet-on-openai-raises-red-flags",
+      "cover_image": {
+        "kind": "fallback",
+        "category": "industry_business"
+      }
+    },
+    {
+      "title": "馬斯克起訴 OpenAI 案被裁定敗訴",
+      "summary": "馬斯克針對 OpenAI 是否背離非營利使命而提起的訴訟，被陪審團以「超過訴訟時效」為由裁定敗訴，該案件未進入實體審理，排除了 OpenAI 上市的潛在法律障礙。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "馬斯克",
+        "OpenAI",
+        "Elon Musk"
+      ],
+      "what": "訴訟裁定敗訴",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175917",
+          "title": "馬斯克提告OpenAI敗訴，OpenAI上市路障排除",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-19T11:07:00+00:00"
+        },
+        {
+          "url": "https://www.technologyreview.com/2026/05/19/1137454/roundtables-inside-the-musk-v-altman-trial/",
+          "title": "Roundtables: Inside the Musk v. Altman Trial",
+          "source_name": "MIT Tech Review",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:15:18+00:00"
+        },
+        {
+          "url": "https://www.technologyreview.com/2026/05/19/1137505/the-download-musk-altman-trial-smart-glasses-warfare-google-i-o/",
+          "title": "The Download: Musk v. Altman, smart glasses for warfare, and Google I/O",
+          "source_name": "MIT Tech Review",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T12:10:00+00:00"
+        },
+        {
+          "url": "https://www.bbc.com/news/articles/cqlpz4w6v13o?at_medium=RSS&at_campaign=rss",
+          "title": "Elon Musk has lost yet another legal battle. Why he'll still keep fighting",
+          "source_name": "BBC Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T08:45:23+00:00"
+        }
+      ],
+      "mention_count": 4,
+      "event_id": "db5bbdf668"
+    },
+    {
+      "title": "SpaceX 計劃於 IPO 後收購 AI 寫碼新創 Cursor",
+      "summary": "Elon Musk 旗下的 SpaceX 計劃在首次公開上市（IPO）後 30 天內收購 AI 寫碼公司 Cursor，以強化其 AI 軟體與代理式開發能力。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "SpaceX",
+        "Cursor"
+      ],
+      "what": "計劃收購",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755978_NJC8XRF98P73LY7T89URU",
+          "title": "SpaceX擬IPO後購併AI新創Cursor　掌握AI寫碼關鍵入口",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T06:04:02+00:00"
+        },
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-19/spacex-is-said-to-plan-to-buy-startup-cursor-30-days-after-ipo",
+          "title": "SpaceX Is Planning to Buy Startup Cursor 30 Days After IPO",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:51:26+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "23c4cc3cc0"
+    },
+    {
+      "title": "Mistral AI 收購 Emmi AI",
+      "summary": "AI 公司 Mistral AI 正式收購 Emmi AI，旨在透過整合相關技術擴展其 AI 服務能力。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "Mistral AI",
+        "Emmi AI"
+      ],
+      "what": "收購公司",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.emmi.ai/news/mistral-ai-acquires-emmi-ai",
+          "title": "Mistral AI acquires Emmi AI",
+          "source_name": "Hacker News (front)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T19:14:12+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/mistral-ai-acquires-viennese-physical-ai-startup-emmi-ai/",
+          "title": "Mistral AI acquires Viennese physical AI startup Emmi AI",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T11:27:09+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "f6204c9074"
+    },
+    {
+      "title": "Google 舉辦 I/O 2026 開發者大會",
+      "summary": "Google 舉行年度開發者大會 I/O 2026，重點發表 Gemini AI 工具組的更新以及 Android XR 智慧眼鏡的詳細資訊。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "Google"
+      ],
+      "what": "舉辦開發者大會",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.wired.com/live/google-io-2026-live-blog-gemini-android-xr-search/",
+          "title": "Google I/O 2026 Live Blog: All the Gemini and Smart Glasses Updates as They Happen",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T10:00:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "395f304cf1"
+    },
+    {
+      "title": "OpenAI 與 Dell 合作導入 Codex",
+      "summary": "OpenAI 與 Dell 宣布合作，將 Codex 連接至 Dell AI Data Platform 並探索 AI Factory 介接，使企業能在混合雲與本地環境中使用 AI 代理。",
+      "category": "industry_business",
+      "importance": 8,
+      "who": [
+        "OpenAI",
+        "Dell"
+      ],
+      "what": "宣布合作",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175963",
+          "title": "OpenAI與Dell合作讓Codex支援企業混合雲與本地環境",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T03:05:07+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a652d73967"
+    },
+    {
+      "title": "Google DeepMind 延攬 Contextual AI 研究團隊",
+      "summary": "Google DeepMind 與 AI 新創 Contextual AI 達成協議，挖角其 20 多名研究人員，據傳交易金額近億美元。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Google DeepMind",
+        "Contextual AI"
+      ],
+      "what": "挖角研究團隊",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755938_IX6LB27O20FVTO9M14CZ5",
+          "title": "傳Google DeepMind砸近億美元　挖角Contextual AI團隊",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T04:41:35+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "78ba2ee0ce"
+    },
+    {
+      "title": "Anthropic 收購 Stainless 強化 Claude 連接能力",
+      "summary": "Anthropic 宣布收購 SDK 與 MCP 伺服器工具業者 Stainless，將其團隊納入 Claude 平臺，以強化 AI 代理連接外部系統、資料與工具的能力。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Anthropic",
+        "Stainless"
+      ],
+      "what": "收購",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175944",
+          "title": "Claude平臺補強外部系統連接能力，Anthropic收購Stainless",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T11:05:24+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ec7075a8d9"
+    },
+    {
+      "title": "OpenAI 投入 2.34 億美元於新加坡成立 AI 實驗室",
+      "summary": "OpenAI 與新加坡政府達成多年期合作夥伴關係，計畫在新加坡成立 AI 實驗室並投入 2.34 億美元，旨在支持該市國家的 AI 發展雄心。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "OpenAI",
+        "新加坡政府"
+      ],
+      "what": "成立 AI 實驗室",
+      "when": "近期",
+      "where": "新加坡",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-20/openai-commits-234-million-for-new-ai-lab-in-singapore",
+          "title": "OpenAI Commits $234 Million for New AI Lab in Singapore",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T03:30:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ae2da3c123"
+    },
+    {
+      "title": "OpenAI 於新加坡啟動 AI 合作計畫",
+      "summary": "OpenAI 在新加坡推出多年期 AI 合作夥伴關係，旨在擴大 AI 部署、培養在地人才，並支援當地企業與公共服務的 AI 轉型。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "OpenAI"
+      ],
+      "what": "建立 AI 合作夥伴關係",
+      "when": "近期",
+      "where": "新加坡",
+      "sources": [
+        {
+          "url": "https://openai.com/index/introducing-openai-for-singapore",
+          "title": "Introducing OpenAI for Singapore",
+          "source_name": "OpenAI Blog",
+          "source_region": "GLOBAL",
+          "source_kind": "vendor",
+          "published": "2026-05-19T20:30:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c20a01376c"
+    },
+    {
+      "title": "Google 調整 AI 訂閱方案為三級制",
+      "summary": "Google 在 I/O 2026 大會上重構 AI 訂閱體系，推出每月 7.99 美元至 99.99 美元不等的三種方案。此次調整將從每日提示次數限制轉向基於計算量消費的計費模式。",
+      "category": "industry_business",
+      "importance": 7,
+      "who": [
+        "Google"
+      ],
+      "what": "調整訂閱方案",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/google-overhauls-its-ai-subscriptions-at-i-o-2026-with-three-tiers-starting-at-10-a-month/",
+          "title": "Google overhauls its AI subscriptions at I/O 2026 with three tiers starting at $10 a month",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T19:33:12+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "25ad0899d9"
+    },
+    {
+      "title": "Google 推出 AI Ultra 訂閱方案",
+      "summary": "Google 推出每月 100 美元的 AI Ultra 方案，提供比 AI Pro 方案高出 5 倍的使用額度，並與 Antigravity 2.0 同時發表。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "AI Ultra plan",
+        "Google"
+      ],
+      "what": "推出訂閱方案",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/google-launches-antigravity-2-0-with-an-updated-desktop-app-and-cli-tool-at-io-2026/",
+          "title": "Google launches Antigravity 2.0 with an updated desktop app and CLI tool at IO 2026",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "7876f0e6d1"
+    },
+    {
+      "title": "AI 郵件安全平台 Ocean 獲 2800 萬美元融資",
+      "summary": "AI 代理郵件安全平台 Ocean 完成 2800 萬美元融資，其 AI 技術可分析郵件上下文以偵測詐騙與冒名頂替企圖。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "Ocean"
+      ],
+      "what": "獲 2800 萬美元融資",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/from-teen-hacker-to-iron-dome-researcher-this-founder-raised-28m-to-fight-ai-phishing/",
+          "title": "From teen hacker to Iron Dome researcher, this founder raised $28M to fight AI phishing",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:08:51+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "72f6599c16"
+    },
+    {
+      "title": "IBM 擴大 AI 資安工具與服務布局",
+      "summary": "IBM 宣布擴展其企業資安工具，旨在應對攻擊者利用先進 AI 加速偵察與漏洞發現的趨勢，強化軟體漏洞的識別與修補能力。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "IBM"
+      ],
+      "what": "擴大工具布局",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175962",
+          "title": "IBM擴大AI資安工具布局，參與廣泛使用軟體漏洞識別與修補",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T12:05:23+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "1487892b5d"
+    },
+    {
+      "title": "NVIDIA 與 Google Cloud 擴大 AI 開發者社群合作",
+      "summary": "NVIDIA 與 Google Cloud 在 Google I/O 大會上宣布加速支持超過 10 萬名開發者，提供學習路徑與實作實驗室，讓開發者能在 Google Cloud 上使用 NVIDIA AI 平台。",
+      "category": "industry_business",
+      "importance": 6,
+      "who": [
+        "NVIDIA",
+        "Google Cloud"
+      ],
+      "what": "擴大開發者合作",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://blogs.nvidia.com/blog/google-cloud-developer-community-ai-builders/",
+          "title": "NVIDIA and Google Cloud Empower the Next Wave of AI Builders",
+          "source_name": "Nvidia Blog",
+          "source_region": "GLOBAL",
+          "source_kind": "vendor",
+          "published": "2026-05-19T20:30:09+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c5a73c371c"
+    },
+    {
+      "title": "美國醫院協會啟動 AI 落地加速器",
+      "summary": "美國醫院協會正式啟動加速器計畫，旨在協助醫療機構將人工智慧、虛擬照護以及電子健康紀錄（EHR）等技術實際應用於醫院環境，以提升醫療服務效率。",
+      "category": "industry_business",
+      "importance": 5,
+      "who": [
+        "美國醫院協會"
+      ],
+      "what": "啟動加速器",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175943",
+          "title": "MedTech醫療科技雙周報第49期：美國醫院協會啟動加速器，要助醫院落地AI、虛擬照護和EHR技術",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-19T17:15:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5c42b6bf9c"
+    },
+    {
+      "title": "Infomaniak 轉用基礎模型保護隱私",
+      "summary": "Infomaniak 宣布將其基礎設施轉向使用基礎模型，旨在強化用戶數據隱私保護並實現主權雲端服務。",
+      "category": "industry_business",
+      "importance": 5,
+      "who": [
+        "Infomaniak"
+      ],
+      "what": "轉用基礎模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://news.infomaniak.com/en/infomaniak-foundation-sovereign-cloud/",
+          "title": "Infomaniak transitions to a foundation model to protect user data privacy",
+          "source_name": "Hacker News (front)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T05:43:51+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2724619d46"
+    },
+    {
+      "title": "Gemini 3.5 Flash 定價顯著提升",
+      "summary": "Gemini 3.5 Flash 的運行成本較前代版本增加 3 倍，且比 Gemini 1.5 Flash 高出 30 倍，引發用戶對其成本效益的討論。",
+      "category": "industry_business",
+      "importance": 5,
+      "who": [
+        "Gemini 3.5 Flash",
+        "Google"
+      ],
+      "what": "調整定價",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1thuct8/gemini_35_flash_costs_3_times_more_than_the/",
+          "title": "Gemini 3.5 flash costs 3 times more than the previous version and 30x more than gemini 1.5 flash.",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T17:43:18+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e08dca55eb"
+    },
+    {
+      "title": "AustralianSuper 聘請首位 AI 負責人",
+      "summary": "澳洲最大退休基金 AustralianSuper 聘請了首位 AI 負責人，以應對快速演進的 AI 技術對退休金融產業可能帶來的影響與重塑。",
+      "category": "industry_business",
+      "importance": 4,
+      "who": [
+        "AustralianSuper"
+      ],
+      "what": "聘請 AI 負責人",
+      "when": "近期",
+      "where": "澳洲",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-20/australiansuper-hires-ai-chief-as-pension-funds-race-to-adapt",
+          "title": "AustralianSuper Hires AI Chief as Pension Funds Race to Adapt",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T02:15:22+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "08bd2d23bd"
+    },
+    {
+      "title": "Analog Devices 收購 Empower Semiconductor",
+      "summary": "Analog Devices 同意以 15 億美元現金收購 Empower Semiconductor，旨在滿足 AI 資料中心對高效能晶片的需求。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "Analog Devices",
+        "Empower Semiconductor",
+        "ADI",
+        "Empower"
+      ],
+      "what": "收購",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-19/analog-devices-to-acquire-empower-in-1-5-billion-transaction",
+          "title": "Analog Devices to Acquire Empower in $1.5 Billion Transaction",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:56:57+00:00"
+        },
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755926_TU3LQA3F1PMKRG795M9ZX",
+          "title": "ADI斥資15億美元收購半導體業者Empower　強化AI電力布局",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T03:21:58+00:00"
+        },
+        {
+          "url": "https://technews.tw/2026/05/20/analog-devices-to-acquire-empower-semiconductor/",
+          "title": "ADI 砸 15 億美元現金收購 Empower，看準 AI 電力瓶頸加速布局",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:57:32+00:00"
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "43ea21b2da",
+      "url": "https://www.bloomberg.com/news/articles/2026-05-19/analog-devices-to-acquire-empower-in-1-5-billion-transaction",
+      "cover_image": {
+        "kind": "fallback",
+        "category": "hardware_infra"
+      }
+    },
+    {
+      "title": "Google 發表 AI 音訊眼鏡",
+      "summary": "Google 在 I/O 2026 上發表新款「音訊眼鏡」（Audio Glasses），使用者可透過語音指令操作 Gemini 及 Google 生態系應用。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "Audio Glasses",
+        "Google",
+        "Smart Glasses"
+      ],
+      "what": "發表 AI 音訊眼鏡",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/google-takes-a-page-out-of-metas-book-announces-new-audio-powered-smart-glasses-at-io-2026/",
+          "title": "Google takes a page out of Meta’s book, announces new audio-powered smart glasses at IO 2026",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T19:15:31+00:00"
+        },
+        {
+          "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+          "title": "Everything Announced at Google I/O 2026: Gemini, Search, Smart Glasses",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:00:48+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "3ce9418ea9",
+      "url": "https://techcrunch.com/2026/05/19/google-takes-a-page-out-of-metas-book-announces-new-audio-powered-smart-glasses-at-io-2026/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2026/05/IMG_1421.jpg?resize=1200,900"
+      }
+    },
+    {
+      "title": "微軟投資175億美元於印度建設資料中心",
+      "summary": "微軟計畫在印度投資175億美元，其規模最大的資料中心預計將於2026年中啟用，旨在滿足印度市場對Azure雲端服務及Copilot人工智慧服務的需求。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "微軟"
+      ],
+      "what": "投資建設資料中心",
+      "when": "近期",
+      "where": "印度",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755931_VE6L1HZA2I4CRN2ESSM9T",
+          "title": "微軟175億美元布局印度　最大資料中心2026年中投運",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:39:37+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "17b9fc8ee3",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755931_VE6L1HZA2I4CRN2ESSM9T",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0520/755931-1-ssm9t_l.jpg"
+      }
+    },
+    {
+      "title": "ASML預計High-NA晶片數月內推出",
+      "summary": "ASML執行長Christophe Fouquet表示，首批採用高數值孔徑（High-NA）技術的晶片產品將在數月內推出，目前英特爾與SK海力士均計畫採用此項新技術。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "High-NA晶片",
+        "ASML"
+      ],
+      "what": "推出新產品",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755925_4ER8HPVZ3CTHF84L8BIDB",
+          "title": "ASML CEO：High-NA晶片數月內推出　AI發展瓶頸在晶圓廠擴產速度",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:34:54+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "bf70a221c1"
+    },
+    {
+      "title": "Google 與黑石合資成立 AI 基礎架構公司",
+      "summary": "Google 與另類資產管理公司黑石（Blackstone）宣布合資成立 AI 基礎架構公司，結合雙方的資料中心、網路、TPU 及軟體，旨在提供客戶執行 AI 的運算容量與基礎設施。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "Google",
+        "黑石"
+      ],
+      "what": "合資成立公司",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175959",
+          "title": "Google、黑石合資成立AI基礎架構公司，跨入運算雲服務",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T12:05:15+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "83d05f4490"
+    },
+    {
+      "title": "阿里巴巴推出新款 AI 訓練與推理晶片",
+      "summary": "阿里巴巴集團在其 AI 技術棧中增加了一款新型處理器，旨在強化 AI 訓練與推理能力，全面覆蓋人工智慧開發的各個環節。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "新款 AI 晶片",
+        "阿里巴巴"
+      ],
+      "what": "推出新晶片",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/articles/2026-05-20/alibaba-unveils-new-ai-chip-for-training-and-inferencing",
+          "title": "Alibaba Unveils New AI Chip for Training and Inferencing",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T03:43:07+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a92162fe22"
+    },
+    {
+      "title": "北美 CSP 購置 NVIDIA GB 與 Rubin 算力方案",
+      "summary": "北美五大雲端服務供應商為擴大 AI 訓練與推論能力，大舉購置 NVIDIA GB200 與 Rubin 整櫃式方案，預計將使 2026 年 AI 推論算力躍升 1.2 倍。",
+      "category": "hardware_infra",
+      "importance": 8,
+      "who": [
+        "北美五大雲端服務供應商",
+        "NVIDIA"
+      ],
+      "what": "購置 AI 算力方案",
+      "when": "近期",
+      "where": "北美",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/20/north-american-csps-acquire-nvidia-gb200-rubin-rack-solutions-1-2x-ai-inference-power-2026/",
+          "title": "北美 CSP 大舉購置 NVIDIA GB / Rubin 整櫃式方案，2026 年 AI 推論算力將躍升 1.2 倍",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T07:00:24+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "a5e77ac554"
+    },
+    {
+      "title": "Intel Xe3P 資料中心 GPU 規格洩漏",
+      "summary": "Intel 代號為 Crescent Island 的 PCB 資訊洩漏，顯示其 Xe3P GPU 採用 160GB LPDDR5X 記憶體以規避 HBM 短缺，預計提供約 704-760GB/s 的記憶體頻寬。",
+      "category": "hardware_infra",
+      "importance": 7,
+      "who": [
+        "Intel",
+        "Xe3P GPU"
+      ],
+      "what": "洩漏硬體規格",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1thxig9/intels_crescent_island_pcb_leaks_showing_a/",
+          "title": "Intel's Crescent Island PCB Leaks, Showing a Massive Xe3P GPU, 16-Pin Connector, 160GB LPDDR5X as Intel Sidesteps the HBM Shortage",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T19:26:48+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "d8316cb699"
+    },
+    {
+      "title": "Cerebras 運行 Kimi K2.6 模型達千 token 每秒",
+      "summary": "Cerebras 宣布其硬體平台能以每秒 1000 個 token 的速度運行擁有萬億參數的 Kimi K2.6 模型，展示其 AI 加速器在處理超大規模模型時的高效能。",
+      "category": "hardware_infra",
+      "importance": 7,
+      "who": [
+        "Kimi K2.6",
+        "Cerebras"
+      ],
+      "what": "運行模型評測",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1thw41i/cerebras_is_running_a_trillion_parameter_model/",
+          "title": "Cerebras is running a trillion parameter model (Kimi K2.6) at 1000 tokens/s",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T18:40:41+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "dbeb6d2321"
+    },
+    {
+      "title": "廣達斥資19億元擴大美國廠房投資",
+      "summary": "廣達子公司QMN以6,171萬美元取得美國加州廠房租賃使用權，租期10年，旨在因應AI伺服器需求增長並擴大美國製造規模，目前加州廠區已擴大超過20座廠房。",
+      "category": "hardware_infra",
+      "importance": 6,
+      "who": [
+        "廣達",
+        "QMN"
+      ],
+      "what": "擴大投資",
+      "when": "近期",
+      "where": "美國加州",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755955_87YL5UUV46T7E56JAH1QE",
+          "title": "看好AI伺服器需求　廣達豪擲新台幣19億元擴大對美投資",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T03:10:13+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "215a83827f"
+    },
+    {
+      "title": "藤倉投資 2,600 億日圓擴大美國光纖產能",
+      "summary": "藤倉（Fujikura）宣布在美國投資最高 2,600 億日圓以擴大光纖電纜產能，旨在因應生成式 AI 帶動的資料中心需求急遽擴大，目標於 2030 年將產能提升 4 倍。",
+      "category": "hardware_infra",
+      "importance": 6,
+      "who": [
+        "藤倉"
+      ],
+      "what": "投資擴產",
+      "when": "2026-05-19",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755904_KMFLQBVHLAN59H5P7G0Z2",
+          "title": "藤倉啟動3,000億日圓美日投資計畫　2030年光纖產能拚增4倍",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:18:53+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c6dc02c3fd"
+    },
+    {
+      "title": "東典光電 1.6T 光通訊產品進入客戶驗證",
+      "summary": "東典光電表示其 1.6T 光通訊產品已進入客戶驗證階段，受惠於 AI 帶動的網通市場需求，預計 2026 年營運將持續成長。",
+      "category": "hardware_infra",
+      "importance": 5,
+      "who": [
+        "東典光電"
+      ],
+      "what": "產品進入客戶驗證",
+      "when": "近期",
+      "where": "台灣",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755999_2X38OC15LTHD8M89UOWQL",
+          "title": "東典2026年力拚損益兩平　光通訊1.6T進入驗證",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T08:15:22+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c40a557714"
+    },
+    {
+      "title": "宜鼎發表 10GbE 高速 LAN 擴充模組",
+      "summary": "宜鼎國際（Innodisk）推出全系列 10GbE 高速 LAN 擴充模組，旨在強化邊緣 AI 的網通佈局，提供嵌入式儲存與工控記憶體方案以支持高速數據傳輸。",
+      "category": "hardware_infra",
+      "importance": 5,
+      "who": [
+        "10GbE 高速 LAN 擴充模組",
+        "宜鼎國際"
+      ],
+      "what": "推出新產品",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/20/innosilicon-unveils-its-full-range-of-10gbe-high-speed-lan-expansion-modules/",
+          "title": "宜鼎發表全系列 10GbE 高速 LAN 擴充模組，引領邊緣 AI 網通佈局",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T08:20:55+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "1bfec9d76a"
+    },
+    {
+      "title": "使用舊款 RTX 2080 Ti 成功本地運行 DeepSeek-V4",
+      "summary": "開發者利用 4 張 RTX 2080 Ti 顯卡，透過自定義 Turing 內核與 W8A8 量化技術，成功在本地運行 DeepSeek-V4-Flash 模型，並達到每秒 255 個預填充標記的性能。",
+      "category": "hardware_infra",
+      "importance": 5,
+      "who": [
+        "DeepSeek-V4-Flash",
+        "RTX 2080 Ti"
+      ],
+      "what": "實現本地部署",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1ti5sxu/running_deepseekv4_locally_with_4x_legacy_rtx/",
+          "title": "Running DeepSeek-V4 locally with 4x legacy RTX 2080 Ti ($2k budget setup). Custom Turing kernels, W8A8 quantization, and 255 prefill tok/s!",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-20T00:41:20+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "0f1c46c078"
+    },
+    {
+      "title": "Gemini 3.5 Flash 正式發布",
+      "summary": "Google 在 2026 年 Google I/O 開發者大會上推出 Gemini 3.5 Flash 模型，主打在不犧牲效能的前提下大幅降低 token 消耗，旨在解決企業 AI 預算飆升的痛點。",
+      "category": "products_apps",
+      "importance": 9,
+      "who": [
+        "Gemini 3.5 Flash",
+        "Google",
+        "Gemini Omni"
+      ],
+      "what": "推出新模型",
+      "when": "2026",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755922_EY08YJHS3VAZC81EE1TZT",
+          "title": "Sundar Pichai點名AI預算為企業痛點　Gemini 3.5 Flash應運而生",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T03:39:57+00:00"
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/19/with-gemini-3-5-flash-google-bets-its-next-ai-wave-on-agents-not-chatbots/",
+          "title": "With Gemini 3.5 Flash, Google bets its next AI wave on agents, not chatbots",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:51:30+00:00"
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/19/googles-gemini-omni-turns-images-audio-and-text-into-video-and-thats-just-the-start/",
+          "title": "Google’s Gemini Omni turns images, audio, and text into video — and that’s just the start",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/175949",
+          "title": "Google公布Gemini 3.5 Flash推理模型，主打代理人開發作業",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:05:47+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/googles-i-o-announcements-new-models-a-cloud-agent-that-never-sleeps-and-a-redesigned-gemini-app/",
+          "title": "Google's I/O announcements: new models, a cloud agent that never sleeps, and a redesigned Gemini app",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:44:17+00:00"
+        },
+        {
+          "url": "https://www.reddit.com/r/singularity/comments/1thtxs8/behold_gemini_35_flash/",
+          "title": "Behold, Gemini 3.5 Flash!",
+          "source_name": "Reddit r/singularity",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T17:29:27+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/google-overhauls-its-ai-subscriptions-at-i-o-2026-with-three-tiers-starting-at-10-a-month/",
+          "title": "Google overhauls its AI subscriptions at I/O 2026 with three tiers starting at $10 a month",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T19:33:12+00:00"
+        },
+        {
+          "url": "https://openrouter.ai/models/google/gemini-3.5-flash",
+          "title": "[OpenRouter 新模型] Google: Gemini 3.5 Flash",
+          "source_name": "OpenRouter Models",
+          "source_region": "GLOBAL",
+          "source_kind": "opensource",
+          "published": "2026-05-19T12:30:00+00:00"
+        },
+        {
+          "url": "https://arstechnica.com/google/2026/05/google-announces-agent-optimized-gemini-3-5-flash-and-a-do-anything-model-called-omni/",
+          "title": "Gemini 3.5 Flash might be fast enough for gen AI to make sense",
+          "source_name": "Ars Technica",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T18:11:50+00:00"
+        }
+      ],
+      "mention_count": 9,
+      "event_id": "58930e1aa4",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755922_EY08YJHS3VAZC81EE1TZT",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0520/755922-1-e1tzt1154_l.jpg"
+      }
+    },
+    {
+      "title": "Google 推出 AI 智慧搜尋框改版",
+      "summary": "Google 於 I/O 2026 大會宣布對搜尋框進行 25 年來最大規模改版，將 AI 直接整合至搜尋入口並加入 AI 代理能力，支援文字、圖片、影片及 Chrome 分頁輸入。",
+      "category": "products_apps",
+      "importance": 9,
+      "who": [
+        "Google 搜尋",
+        "Google",
+        "Google AI Studio"
+      ],
+      "what": "推出新功能",
+      "when": "2026-05-19",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175950",
+          "title": "Google搜尋25年大改版，整合AI打造智慧搜尋框",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T10:05:53+00:00"
+        },
+        {
+          "url": "https://venturebeat.com/technology/google-just-redesigned-the-search-box-for-the-first-time-in-25-years-heres-why-it-matters-more-than-you-think",
+          "title": "Google just redesigned the search box for the first time in 25 years — here’s why it matters more than you think.",
+          "source_name": "VentureBeat AI",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        },
+        {
+          "url": "https://www.ithome.com.tw/news/175964",
+          "title": "Google更新AI Studio，可直接生成原生Android App",
+          "source_name": "iThome 新聞",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T01:05:49+00:00"
+        }
+      ],
+      "mention_count": 3,
+      "event_id": "20d4e7b606",
+      "url": "https://www.ithome.com.tw/news/175950",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://www.ithome.com.tw/sites/default/files/field/image/0520-ai_search-google.jpg"
+      }
+    },
+    {
+      "title": "Google 推出 AI 代理人功能",
+      "summary": "Google 計劃在旗下多項產品中啟用 AI 代理人（AI Agents），使其能自動執行複雜任務，將 AI 從對話工具轉化為可操作的助手。",
+      "category": "products_apps",
+      "importance": 9,
+      "who": [
+        "AI Agents",
+        "Google"
+      ],
+      "what": "啟用 AI 代理人",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+          "title": "Everything Announced at Google I/O 2026: Gemini, Search, Smart Glasses",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:00:48+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "88364c7093",
+      "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://media.wired.com/photos/6a047ecbec98d3bd8037fdbe/191:100/w_1280,c_limit/GettyImages-2215577882.jpg"
+      }
+    },
+    {
+      "title": "Google 推出搭載 Gemini 的 Android XR 眼鏡",
+      "summary": "Google 在 I/O 2026 大會上揭曉新一代 AI 眼鏡，宣布與三星電子、高通以及 Warby Parker、Gentle Monster 合作，將 Gemini 助理整合至 Android XR 平台中。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Android XR",
+        "Google",
+        "三星電子",
+        "高通",
+        "Gemini Spark",
+        "AI 智慧眼鏡",
+        "Daily Brief"
+      ],
+      "what": "推出新產品",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755909_L56LCPZ9LMN44AL02FAOI",
+          "title": "Google偕三星、高通推新一代AI眼鏡　搶攻次世代穿戴",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:28:25+00:00"
+        },
+        {
+          "url": "https://techcrunch.com/2026/05/19/google-introduces-gemini-spark-a-24-7-agentic-assistant-with-gmail-integration/",
+          "title": "Google introduces Gemini Spark, a 24/7 agentic assistant with Gmail integration, at IO 2026",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        },
+        {
+          "url": "https://www.bbc.com/news/articles/cvgz1ynq1nqo?at_medium=RSS&at_campaign=rss",
+          "title": "Google to release first smart glasses since Google Glass flop",
+          "source_name": "BBC Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:00:12+00:00"
+        },
+        {
+          "url": "https://www.theverge.com/tech/934172/google-io-gemini-ai-trust-personal-data",
+          "title": "Google’s AI future demands trust — and your personal data",
+          "source_name": "The Verge",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:00:00+00:00"
+        },
+        {
+          "url": "https://the-decoder.com/googles-i-o-announcements-new-models-a-cloud-agent-that-never-sleeps-and-a-redesigned-gemini-app/",
+          "title": "Google's I/O announcements: new models, a cloud agent that never sleeps, and a redesigned Gemini app",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:44:17+00:00"
+        }
+      ],
+      "mention_count": 5,
+      "event_id": "27f26d0f55"
+    },
+    {
+      "title": "Hugging Face 發布 DNA 基礎模型 Carbon 系列",
+      "summary": "Hugging Face 推出開源 DNA 基礎模型 Carbon 系列，其中 Carbon-3B 的性能可媲美目前的 SOTA 模型 Evo2-7B，且推理速度快 275 倍。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Carbon",
+        "Hugging Face",
+        "OlmoEarth v1.1"
+      ],
+      "what": "推出新模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1thsw7b/carbon_decoding_the_language_of_life/",
+          "title": "Carbon: Decoding the Language of Life",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T16:54:24+00:00"
+        },
+        {
+          "url": "https://huggingface.co/blog/allenai/olmoearth-v1-1",
+          "title": "OlmoEarth v1.1: A more efficient family of models",
+          "source_name": "Hugging Face Blog",
+          "source_region": "GLOBAL",
+          "source_kind": "vendor",
+          "published": "2026-05-19T18:38:09+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "463cc8c382"
+    },
+    {
+      "title": "Google 揭示 Gemini 代理式企業藍圖",
+      "summary": "Google 在 I/O 2026 大會上推出以 Gemini 為核心的 AI 布局，涵蓋模型、開發工具及 Workspace 與資安防護升級，旨在將「代理式企業」願景落實於雲端客戶工作中。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Gemini",
+        "Google"
+      ],
+      "what": "揭示產品藍圖",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755911_SXR80MN52CCE6K046Y196",
+          "title": "Google I/O 2026全面AI化　揭示Gemini代理式企業藍圖",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T01:51:43+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "c210d2c0aa"
+    },
+    {
+      "title": "Google AI Studio 推出 Android App 自動生成工具",
+      "summary": "Google 推出新型網頁版 AI 工具，讓使用者能在 AI Studio 中快速生成原生 Android 應用程式，旨在擴展 AI 驅動的軟體開發能力。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "AI Studio",
+        "Google"
+      ],
+      "what": "推出新工具",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/googles-ai-studio-now-lets-anyone-build-android-apps-in-minutes/",
+          "title": "Google’s AI Studio now lets anyone build Android apps in minutes",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e5bccd6b69"
+    },
+    {
+      "title": "Google 推出 AI 資訊代理人",
+      "summary": "Google 發表新型 AI 資訊代理人（Information Agents），可於背景監控特定主題，並在內容更新或變動時主動提醒使用者。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Information Agents",
+        "Google"
+      ],
+      "what": "推出 AI 資訊代理人",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/how-to-use-googles-new-ai-agents-to-go-beyond-your-standard-searches/",
+          "title": "How to use Google’s new AI agents to go beyond your standard searches",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:16:25+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "fa8a67780d"
+    },
+    {
+      "title": "Google 更新 Gemini 系列模型",
+      "summary": "Google 在 I/O 2026 大會上宣布對 Gemini 模型進行升級，旨在提升模型的整體性能與處理能力，強化 AI 在各項任務中的表現。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Gemini",
+        "Google"
+      ],
+      "what": "更新 AI 模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+          "title": "Everything Announced at Google I/O 2026: Gemini, Search, Smart Glasses",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:00:48+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "af38d717c6"
+    },
+    {
+      "title": "Google 翻新 AI 搜尋功能",
+      "summary": "Google 宣布對搜尋引擎進行重大翻新，將 AI 深度整合至搜尋體驗中，提供更自動化且個人化的搜尋結果。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Google Search",
+        "Google"
+      ],
+      "what": "翻新搜尋功能",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.wired.com/story/everything-google-announced-at-google-io-2026/",
+          "title": "Everything Announced at Google I/O 2026: Gemini, Search, Smart Glasses",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:00:48+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "55e78bce17"
+    },
+    {
+      "title": "ByteDance 發布開源多模態模型 Lance",
+      "summary": "ByteDance 推出 3B 參數的輕量級統一多模態模型 Lance，支援影像與影片的理解、生成與編輯。該模型完全從零開始訓練，僅耗費 128 顆 A100 GPU 的預算。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Lance",
+        "ByteDance"
+      ],
+      "what": "發布開源模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1thkwgk/bytedance_released_an_open_source_model_that/",
+          "title": "bytedance released an open source model that attempts to do just about anything with only 3b parameters",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T12:05:26+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "31765cbddb"
+    },
+    {
+      "title": "NVIDIA 發布 Nemotron-Labs-Diffusion 模型",
+      "summary": "NVIDIA 推出 Nemotron-Labs-Diffusion，這是一款支持自回歸（AR）解碼與擴散並行解碼的三模態語言模型，可透過切換注意力模式實現高效的自推測解碼。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Nemotron-Labs-Diffusion",
+        "NVIDIA"
+      ],
+      "what": "推出新模型",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.reddit.com/r/LocalLLaMA/comments/1thv6du/nemotronlabsdiffusion_from_nvidia/",
+          "title": "Nemotron-Labs-Diffusion from NVIDIA",
+          "source_name": "Reddit r/LocalLLaMA",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T18:09:52+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "2422ff6c49"
+    },
+    {
+      "title": "Google 推出 AI 代理 Gemini Spark",
+      "summary": "Google 在 I/O 2026 大會上發表 AI 代理 Gemini Spark。該產品旨在提供更強的自動化代理能力，並隨新的訂閱方案一同推出。",
+      "category": "products_apps",
+      "importance": 8,
+      "who": [
+        "Gemini Spark",
+        "Google"
+      ],
+      "what": "推出 AI 代理",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/google-overhauls-its-ai-subscriptions-at-i-o-2026-with-three-tiers-starting-at-10-a-month/",
+          "title": "Google overhauls its AI subscriptions at I/O 2026 with three tiers starting at $10 a month",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T19:33:12+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "76dad6a3b6"
+    },
+    {
+      "title": "OpenAI 推出 AI 內容來源驗證工具",
+      "summary": "OpenAI 透過 Content Credentials、SynthID 及新驗證工具，強化 AI 生成內容的來源追蹤，旨在提升 AI 生態系統的透明度與安全性。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "OpenAI"
+      ],
+      "what": "推出內容驗證工具",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://openai.com/index/advancing-content-provenance",
+          "title": "Advancing content provenance for a safer, more transparent AI ecosystem",
+          "source_name": "OpenAI Blog",
+          "source_region": "GLOBAL",
+          "source_kind": "vendor",
+          "published": "2026-05-19T10:45:00+00:00"
+        },
+        {
+          "url": "https://openai.com/index/advancing-content-provenance/",
+          "title": "OpenAI Adopts Google's SynthID Watermark for AI Images with Verification Tool",
+          "source_name": "Hacker News (front)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T19:34:30+00:00"
+        }
+      ],
+      "mention_count": 2,
+      "event_id": "61a04b62f1"
+    },
+    {
+      "title": "OpenAI 與 Nvidia 採納 Google SynthID 浮水印技術",
+      "summary": "Google 開發的 AI 內容浮水印技術 SynthID 正被 OpenAI 與 Nvidia 等公司採納，旨在協助使用者區分 AI 生成內容與真實資訊。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "SynthID",
+        "Google",
+        "OpenAI",
+        "Nvidia"
+      ],
+      "what": "採納浮水印技術",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://arstechnica.com/google/2026/05/googles-synthid-ai-watermarking-tech-is-being-adopted-by-openai-nvidia-and-more/",
+          "title": "Google's SynthID AI watermarking tech is being adopted by OpenAI, Nvidia, and more",
+          "source_name": "Ars Technica",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T18:37:02+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "cff011f340"
+    },
+    {
+      "title": "Meta AI 智慧眼鏡於日本發售",
+      "summary": "Meta 宣布將於 5 月 21 日起在日本發售搭載 AI 的智慧眼鏡，該裝置支援語音指令拍照及日文翻譯功能，定位為手機之後的下一代 AI 裝置。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Meta AI 眼鏡",
+        "Meta"
+      ],
+      "what": "產品發售",
+      "when": "2026-05-21",
+      "where": "日本",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755906_ISY8TYFE1QO1OY569V0B0",
+          "title": "Meta智慧眼鏡日本發售　定位為手機後下一代AI裝置",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T01:54:06+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ece77d0f14"
+    },
+    {
+      "title": "Google 更新 Gemini 應用程式功能",
+      "summary": "Google 在 I/O 2026 大會上更新了 Gemini 應用程式，旨在將其從單一聊天機器人轉型為全方位 AI 中心，以競爭 ChatGPT 與 Claude。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Gemini app",
+        "Google"
+      ],
+      "what": "更新應用程式",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/google-updates-its-gemini-app-to-take-on-chatgpt-and-claude-at-io-2026/",
+          "title": "Google updates its Gemini app to take on ChatGPT and Claude at IO 2026",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "68daa1a270"
+    },
+    {
+      "title": "Google 發布 Android CLI 支援 AI 編碼代理",
+      "summary": "Google 推出 Android CLI 工具，旨在與 Claude Code 及 OpenAI Codex 等平台協作，讓開發者或 AI 助手能透過命令行更快速地構建 Android 應用。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Android CLI",
+        "Google"
+      ],
+      "what": "發布開發工具",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/agentic-app-coding-gets-an-upgrade-with-googles-release-of-android-cli/",
+          "title": "Agentic app coding gets an upgrade with Google’s release of Android CLI",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "feda60874e"
+    },
+    {
+      "title": "Google 發布 Antigravity 2.0",
+      "summary": "Google 在 I/O 2026 大會上推出 Antigravity 2.0，此次更新包含全新的桌面應用程式以及命令行界面（CLI）工具。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Antigravity 2.0",
+        "Google"
+      ],
+      "what": "推出新版本",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/google-launches-antigravity-2-0-with-an-updated-desktop-app-and-cli-tool-at-io-2026/",
+          "title": "Google launches Antigravity 2.0 with an updated desktop app and CLI tool at IO 2026",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T17:45:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "29b372cc9a"
+    },
+    {
+      "title": "Ask YouTube 推出 AI 對話式搜尋",
+      "summary": "Google 為 YouTube 推出名為「Ask YouTube」的 AI 對話式搜尋功能，旨在全面翻新使用者的影片搜尋體驗。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Ask YouTube",
+        "Google"
+      ],
+      "what": "推出 AI 對話式搜尋",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/ask-youtube-brings-ai-powered-conversational-search-to-video-adds-gemini-omni-to-shorts/",
+          "title": "‘Ask YouTube’ brings AI-powered conversational search to video, adds Gemini Omni to Shorts",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T05:45:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6c2762d294"
+    },
+    {
+      "title": "Gemini Omni 整合至 YouTube Shorts",
+      "summary": "Google 將 Gemini Omni 模型整合至 YouTube Shorts 短影片功能中，強化影片內容的 AI 互動能力。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Gemini Omni",
+        "Google"
+      ],
+      "what": "整合至短影片功能",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/ask-youtube-brings-ai-powered-conversational-search-to-video-adds-gemini-omni-to-shorts/",
+          "title": "‘Ask YouTube’ brings AI-powered conversational search to video, adds Gemini Omni to Shorts",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-20T05:45:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "b3c767d196"
+    },
+    {
+      "title": "Gmail AI Inbox 推出對話式語音搜尋",
+      "summary": "Google 擴展 Gmail 的 AI 收件匣功能，新增對話式語音搜尋，讓使用者能透過 Gemini 快速查找郵件中的詳細資訊。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Gmail AI Inbox",
+        "Google"
+      ],
+      "what": "推出對話式語音搜尋",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/you-can-now-talk-to-your-gmail-inbox-as-seen-at-google-io-2026/",
+          "title": "You can now talk to your Gmail inbox, as seen at Google IO 2026",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T21:25:31+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "e59df6feca"
+    },
+    {
+      "title": "Redis 推出 AI 代理情境引擎 Iris",
+      "summary": "Redis 推出名為 Iris 的 AI 代理情境引擎，整合五項情境與記憶工具，使 AI 代理能安全檢索企業資料並保存互動記憶，透過語意快取與搜尋優化任務情境。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Redis Iris",
+        "Redis"
+      ],
+      "what": "推出新產品",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175934",
+          "title": "Redis推出AI代理情境引擎Iris，整合檢索、記憶與資料同步工具",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-19T15:55:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "8518abae89"
+    },
+    {
+      "title": "Google 推出整合 Gemini 的 Android XR 平台",
+      "summary": "Google 與三星、高通共同打造 Android XR 平台，將 Gemini AI 整合至智慧眼鏡中，支援語音啟動 AI 功能，旨在搶攻 Meta 的市場份額。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "Android XR",
+        "Google",
+        "三星",
+        "高通"
+      ],
+      "what": "推出 AI 平台",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/20/intelligent-eyewear-is-coming-this-fall/",
+          "title": "Google 攜手品牌秀智慧眼鏡，語音啟動 Gemini 搶攻 Meta 市場",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T06:24:04+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "39643e40b1"
+    },
+    {
+      "title": "OpenAI 採用 Google SynthID 水印",
+      "summary": "OpenAI 宣布在其 AI 生成影像中採用 Google 的 SynthID 數位水印技術，以提升內容來源的透明度與可追溯性。",
+      "category": "products_apps",
+      "importance": 7,
+      "who": [
+        "OpenAI",
+        "SynthID"
+      ],
+      "what": "採用數位水印",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://openai.com/index/advancing-content-provenance/",
+          "title": "OpenAI Adopts Google's SynthID Watermark for AI Images with Verification Tool",
+          "source_name": "Hacker News (front)",
+          "source_region": "GLOBAL",
+          "source_kind": "community",
+          "published": "2026-05-19T19:34:30+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "06a5a82e89"
+    },
+    {
+      "title": "法院駁回馬斯克對 OpenAI 與微軟之訴訟",
+      "summary": "陪審團迅速裁定駁回 Elon Musk 對 OpenAI 創始人及微軟提出的訴訟，確認其指控缺乏足夠證據且提起訴訟過晚。",
+      "category": "policy_society",
+      "importance": 8,
+      "who": [
+        "Elon Musk",
+        "OpenAI",
+        "Microsoft"
+      ],
+      "what": "訴訟被法院駁回",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://techcrunch.com/2026/05/19/elon-musk-said-sam-altman-stole-a-non-profit-but-the-trial-showed-he-had-similar-aims/",
+          "title": "Elon Musk said Sam Altman ‘stole’ a non-profit — but the trial showed he had similar aims",
+          "source_name": "TechCrunch",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:11:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "5645ece441",
+      "url": "https://techcrunch.com/2026/05/19/elon-musk-said-sam-altman-stole-a-non-profit-but-the-trial-showed-he-had-similar-aims/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://techcrunch.com/wp-content/uploads/2026/04/musk-court-2273245544.jpg?resize=1200,801"
+      }
+    },
+    {
+      "title": "越南頒布 AI 監管法規",
+      "summary": "越南政府頒布第 142 號法令，要求 OpenAI 與 Anthropic 等 AI 公司必須在 2027 年 3 月前指派政府溝通代表，以確保相關企業符合當地的人工智慧監管合規要求。",
+      "category": "policy_society",
+      "importance": 7,
+      "who": [
+        "越南政府",
+        "OpenAI",
+        "Anthropic"
+      ],
+      "what": "發布 AI 監管法規",
+      "when": "近期",
+      "where": "越南",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755965_Q34876IX7QU0AH4GOW01U",
+          "title": "越南發布AI法規　OpenAI、Anthropic須設溝通窗口",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T04:03:50+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ada03058ee",
+      "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755965_Q34876IX7QU0AH4GOW01U",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.digitimes.com/newsimg/2026/0520/755965-1-ow01u_l.jpg"
+      }
+    },
+    {
+      "title": "美國執行刪除非合意親密影像法打擊 AI 深偽",
+      "summary": "美國正式執行「刪除非合意親密影像法」，要求科技平台必須移除由 AI 生成的非合意情色深偽影像及其他未經同意的私密影像。",
+      "category": "policy_society",
+      "importance": 7,
+      "who": [
+        "美國政府"
+      ],
+      "what": "執行法律",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://technews.tw/2026/05/20/ai-deepfake-images-proliferate-us-enforces-non-consensual-intimate-image-removal-act/",
+          "title": "AI 深偽影像氾濫，美執行《刪除非合意親密影像法》",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T06:50:44+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "6f847205d3",
+      "url": "https://technews.tw/2026/05/20/ai-deepfake-images-proliferate-us-enforces-non-consensual-intimate-image-removal-act/",
+      "cover_image": {
+        "kind": "remote",
+        "url": "https://img.technews.tw/wp-content/uploads/2024/09/02111814/portrait-hacker-with-mask.jpg"
+      }
+    },
+    {
+      "title": "Elon Musk 對 OpenAI 訴訟案提出上訴",
+      "summary": "Elon Musk 在針對 Sam Altman 與 OpenAI 的訴訟中敗訴，法院駁回其請求 1340 億美元賠償的案件。Musk 的律師隨後表示保留上訴權利。",
+      "category": "policy_society",
+      "importance": 7,
+      "who": [
+        "Elon Musk",
+        "OpenAI"
+      ],
+      "what": "訴訟上訴",
+      "when": "近期",
+      "where": "奧克蘭",
+      "sources": [
+        {
+          "url": "https://the-decoder.com/elon-musk-appeals-134-billion-openai-loss-calls-verdict-a-calendar-technicality/",
+          "title": "Elon Musk appeals $134 billion OpenAI loss, calls verdict a \"calendar technicality\"",
+          "source_name": "The Decoder",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T08:54:50+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "1f07503e42"
+    },
+    {
+      "title": "美國參議員擬推法案反制中國AI擴張",
+      "summary": "美國民主黨與共和黨參議員計畫聯手推出新法案，透過政府資金補貼與簡化採購流程，協助盟國政府購買美國科技產品，以防堵中國在海外擴張AI工具的影響力。",
+      "category": "policy_society",
+      "importance": 6,
+      "who": [
+        "美國參議員"
+      ],
+      "what": "擬推新法案",
+      "when": "近期",
+      "where": "美國",
+      "sources": [
+        {
+          "url": "https://www.digitimes.com.tw/tech/dt/n/shwnws.asp?id=0000755935_PH38ZVIU4GE3MN4I158MD",
+          "title": "美國兩黨參議員擬推新法案　反制中國科技與AI海外擴張",
+          "source_name": "DIGITIMES 中文",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:38:31+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "729a090a1f"
+    },
+    {
+      "title": "數發部發表 AI 人才認定指引 3.0",
+      "summary": "臺灣數位發展部參考美、歐及臺灣法規，發表 AI 人才認定指引 3.0 版本，其中新增「AI 治理素養」與「AI 協作開發」能力項目，旨在提升產業人才的專業素養。",
+      "category": "policy_society",
+      "importance": 6,
+      "who": [
+        "數發部"
+      ],
+      "what": "發表認定指引",
+      "when": "近期",
+      "where": "臺灣",
+      "sources": [
+        {
+          "url": "https://www.ithome.com.tw/news/175935",
+          "title": "數發部發表AI人才認定指引3.0，新增AI治理與協作能力",
+          "source_name": "iThome AI 專區",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-19T15:54:00+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "bb27883c3b"
+    },
+    {
+      "title": "OpenAI 前員工發公開信警告 xAI 資安漏洞",
+      "summary": "兩名 OpenAI 前員工與 AI 安全非營利組織發布公開信，警告投資人馬斯克旗下的 xAI 在資安紀錄方面表現不佳，可能成為 SpaceX 未來上市的絆腳石。",
+      "category": "policy_society",
+      "importance": 5,
+      "who": [
+        "OpenAI 前員工",
+        "xAI"
+      ],
+      "what": "發布公開信警告",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://finance.technews.tw/2026/05/20/former-openai-staffers-warn-that-xais-poor-safety-record-could-complicate-spacexs-ipo/",
+          "title": "OpenAI 前班底示警：xAI 資安紀錄太「掉漆」，恐成 SpaceX 上市絆腳石",
+          "source_name": "TechNews 科技新報",
+          "source_region": "TW",
+          "source_kind": "media",
+          "published": "2026-05-20T02:20:16+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "4636858961"
+    },
+    {
+      "title": "英聯邦短篇小說獎得獎者涉嫌使用 AI",
+      "summary": "英聯邦短篇小說獎（Commonwealth Short Story Prize）五位區域獲獎者中有三人被懷疑在創作過程中依賴 AI 聊天機器人。此事件引發關於生成式 AI 對文學創作真實性及獎項評審機制影響的討論。",
+      "category": "policy_society",
+      "importance": 4,
+      "who": [
+        "Commonwealth Short Story Prize",
+        "AI Chatbots"
+      ],
+      "what": "涉嫌使用 AI 創作",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.wired.com/story/commonwealth-short-story-prize-ai-allegations/",
+          "title": "Literary Prizewinners Are Facing AI Allegations. It Feels Like the New Normal",
+          "source_name": "Wired",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T22:53:04+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "34981d384d"
+    },
+    {
+      "title": "大學生抗議校園導入 AI 技術",
+      "summary": "部分大學生透過組織抗議、發起請願及表演藝術，表達對 AI 技術影響教育品質及未來就業前景的擔憂。",
+      "category": "policy_society",
+      "importance": 4,
+      "who": [
+        "大學生"
+      ],
+      "what": "抗議 AI 導入",
+      "when": "近期",
+      "where": "",
+      "sources": [
+        {
+          "url": "https://www.bloomberg.com/news/videos/2026-05-19/college-kids-don-t-want-your-ai-video",
+          "title": "College Kids Don't Want Your AI",
+          "source_name": "Bloomberg Tech",
+          "source_region": "GLOBAL",
+          "source_kind": "media",
+          "published": "2026-05-19T20:30:15+00:00"
+        }
+      ],
+      "mention_count": 1,
+      "event_id": "ae735cfd1d"
+    }
+  ]
+}
