@@ -106,6 +106,12 @@ def load_merged_top_events(selected_date: str, date_options: list[str], days: in
 # ─── 側欄 ───
 with st.sidebar:
     st.markdown("### 系統設定")
+    
+    from config import LLM_CFG
+    if not LLM_CFG.get("api_key"):
+        st.error("⚠️ **未設定 LLM API 金鑰！**\n\n即時爬搜將跳過 LLM 抽取。請至 Streamlit Cloud 控制台之 **App Settings -> Secrets** 設定金鑰。")
+        st.divider()
+
     selected_date = st.selectbox(
         "選擇日期",
         options=date_options or ["（尚無資料）"],
