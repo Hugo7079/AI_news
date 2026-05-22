@@ -48,7 +48,7 @@
 ## 三、安裝
 
 ```bash
-cd "/Users/leolee/Desktop/AI新聞爬搜整理"
+cd "~/AI新聞爬搜整理"
 python3 -m venv .venv          # 可選
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -118,7 +118,7 @@ launchctl load -w ~/Library/LaunchAgents/com.leolee.ainews.plist
 ```bash
 crontab -e
 # 加入：
-0 8 * * * /Users/leolee/Desktop/AI新聞爬搜整理/run_daily.sh >> /Users/leolee/Desktop/AI新聞爬搜整理/output/cron.log 2>&1
+0 8 * * * /Users/leolee/AI新聞爬搜整理/run_daily.sh >> /Users/leolee/AI新聞爬搜整理/output/cron.log 2>&1
 ```
 
 ### 4. 部署到 Streamlit Community Cloud

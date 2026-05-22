@@ -12,13 +12,13 @@
 <dict>
     <key>Label</key>
     <string>com.leolee.ainews</string>
-
+ 
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/leolee/Desktop/AI新聞爬搜整理/run_daily.sh</string>
+        <string>/Users/leolee/AI新聞爬搜整理/run_daily.sh</string>
     </array>
-
+ 
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
@@ -26,16 +26,16 @@
         <key>Minute</key>
         <integer>0</integer>
     </dict>
-
+ 
     <key>WorkingDirectory</key>
-    <string>/Users/leolee/Desktop/AI新聞爬搜整理</string>
-
+    <string>/Users/leolee/AI新聞爬搜整理</string>
+ 
     <key>StandardOutPath</key>
-    <string>/Users/leolee/Desktop/AI新聞爬搜整理/output/launchd.out.log</string>
-
+    <string>/Users/leolee/AI新聞爬搜整理/output/launchd.out.log</string>
+ 
     <key>StandardErrorPath</key>
-    <string>/Users/leolee/Desktop/AI新聞爬搜整理/output/launchd.err.log</string>
-
+    <string>/Users/leolee/AI新聞爬搜整理/output/launchd.err.log</string>
+ 
     <key>RunAtLoad</key>
     <false/>
 </dict>
