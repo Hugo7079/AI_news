@@ -166,15 +166,17 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
         }
 
     df = pd.DataFrame([_to_row(ev) for ev in db_events])
+    if df.empty:
+        df = pd.DataFrame(columns=["類別", "重要度", "報導數", "事件標題", "摘要", "主體", "動作", "時間", "地點", "證據來源", "category_id"])
+
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
-        if not df.empty:
-            df.drop(columns="category_id").to_excel(writer, sheet_name="全部事件", index=False)
+        df.drop(columns="category_id", errors="ignore").to_excel(writer, sheet_name="全部事件", index=False)
         for cid, c in CATEGORIES.items():
-            sub = df[df["category_id"] == cid] if not df.empty else df
+            sub = df[df["category_id"] == cid]
             if len(sub):
-                sub.drop(columns="category_id").to_excel(writer,
-                                                          sheet_name=c["label"][:31],
-                                                          index=False)
+                sub.drop(columns="category_id", errors="ignore").to_excel(writer,
+                                                                          sheet_name=c["label"][:31],
+                                                                          index=False)
 
     print(f"\n[done] 資料庫 JSON：{json_db_path}")
     print(f"[done] 精選 JSON：{json_top_path}")
