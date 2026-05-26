@@ -33,9 +33,10 @@ from events import extract_events_from_items, merge_events, filter_events
 from cover_image import attach_cover_images
 
 
-# 每類事件保留上限（資料庫）/ 精選
+# 每類事件保留上限（資料庫）
 PER_CAT_DB = 25
-TOP_PICKS = 3
+# 精選總數（跨所有分類合計），依 importance / mention_count 取前 N
+TOP_PICKS_TOTAL = 6
 
 
 def run(days_back: int = DEFAULT_DAYS_BACK,
@@ -87,23 +88,27 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     events.sort(key=lambda e: (e.get("importance", 0), e.get("mention_count", 0)),
                 reverse=True)
 
-    # 按類別切：每類保留 PER_CAT_DB
+    # 按類別切：每類保留 PER_CAT_DB（資料庫只受每類上限影響）
     by_cat: dict[str, list[dict]] = defaultdict(list)
     for ev in events:
         by_cat[ev.get("category", "uncategorized")].append(ev)
     db_events: list[dict] = []
-    top_events: list[dict] = []
     for cid in list(CATEGORIES.keys()) + ["uncategorized"]:
         rows = by_cat.get(cid, [])
         rows.sort(key=lambda e: (e.get("importance", 0), e.get("mention_count", 0)),
                   reverse=True)
         cat_db = rows[:PER_CAT_DB]
-        cat_top = rows[:TOP_PICKS]
         db_events.extend(cat_db)
-        top_events.extend(cat_top)
         if rows:
             label = CATEGORY_LABEL_BY_ID.get(cid, "未分類")
-            print(f"    {label:14s}  共 {len(rows):3d} 個事件 → 保留 {len(cat_db):3d} / 精選 {len(cat_top)}")
+            print(f"    {label:14s}  共 {len(rows):3d} 個事件 → 保留 {len(cat_db):3d}")
+
+    # 精選：跨類別合計取 Top N（依 importance / mention_count 全域排序）
+    db_sorted = sorted(db_events,
+                       key=lambda e: (e.get("importance", 0), e.get("mention_count", 0)),
+                       reverse=True)
+    top_events: list[dict] = db_sorted[:TOP_PICKS_TOTAL]
+    print(f"    今日精選           合計 {len(top_events)} / 上限 {TOP_PICKS_TOTAL}（跨類別 importance 排序）")
 
     # 9) 封面圖（只給 top events）
     print(f"\n取得封面圖（共 {len(top_events)} 個精選事件）...")

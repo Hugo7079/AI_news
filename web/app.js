@@ -35,6 +35,9 @@ const CATEGORIES = {
 
 const CATEGORY_ORDER = ["tech_research","industry_business","hardware_infra","products_apps","policy_society","uncategorized"];
 
+// 精選顯示上限（跟 pipeline.py 的 TOP_PICKS_TOTAL 對齊）
+const TOP_PICKS_DISPLAY = 6;
+
 const ICONS = {
   tech_research: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></svg>`,
   industry_business: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
@@ -181,7 +184,13 @@ function cardHtml(ev) {
 }
 
 function renderTopPicks(events) {
-  const tops = applyInterestFilter(events.filter((e) => e.is_top));
+  // 先依 importance / mention_count 排序，再卡上限（兼容舊資料每類 3 個合計 15 的情況）
+  const sortedTops = [...events.filter((e) => e.is_top)].sort((a, b) => {
+    const di = (b.importance || 0) - (a.importance || 0);
+    if (di !== 0) return di;
+    return (b.mention_count || 0) - (a.mention_count || 0);
+  });
+  const tops = applyInterestFilter(sortedTops).slice(0, TOP_PICKS_DISPLAY);
   if (!tops.length) {
     $topPicks.innerHTML = `<div class="empty">您關注的領域中今日暫無精選事件。</div>`;
     return;
