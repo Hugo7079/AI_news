@@ -7,12 +7,43 @@ LLM 呼叫工具（OpenAI 相容 endpoint）
 
 from __future__ import annotations
 import json
+import os
 import re
+import threading
 import time
 
 import requests
 
 from config import LLM_CFG
+
+
+# ─── 全域速率限制 ───
+# Gemini 2.5 Flash 免費版只有 10 RPM；2.0 Flash 是 15 RPM。
+# 預設 8 RPM，留 buffer 給 retry。可用 AINEWS_LLM_RPM 環境變數覆寫。
+_RPM_LIMIT = int(os.getenv("AINEWS_LLM_RPM", "8"))
+
+
+class _RateLimiter:
+    """以 60 秒滑動視窗強制不超過 N 次請求；thread-safe。"""
+
+    def __init__(self, rpm: int):
+        self.rpm = max(1, rpm)
+        self.lock = threading.Lock()
+        self.timestamps: list[float] = []
+
+    def acquire(self) -> None:
+        while True:
+            with self.lock:
+                now = time.monotonic()
+                self.timestamps = [t for t in self.timestamps if t > now - 60.0]
+                if len(self.timestamps) < self.rpm:
+                    self.timestamps.append(now)
+                    return
+                wait = self.timestamps[0] + 60.0 - now + 0.1
+            time.sleep(max(wait, 0.05))
+
+
+_rate_limiter = _RateLimiter(_RPM_LIMIT)
 
 
 # 一般瀏覽器 UA — 繞過 Cloudflare 對 Python 預設 UA 的封鎖（error code 1010）
@@ -68,8 +99,11 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
 
     url = _build_url(base_url)
     if not _logged_url:
-        print(f"  [LLM] endpoint={url}  model={model}")
+        print(f"  [LLM] endpoint={url}  model={model}  rpm_limit={_RPM_LIMIT}")
         _logged_url = True
+
+    # 全域速率限制：阻塞直到本次請求合法
+    _rate_limiter.acquire()
 
     messages = []
     if system:
