@@ -619,12 +619,16 @@ def _programmatic_dedup(events: list[dict]) -> list[dict]:
                             if has_common_topic:
                                 is_match = True
 
-                    # 規則 3: Jaccard >= 0.52 且 who 重疊 (高置信度直接合併)
-                    if not is_match and sim >= 0.52:
+                    # 規則 3: Jaccard >= 0.42 且 who 重疊 (放寬以補 LLM 失效時的去重)
+                    if not is_match and sim >= 0.42:
                         who_other = {_align_who(w) for w in (other.get("who") or []) if w}
                         who_other = {w for w in who_other if w and len(w) > 1}
                         if who_head.intersection(who_other):
                             is_match = True
+
+                    # 規則 4: 標題極度相似 (Jaccard >= 0.68) — 直接合併，不需 who 重疊
+                    if not is_match and sim >= 0.68:
+                        is_match = True
 
                 if is_match:
                     _merge_into_programmatic(head, other)
