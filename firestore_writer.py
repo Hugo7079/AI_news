@@ -127,11 +127,21 @@ def _event_to_doc(ev: dict, date_str: str, is_top: bool) -> dict:
         "where":          ev.get("where", ""),
         "sources":        [
             {
-                "url":         s.get("url", ""),
-                "title":       s.get("title", ""),
-                "source_name": s.get("source_name", ""),
-                "source_kind": s.get("source_kind", ""),
-                "published":   s.get("published", ""),
+                "url":            s.get("url", ""),
+                "title":          s.get("title", ""),
+                "source_name":    s.get("source_name", ""),
+                "source_kind":    s.get("source_kind", ""),
+                "published":      s.get("published", ""),
+                # 開源生態欄位（HF / GitHub / Ollama / OpenRouter 才有）
+                "is_opensource":  bool(s.get("is_opensource", False)),
+                "stars":          s.get("stars", "") or "",
+                "pulls":          s.get("pulls", "") or "",
+                "downloads":      int(s.get("downloads", 0) or 0),
+                "likes":          int(s.get("likes", 0) or 0),
+                "upvotes":        int(s.get("upvotes", 0) or 0),
+                "context_length": int(s.get("context_length", 0) or 0),
+                "task":           s.get("task", "") or "",
+                "pricing":        s.get("pricing", {}) or {},
             }
             for s in (ev.get("sources") or [])
         ],

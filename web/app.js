@@ -56,6 +56,7 @@ const $interestChips = document.getElementById("interest-chips");
 const $metrics       = document.getElementById("metrics");
 const $topPicks      = document.getElementById("top-picks");
 const $trendingWrap  = document.getElementById("trending-wrap");
+const $opensource    = document.getElementById("opensource-grid");
 const $tabs          = document.getElementById("category-tabs");
 const $eventList     = document.getElementById("event-list");
 const $topEntities   = document.getElementById("top-entities");
@@ -199,47 +200,149 @@ function renderTopPicks(events) {
 }
 
 // ─── Trending list ───
+// 改版：按「主體跨事件出現次數」計算。同一個 who 出現在 N 個事件 → N 個事件熱度。
+// 取出現次數 >= 2 的 entity，按次數排序顯示 Top 5，挑那個 entity 旗下最重要的事件當代表。
+function _entityKey(s) {
+  return String(s || "").trim().toLowerCase()
+    .replace(/[\s"'()（）\-_、,，。.]/g, "");
+}
+
 function renderTrending(events) {
   const filtered = applyInterestFilter(events);
-  const trending = filtered
-    .filter((e) => Number(e.mention_count || 1) > 1)
+
+  // 1) 為每個 entity（原始字串）統計出現過的事件
+  //    用 normalized key 做合併（"南山人壽" / "南山人壽保險" 算同一個）
+  const byKey = new Map();   // key → { display, events: [] }
+  for (const ev of filtered) {
+    const seenInThisEvent = new Set();   // 同事件不重覆計
+    for (const w of (ev.who || [])) {
+      const k = _entityKey(w);
+      if (!k || k.length < 2 || seenInThisEvent.has(k)) continue;
+      seenInThisEvent.add(k);
+      if (!byKey.has(k)) byKey.set(k, { display: String(w).trim(), events: [] });
+      byKey.get(k).events.push(ev);
+    }
+  }
+
+  // 2) 篩出 count >= 2 的 entity，按 count desc 排序
+  const ranked = [...byKey.entries()]
+    .map(([k, v]) => ({ key: k, display: v.display, events: v.events }))
+    .filter((e) => e.events.length >= 2)
     .sort((a, b) => {
-      const dc = (b.mention_count || 0) - (a.mention_count || 0);
-      if (dc !== 0) return dc;
-      return (b.importance || 0) - (a.importance || 0);
+      if (b.events.length !== a.events.length) return b.events.length - a.events.length;
+      // 平手用代表事件的 importance 當 tiebreaker
+      const ai = Math.max(...a.events.map((x) => x.importance || 0));
+      const bi = Math.max(...b.events.map((x) => x.importance || 0));
+      return bi - ai;
     })
     .slice(0, 5);
 
-  if (!trending.length) {
+  if (!ranked.length) {
     $trendingWrap.innerHTML = "";
     return;
   }
 
-  const rows = trending.map((ev, i) => {
+  const rows = ranked.map((entry, i) => {
+    // 代表事件：該 entity 旗下 importance 最高、mention_count 最高的一筆
+    const repEvent = [...entry.events].sort((a, b) => {
+      const di = (b.importance || 0) - (a.importance || 0);
+      if (di !== 0) return di;
+      return (b.mention_count || 0) - (a.mention_count || 0);
+    })[0];
     const rank = String(i + 1).padStart(2, "0");
-    const color = catColor(ev.category);
-    const primarySrc = (ev.sources || [])[0] || {};
+    const color = catColor(repEvent.category);
+    const primarySrc = (repEvent.sources || [])[0] || {};
     const titleNode = primarySrc.url
-      ? `<a href="${escapeHtml(primarySrc.url)}" target="_blank" rel="noopener noreferrer"><span class="title-text">${escapeHtml(ev.title)}</span></a>`
-      : `<span class="title-text">${escapeHtml(ev.title)}</span>`;
+      ? `<a href="${escapeHtml(primarySrc.url)}" target="_blank" rel="noopener noreferrer"><span class="title-text">${escapeHtml(repEvent.title)}</span></a>`
+      : `<span class="title-text">${escapeHtml(repEvent.title)}</span>`;
     return `
       <div class="trending-item">
         <div class="trending-rank">${rank}</div>
         <div class="trending-text">
-          <span class="cat-badge" style="background:${color}">${ICONS[ev.category] || ICONS.uncategorized}${escapeHtml(catLabel(ev.category))}</span>
+          <span class="cat-badge" style="background:${color}">${ICONS[repEvent.category] || ICONS.uncategorized}${escapeHtml(entry.display)}</span>
           ${titleNode}
         </div>
-        <div class="trending-count">${ev.mention_count} 篇</div>
+        <div class="trending-count">${entry.events.length} 個事件</div>
       </div>
     `;
   }).join("");
 
   $trendingWrap.innerHTML = `
     <div class="trending">
-      <div class="trending-title">${ICON_FIRE}本日最受關注事件（被報導次數）</div>
+      <div class="trending-title">${ICON_FIRE}本日最受關注主體（跨事件出現次數）</div>
       <div class="trending-list">${rows}</div>
     </div>
   `;
+}
+
+// ─── Open Source Radar ───
+const ICON_CODE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`;
+const ICON_STAR_OS = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+const ICON_DL = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+const ICON_UP = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`;
+const ICON_CTX = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>`;
+const ICON_TAG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`;
+
+function _fmtNum(n) {
+  n = Number(n) || 0;
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+  return String(n);
+}
+
+function osCardHtml(ev) {
+  const osSources = (ev.sources || []).filter((s) => s.is_opensource);
+  if (!osSources.length) return "";
+
+  // 彙整指標
+  let stars = "", pulls = "", downloads = 0, likes = 0, upvotes = 0, ctx = 0, task = "";
+  const sourceNames = [];
+  for (const s of osSources) {
+    if (s.source_name && !sourceNames.includes(s.source_name)) sourceNames.push(s.source_name);
+    if (!stars && s.stars) stars = String(s.stars);
+    if (!pulls && s.pulls) pulls = String(s.pulls);
+    if (s.downloads) downloads = Math.max(downloads, Number(s.downloads) || 0);
+    if (s.likes) likes = Math.max(likes, Number(s.likes) || 0);
+    if (s.upvotes) upvotes = Math.max(upvotes, Number(s.upvotes) || 0);
+    if (s.context_length) ctx = Math.max(ctx, Number(s.context_length) || 0);
+    if (!task && s.task) task = String(s.task);
+  }
+
+  const badges = [];
+  if (stars) badges.push(`<span class="os-badge">${ICON_STAR_OS}${stars} stars</span>`);
+  if (pulls) badges.push(`<span class="os-badge">${ICON_DL}${pulls} pulls</span>`);
+  if (downloads > 0) badges.push(`<span class="os-badge">${ICON_DL}${_fmtNum(downloads)} dl</span>`);
+  if (likes > 0) badges.push(`<span class="os-badge os-badge-alt">${ICON_UP}${_fmtNum(likes)} likes</span>`);
+  if (upvotes > 0) badges.push(`<span class="os-badge os-badge-alt">${ICON_UP}${upvotes} upvotes</span>`);
+  if (ctx > 0) {
+    const ctxStr = ctx >= 1024 ? `${Math.floor(ctx / 1024)}k` : String(ctx);
+    badges.push(`<span class="os-badge">${ICON_CTX}Ctx ${ctxStr}</span>`);
+  }
+  if (task) badges.push(`<span class="os-badge os-badge-alt">${ICON_TAG}${escapeHtml(task)}</span>`);
+
+  const url = (ev.sources || [])[0]?.url || "#";
+  return `
+    <article class="os-card">
+      <div class="os-card-source">${ICON_CODE}<span>${escapeHtml(sourceNames.join(" / "))}</span></div>
+      <div class="os-card-name"><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ev.title || "(無標題)")}</a></div>
+      <div class="os-card-desc">${escapeHtml(ev.summary || "")}</div>
+      ${badges.length ? `<div class="os-badges">${badges.join("")}</div>` : ""}
+    </article>
+  `;
+}
+
+function renderOpenSource(events) {
+  const filtered = applyInterestFilter(events);
+  const osEvents = filtered.filter((ev) =>
+    (ev.sources || []).some((s) => s.is_opensource),
+  );
+  if (!osEvents.length) {
+    $opensource.innerHTML = `<div class="empty" style="grid-column:1/-1">今日無開源生態事件。</div>`;
+    return;
+  }
+  // 依 importance 排序，顯示前 8 筆
+  osEvents.sort((a, b) => (b.importance || 0) - (a.importance || 0));
+  $opensource.innerHTML = osEvents.slice(0, 8).map(osCardHtml).join("");
 }
 
 // ─── Database (tabs + list) ───
@@ -374,6 +477,7 @@ function renderCatDist(events) {
 function renderAll() {
   renderTopPicks(currentEvents);
   renderTrending(currentEvents);
+  renderOpenSource(currentEvents);
   renderTabsAndList(currentEvents);
   renderMetrics(currentEvents);
   renderTopEntities(currentEvents);
@@ -384,6 +488,7 @@ async function showDate(date) {
   currentDate = date;
   $topPicks.innerHTML = `<div class="loading"><div class="spinner"></div><div>讀取中…</div></div>`;
   $trendingWrap.innerHTML = "";
+  $opensource.innerHTML = "";
   $eventList.innerHTML = "";
   $metrics.innerHTML = "";
   $topEntities.innerHTML = "";
