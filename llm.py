@@ -7,15 +7,34 @@ LLM 呼叫工具（OpenAI 相容 endpoint）
 
 from __future__ import annotations
 import json
+import re
 import urllib.request
 import urllib.error
 
 from config import LLM_CFG
 
 
-def _build_url(base: str, path: str = "/v1/chat/completions") -> str:
+# 一般瀏覽器 UA — 繞過 Cloudflare 對 Python-urllib 的封鎖（error code 1010）
+_USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+
+_HAS_VERSION_RE = re.compile(r"/v\d+\w*(/|$)")
+
+
+def _build_url(base: str) -> str:
+    """根據 base_url 自動補上正確的 path：
+    - 若 base 已含完整 /chat/completions → 直接用
+    - 若 base 已含 /v1 或 /v1beta 等版本片段 → 補 /chat/completions
+    - 否則（如 http://host:port/） → 補 /v1/chat/completions
+    """
     base = base.rstrip("/")
-    return base + path if not base.endswith(path) else base
+    if base.endswith("/chat/completions"):
+        return base
+    if _HAS_VERSION_RE.search(base):
+        return base + "/chat/completions"
+    return base + "/v1/chat/completions"
 
 
 def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
@@ -46,6 +65,8 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
         headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {LLM_CFG['api_key']}",
+            "User-Agent": _USER_AGENT,
+            "Accept": "application/json",
         },
     )
     try:
