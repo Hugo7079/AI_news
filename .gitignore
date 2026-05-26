@@ -1,9 +1,20 @@
 __pycache__/
 *.pyc
 .DS_Store
-.streamlit/secrets.toml
 .ainews_llm_config.json
 
-# 輸出：保留 JSON + 封面圖（部署到 Streamlit Cloud 用），Excel / log 不入 git
+# Firebase service account 金鑰絕對不能進 repo
+firebase-credentials.json
+*-firebase-adminsdk-*.json
+
+# 本地輸出：Firestore 是 source of truth，本地檔只是備份
 output/*.xlsx
-output/cron.log
+output/*.json
+output/images/
+output/*.log
+
+# Firebase tooling
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log

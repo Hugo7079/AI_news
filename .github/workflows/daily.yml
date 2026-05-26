@@ -1,0 +1,50 @@
+name: Daily AI news crawl
+
+on:
+  schedule:
+    # 每天 00:00 UTC (= 台灣時間 08:00) 跑
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "抓近 N 天"
+        required: false
+        default: "1"
+      enable_google_news:
+        description: "啟用 Google News 補強"
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          AINEWS_LLM_API_KEY:           ${{ secrets.AINEWS_LLM_API_KEY }}
+          AINEWS_LLM_BASE_URL:          ${{ secrets.AINEWS_LLM_BASE_URL }}
+          AINEWS_LLM_MODEL:             ${{ secrets.AINEWS_LLM_MODEL }}
+          HF_TOKEN:                     ${{ secrets.HF_TOKEN }}
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          DAYS="${{ github.event.inputs.days || '1' }}"
+          GOOGLE_FLAG=""
+          if [ "${{ github.event.inputs.enable_google_news }}" = "true" ]; then
+            GOOGLE_FLAG="--google"
+          fi
+          python3 pipeline.py --days "$DAYS" $GOOGLE_FLAG

@@ -19,6 +19,7 @@
 
 from __future__ import annotations
 import json
+import os
 from collections import defaultdict
 from datetime import date, datetime
 from pathlib import Path
@@ -181,6 +182,14 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     print(f"\n[done] 資料庫 JSON：{json_db_path}")
     print(f"[done] 精選 JSON：{json_top_path}")
     print(f"[done] Excel：{xlsx_path}")
+
+    # 11) 寫入 Firestore（失敗不阻斷本地輸出）
+    if os.getenv("AINEWS_SKIP_FIRESTORE", "").strip().lower() not in ("1", "true", "yes"):
+        try:
+            from firestore_writer import write_run as firestore_write
+            firestore_write(today, db_events, top_events, dict(by_cat_label))
+        except Exception as e:
+            print(f"[firestore] 寫入失敗（本地輸出已完成）：{type(e).__name__}: {e}")
 
     return {
         "date": today,

@@ -242,18 +242,6 @@ def load_llm_config() -> dict:
         if v:
             cfg[k] = int(v) if k == "timeout" else v
 
-    # Fallback to Streamlit Secrets
-    try:
-        import streamlit as st
-        if hasattr(st, "secrets") and st.secrets:
-            for k, env_key in env_map.items():
-                if env_key in st.secrets:
-                    val = str(st.secrets[env_key]).strip()
-                    if val:
-                        cfg[k] = int(val) if k == "timeout" else val
-    except Exception:
-        pass
-
     return cfg
 
 

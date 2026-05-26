@@ -41,16 +41,6 @@ def _load_hf_token() -> str:
     if tok:
         return tok
 
-    # Fallback to Streamlit Secrets
-    try:
-        import streamlit as st
-        if hasattr(st, "secrets") and "HF_TOKEN" in st.secrets:
-            val = str(st.secrets["HF_TOKEN"]).strip()
-            if val:
-                return val
-    except Exception:
-        pass
-
     cfg_path = BASE_DIR / ".ainews_llm_config.json"
     if cfg_path.exists():
         try:

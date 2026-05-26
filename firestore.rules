@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// 公開閱讀，只有 service account（GitHub Actions）能寫
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /events/{docId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /daily_summary/{date} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

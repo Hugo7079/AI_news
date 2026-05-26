@@ -1,0 +1,11 @@
+rules_version = '2';
+
+// 封面圖：公開讀，service account 才能寫
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /covers/{date}/{file} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
