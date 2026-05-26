@@ -30,16 +30,35 @@
       </div>
     </header>
 
+    <section class="interest-panel" aria-label="客製化簡報視角">
+      <div class="interest-header">
+        <span class="interest-title">客製化簡報視角 / 您的關注領域</span>
+        <span class="interest-sub">點擊選擇或移除有興趣的領域，下方所有區塊會即時過濾</span>
+      </div>
+      <div id="interest-chips" class="interest-chips"></div>
+    </section>
+
     <h2 class="section-title"><span class="accent"></span>今日精選</h2>
     <section id="top-picks" class="card-grid"></section>
+
+    <section id="trending-wrap"></section>
 
     <h2 class="section-title"><span class="accent"></span>事件資料庫</h2>
     <nav id="category-tabs" class="tabs" aria-label="分類篩選"></nav>
     <section id="event-list" class="event-list"></section>
 
-    <h2 class="section-title"><span class="accent"></span>數據看板</h2>
+    <h2 class="section-title"><span class="accent"></span>今日 AI 局勢數據看板</h2>
     <section id="metrics" class="metrics" aria-label="當日統計"></section>
-    <section id="bar" class="bar-row" aria-label="分類分布"></section>
+    <div class="analytics-grid">
+      <section class="analytics-card">
+        <h3 class="analytics-title">熱門被提及主體 (Top Mentioned Entities)</h3>
+        <div id="top-entities" class="hbar-list"></div>
+      </section>
+      <section class="analytics-card">
+        <h3 class="analytics-title">事件分類分佈 (Event Category Distribution)</h3>
+        <div id="cat-distribution" class="hbar-list"></div>
+      </section>
+    </div>
 
     <footer class="footer">
       <p>資料：Firestore <code>events</code> ・ 更新：每日 GitHub Actions cron</p>
