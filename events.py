@@ -40,10 +40,11 @@ from config import CATEGORY_IDS, CATEGORIES, LLM_BATCH_SIZE
 from llm import chat_json
 
 
-# 平行度。LLM server 通常能扛 4-8 個並發；若伺服器吃緊就調降。
-EVENT_EXTRACT_WORKERS = 4
+# 平行度。Gemini 2.5 Flash 免費版只有 10 RPM，2.0 Flash 也只有 15 RPM；
+# 並行太多會被 throttle 成 429。llm.py 已會自動 retry，但降併發整體比較快。
+EVENT_EXTRACT_WORKERS = 2
 EVENT_BATCH_SIZE = 8           # 8 則 / 次 LLM call
-MERGE_LLM_WORKERS = 4
+MERGE_LLM_WORKERS = 2
 
 
 # ─────────────────────────────────────────────────────────────

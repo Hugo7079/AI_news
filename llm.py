@@ -8,6 +8,7 @@ LLM 呼叫工具（OpenAI 相容 endpoint）
 from __future__ import annotations
 import json
 import re
+import time
 
 import requests
 
@@ -88,20 +89,40 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
         "Content-Type": "application/json",
     }
 
-    try:
-        resp = _session.post(
-            url,
-            data=json.dumps(payload).encode("utf-8"),
-            headers=headers,
-            timeout=LLM_CFG.get("timeout", 30),
-        )
-    except requests.RequestException as e:
-        print(f"  [LLM error] {type(e).__name__}: {e}")
-        return ""
+    # 429 / 503 / 504：等一下再試最多 3 次（指數退避 + Retry-After）
+    max_attempts = 4
+    backoff = 4.0
+    resp = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            resp = _session.post(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers=headers,
+                timeout=LLM_CFG.get("timeout", 30),
+            )
+        except requests.RequestException as e:
+            print(f"  [LLM error] {type(e).__name__}: {e}")
+            return ""
 
-    if resp.status_code != 200:
+        if resp.status_code == 200:
+            break
+        if resp.status_code in (429, 503, 504) and attempt < max_attempts:
+            retry_after = resp.headers.get("Retry-After")
+            try:
+                wait = float(retry_after) if retry_after else backoff
+            except ValueError:
+                wait = backoff
+            wait = min(wait, 30.0)
+            time.sleep(wait)
+            backoff *= 2
+            continue
+        # 不可重試的錯誤 → 直接回
         body = (resp.text or "")[:300]
         print(f"  [LLM HTTPError] {resp.status_code}: {body}")
+        return ""
+
+    if resp is None or resp.status_code != 200:
         return ""
 
     try:
