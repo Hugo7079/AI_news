@@ -8,19 +8,27 @@ LLM 呼叫工具（OpenAI 相容 endpoint）
 from __future__ import annotations
 import json
 import re
-import urllib.request
-import urllib.error
+
+import requests
 
 from config import LLM_CFG
 
 
-# 一般瀏覽器 UA — 繞過 Cloudflare 對 Python-urllib 的封鎖（error code 1010）
-_USER_AGENT = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-)
+# 一般瀏覽器 UA — 繞過 Cloudflare 對 Python 預設 UA 的封鎖（error code 1010）
+_HEADERS_BASE = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/event-stream",
+    "Accept-Language": "en-US,en;q=0.9",
+}
 
 _HAS_VERSION_RE = re.compile(r"/v\d+\w*(/|$)")
+
+# 用一個共用 session：keep-alive、共用 connection pool，行為更像真實瀏覽器
+_session = requests.Session()
+_logged_url = False
 
 
 def _build_url(base: str) -> str:
@@ -42,8 +50,25 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
     """
     呼叫 OpenAI 相容 /v1/chat/completions；失敗回空字串。
     """
-    if not LLM_CFG.get("api_key"):
+    global _logged_url
+    api_key = LLM_CFG.get("api_key", "")
+    base_url = LLM_CFG.get("base_url", "")
+    model = LLM_CFG.get("model", "gemma-4-31B-it")
+    if not api_key:
+        if not _logged_url:
+            print("  [LLM] api_key 為空 — 跳過所有 LLM 呼叫")
+            _logged_url = True
         return ""
+    if not base_url:
+        if not _logged_url:
+            print("  [LLM] base_url 為空 — 跳過所有 LLM 呼叫")
+            _logged_url = True
+        return ""
+
+    url = _build_url(base_url)
+    if not _logged_url:
+        print(f"  [LLM] endpoint={url}  model={model}")
+        _logged_url = True
 
     messages = []
     if system:
@@ -51,59 +76,58 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
     messages.append({"role": "user", "content": prompt})
 
     payload = {
-        "model": LLM_CFG.get("model", "gemma-4-31B-it"),
+        "model": model,
         "messages": messages,
         "temperature": temperature,
         "max_tokens": max_tokens,
     }
-    data = json.dumps(payload).encode("utf-8")
-    url = _build_url(LLM_CFG["base_url"])
-    req = urllib.request.Request(
-        url,
-        data=data,
-        method="POST",
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {LLM_CFG['api_key']}",
-            "User-Agent": _USER_AGENT,
-            "Accept": "application/json",
-        },
-    )
+
+    headers = {
+        **_HEADERS_BASE,
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
     try:
-        with urllib.request.urlopen(req, timeout=LLM_CFG.get("timeout", 30)) as resp:
-            obj = json.loads(resp.read().decode("utf-8"))
-        choices = obj.get("choices") or []
-        if not choices:
-            return ""
-        msg = choices[0].get("message") or {}
-        content = msg.get("content")
-        reasoning = msg.get("reasoning_content") or ""
-        # 推理型模型常把答案放在 reasoning_content；content 為 None
-        if not content:
-            content = reasoning
-        if isinstance(content, list):
-            parts = []
-            for blk in content:
-                if isinstance(blk, dict):
-                    parts.append(blk.get("text") or blk.get("content") or "")
-                else:
-                    parts.append(str(blk))
-            content = "".join(parts)
-        text = (content or "").strip()
-        # 若 content 與 reasoning 不同（一般模型 finalize 過），優先 content；
-        # 若 content 為空但 reasoning 有 JSON，回傳 reasoning（已落在 content 變數中）。
-        return text
-    except urllib.error.HTTPError as e:
-        body = ""
-        try:
-            body = e.read().decode("utf-8", errors="ignore")[:200]
-        except Exception:
-            pass
-        print(f"  [LLM HTTPError] {e.code}: {body}")
-        return ""
-    except Exception as e:
+        resp = _session.post(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers=headers,
+            timeout=LLM_CFG.get("timeout", 30),
+        )
+    except requests.RequestException as e:
         print(f"  [LLM error] {type(e).__name__}: {e}")
         return ""
+
+    if resp.status_code != 200:
+        body = (resp.text or "")[:300]
+        print(f"  [LLM HTTPError] {resp.status_code}: {body}")
+        return ""
+
+    try:
+        obj = resp.json()
+    except ValueError:
+        print(f"  [LLM] 回應不是 JSON：{resp.text[:200]}")
+        return ""
+
+    choices = obj.get("choices") or []
+    if not choices:
+        return ""
+    msg = choices[0].get("message") or {}
+    content = msg.get("content")
+    reasoning = msg.get("reasoning_content") or ""
+    # 推理型模型常把答案放在 reasoning_content；content 為 None
+    if not content:
+        content = reasoning
+    if isinstance(content, list):
+        parts = []
+        for blk in content:
+            if isinstance(blk, dict):
+                parts.append(blk.get("text") or blk.get("content") or "")
+            else:
+                parts.append(str(blk))
+        content = "".join(parts)
+    return (content or "").strip()
 
 
 def chat_json(prompt: str, system: str | None = None, max_tokens: int = 4000) -> dict | list | None:
@@ -111,7 +135,6 @@ def chat_json(prompt: str, system: str | None = None, max_tokens: int = 4000) ->
     raw = chat(prompt, system=system, temperature=0.0, max_tokens=max_tokens)
     if not raw:
         return None
-    import re
     # 1) 先試 ```json ... ```
     m = re.search(r"```json\s*(.*?)```", raw, flags=re.DOTALL)
     if m:
