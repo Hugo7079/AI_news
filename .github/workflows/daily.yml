@@ -2,8 +2,8 @@ name: Daily AI news crawl
 
 on:
   schedule:
-    # 每天 02:15 UTC (= 台灣時間 10:15) 跑
-    - cron: "15 2 * * *"
+    # 每天 02:45 UTC (= 台灣時間 10:45) 跑
+    - cron: "45 2 * * *"
   workflow_dispatch:
     inputs:
       days:
