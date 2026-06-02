@@ -91,6 +91,12 @@ body::before {
   letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--text-muted);
 }
+.hero-hint {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
 .select {
   appearance: none;
   -webkit-appearance: none;

@@ -47,6 +47,18 @@ EVENT_BATCH_SIZE = 8           # 8 則 / 次 LLM call
 MERGE_LLM_WORKERS = 2
 
 
+def _safe_int(val, default: int = 5) -> int:
+    if val is None or val == "":
+        return default
+    try:
+        return int(val)
+    except (ValueError, TypeError):
+        try:
+            return int(float(val))
+        except (ValueError, TypeError):
+            return default
+
+
 # ─────────────────────────────────────────────────────────────
 # 1. 從新聞抽取事件
 # ─────────────────────────────────────────────────────────────
@@ -111,10 +123,7 @@ def _normalize_event(ev: dict, src_item: dict) -> dict | None:
         cat = "uncategorized"
     if not title or not summary:
         return None
-    try:
-        importance = int(ev.get("importance") or 5)
-    except Exception:
-        importance = 5
+    importance = _safe_int(ev.get("importance"), 5)
     importance = max(1, min(10, importance))
 
     who_raw = ev.get("who") or []
@@ -443,7 +452,7 @@ def _merge_into(head: dict, other: dict) -> None:
             cur_who.append(w)
             cur_set.add(_norm_token(w))
     head["who"] = cur_who[:8]
-    head["importance"] = max(head.get("importance", 0), other.get("importance", 0))
+    head["importance"] = max(_safe_int(head.get("importance"), 0), _safe_int(other.get("importance"), 0))
 
 
 def _llm_group_merge(comp: list[dict]) -> list[dict]:
@@ -492,7 +501,7 @@ def _llm_group_merge(comp: list[dict]) -> list[dict]:
                     head["what"] = item.get("what") or head["what"]
                     head["when"] = item.get("when") or head["when"]
                     head["where"] = item.get("where") or head.get("where", "")
-                    head["importance"] = item.get("importance") or head["importance"]
+                    head["importance"] = _safe_int(item.get("importance"), head["importance"])
                 else:
                     _merge_into(head, comp[orig_idx])
         if head:
@@ -528,7 +537,7 @@ def _merge_into_programmatic(head: dict, other: dict) -> None:
     head["who"] = cur_who[:8]
 
     # 3. importance 取最大值
-    head["importance"] = max(head.get("importance") or 5, other.get("importance") or 5)
+    head["importance"] = max(_safe_int(head.get("importance"), 5), _safe_int(other.get("importance"), 5))
 
     # 4. 更好的 when / where
     w_head = head.get("when") or ""
@@ -759,7 +768,7 @@ def filter_events(events: list[dict],
     kept: list[dict] = []
     dropped_imp = dropped_short = dropped_old = 0
     for ev in events:
-        if ev.get("importance", 0) < min_importance:
+        if _safe_int(ev.get("importance"), 0) < min_importance:
             dropped_imp += 1
             continue
         if len(ev.get("summary", "")) < min_summary_chars:

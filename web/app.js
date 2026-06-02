@@ -51,10 +51,14 @@ const ICON_FIRE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" f
 const ICON_STAR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
 
 // ─── DOM refs ───
-const $dateSelect    = document.getElementById("date-select");
+const $rangeSelect   = document.getElementById("range-select");
+const $rangeHint     = document.getElementById("range-hint");
 const $interestChips = document.getElementById("interest-chips");
 const $metrics       = document.getElementById("metrics");
 const $topPicks      = document.getElementById("top-picks");
+const $topPicksTitle = document.getElementById("top-picks-title");
+const $osTitle       = document.getElementById("opensource-title");
+const $metricsTitle  = document.getElementById("metrics-title");
 const $trendingWrap  = document.getElementById("trending-wrap");
 const $opensource    = document.getElementById("opensource-grid");
 const $tabs          = document.getElementById("category-tabs");
@@ -62,10 +66,19 @@ const $eventList     = document.getElementById("event-list");
 const $topEntities   = document.getElementById("top-entities");
 const $catDist       = document.getElementById("cat-distribution");
 
-let currentDate = null;
-let currentEvents = [];
+let availableDates = [];   // desc 排序：[最新, …, 最舊]
+let currentRange = 1;      // 預設今日
+let currentDates = [];     // 目前載入的日期集合（desc）
+let currentEvents = [];    // 目前區間內所有事件
 let activeTab = "all";
 let selectedCategories = new Set(CATEGORY_ORDER);  // 預設全選
+
+function rangeLabel(days) {
+  return days === 1 ? "今日" : `近 ${days} 天`;
+}
+function rangeWord(days) {
+  return days === 1 ? "本日" : `近 ${days} 天`;
+}
 
 // ─── helpers ───
 const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({
@@ -81,6 +94,19 @@ function fmtDate(s) {
   const weekday = ["日","一","二","三","四","五","六"][dt.getDay()];
   return `${y}/${m}/${d} (週${weekday})`;
 }
+function fmtDateShort(s) {
+  if (!s) return "";
+  const [, m, d] = s.split("-");
+  return `${Number(m)}/${Number(d)}`;
+}
+function fmtRange(dates) {
+  if (!dates.length) return "";
+  if (dates.length === 1) return fmtDate(dates[0]);
+  // dates 是 desc，[新, …, 舊]
+  const newest = dates[0];
+  const oldest = dates[dates.length - 1];
+  return `${fmtDateShort(oldest)} ~ ${fmtDateShort(newest)}`;
+}
 
 // 過濾：依目前選的分類
 function applyInterestFilter(events) {
@@ -91,14 +117,18 @@ function applyInterestFilter(events) {
 // ─── Firestore queries ───
 async function loadDates() {
   const snap = await getDocs(query(collection(db, "daily_summary"), orderBy("date", "desc")));
-  const dates = snap.docs.map((d) => d.id);
-  $dateSelect.innerHTML = dates.map((d) => `<option value="${d}">${fmtDate(d)}</option>`).join("");
-  return dates;
+  return snap.docs.map((d) => d.id);
 }
 
 async function loadEvents(date) {
   const snap = await getDocs(query(collection(db, "events"), where("date", "==", date)));
-  const events = snap.docs.map((d) => d.data());
+  return snap.docs.map((d) => d.data());
+}
+
+async function loadEventsForDates(dates) {
+  if (!dates.length) return [];
+  const buckets = await Promise.all(dates.map(loadEvents));
+  const events = buckets.flat();
   events.sort((a, b) => {
     const di = (b.importance || 0) - (a.importance || 0);
     if (di !== 0) return di;
@@ -185,7 +215,7 @@ function cardHtml(ev) {
 }
 
 function renderTopPicks(events) {
-  // 先依 importance / mention_count 排序，再卡上限（兼容舊資料每類 3 個合計 15 的情況）
+  // 跨日合併：每天的 is_top 都納入候選，再以 importance / mention_count 排序取總上限。
   const sortedTops = [...events.filter((e) => e.is_top)].sort((a, b) => {
     const di = (b.importance || 0) - (a.importance || 0);
     if (di !== 0) return di;
@@ -193,7 +223,7 @@ function renderTopPicks(events) {
   });
   const tops = applyInterestFilter(sortedTops).slice(0, TOP_PICKS_DISPLAY);
   if (!tops.length) {
-    $topPicks.innerHTML = `<div class="empty">您關注的領域中今日暫無精選事件。</div>`;
+    $topPicks.innerHTML = `<div class="empty">您關注的領域中${escapeHtml(rangeWord(currentRange))}暫無精選事件。</div>`;
     return;
   }
   $topPicks.innerHTML = tops.map(cardHtml).join("");
@@ -205,6 +235,10 @@ function renderTopPicks(events) {
 function _entityKey(s) {
   return String(s || "").trim().toLowerCase()
     .replace(/[\s"'()（）\-_、,，。.]/g, "");
+}
+
+function trendingTitleText() {
+  return `${rangeWord(currentRange)}最受關注主體（跨事件出現次數）`;
 }
 
 function renderTrending(events) {
@@ -269,7 +303,7 @@ function renderTrending(events) {
 
   $trendingWrap.innerHTML = `
     <div class="trending">
-      <div class="trending-title">${ICON_FIRE}本日最受關注主體（跨事件出現次數）</div>
+      <div class="trending-title">${ICON_FIRE}${escapeHtml(trendingTitleText())}</div>
       <div class="trending-list">${rows}</div>
     </div>
   `;
@@ -337,7 +371,7 @@ function renderOpenSource(events) {
     (ev.sources || []).some((s) => s.is_opensource),
   );
   if (!osEvents.length) {
-    $opensource.innerHTML = `<div class="empty" style="grid-column:1/-1">今日無開源生態事件。</div>`;
+    $opensource.innerHTML = `<div class="empty" style="grid-column:1/-1">${escapeHtml(rangeWord(currentRange))}無開源生態事件。</div>`;
     return;
   }
   // 依 importance 排序，顯示前 8 筆
@@ -409,11 +443,12 @@ function renderMetrics(events) {
   const totalDb = filtered.length;
   const topCount = filtered.filter((e) => e.is_top).length;
   const catCount = new Set(filtered.map((e) => e.category || "uncategorized")).size;
+  const topLabel = currentRange === 1 ? "今日精選" : `${rangeLabel(currentRange)}精選`;
   const cards = [
     { label: "事件總數",   value: totalDb },
-    { label: "今日精選",   value: topCount },
+    { label: topLabel,     value: topCount },
     { label: "覆蓋分類",   value: catCount },
-    { label: "資料日期",   value: fmtDate(currentDate) },
+    { label: "資料區間",   value: fmtRange(currentDates) },
   ];
   $metrics.innerHTML = cards.map((c) => `
     <div class="metric">
@@ -474,7 +509,24 @@ function renderCatDist(events) {
 }
 
 // ─── Orchestration ───
+function updateSectionTitles() {
+  const rl = rangeLabel(currentRange);
+  if ($topPicksTitle) $topPicksTitle.innerHTML = `<span class="accent"></span>${escapeHtml(rl)}精選`;
+  if ($osTitle)       $osTitle.innerHTML       = `<span class="accent"></span>開源生態與模型觀測站（${escapeHtml(rl)}）`;
+  if ($metricsTitle)  $metricsTitle.innerHTML  = `<span class="accent"></span>${escapeHtml(rl)} AI 局勢數據看板`;
+}
+
+function updateRangeHint() {
+  if (!$rangeHint) return;
+  if (!currentDates.length) { $rangeHint.textContent = ""; return; }
+  $rangeHint.textContent = currentDates.length === 1
+    ? fmtDate(currentDates[0])
+    : `${fmtRange(currentDates)}（共 ${currentDates.length} 天）`;
+}
+
 function renderAll() {
+  updateSectionTitles();
+  updateRangeHint();
   renderTopPicks(currentEvents);
   renderTrending(currentEvents);
   renderOpenSource(currentEvents);
@@ -484,8 +536,9 @@ function renderAll() {
   renderCatDist(currentEvents);
 }
 
-async function showDate(date) {
-  currentDate = date;
+async function showRange(days) {
+  currentRange = days;
+  currentDates = availableDates.slice(0, days);   // desc, 取前 N 天
   $topPicks.innerHTML = `<div class="loading"><div class="spinner"></div><div>讀取中…</div></div>`;
   $trendingWrap.innerHTML = "";
   $opensource.innerHTML = "";
@@ -493,10 +546,11 @@ async function showDate(date) {
   $metrics.innerHTML = "";
   $topEntities.innerHTML = "";
   $catDist.innerHTML = "";
+  updateSectionTitles();
+  updateRangeHint();
 
   try {
-    const events = await loadEvents(date);
-    currentEvents = events;
+    currentEvents = await loadEventsForDates(currentDates);
     activeTab = "all";
     renderAll();
   } catch (err) {
@@ -508,13 +562,13 @@ async function showDate(date) {
 async function main() {
   try {
     renderInterestChips();
-    const dates = await loadDates();
-    if (!dates.length) {
+    availableDates = await loadDates();
+    if (!availableDates.length) {
       $topPicks.innerHTML = `<div class="empty">Firestore 還沒有資料。先跑 <code>scripts/migrate_legacy.py</code> 或等今日 cron 跑完。</div>`;
       return;
     }
-    $dateSelect.addEventListener("change", (e) => showDate(e.target.value));
-    await showDate(dates[0]);
+    $rangeSelect.addEventListener("change", (e) => showRange(Number(e.target.value) || 1));
+    await showRange(Number($rangeSelect.value) || 1);
   } catch (err) {
     console.error(err);
     $topPicks.innerHTML = `<div class="empty">初始化失敗：${escapeHtml(err.message || err)}<br>請確認 Firestore Rules 是否允許 public read。</div>`;

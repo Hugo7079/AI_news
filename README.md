@@ -4,7 +4,7 @@
 LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接顯示。
 
 ```
-GitHub Actions cron (08:00 TPE)
+GitHub Actions cron (06:00 TPE)
         │
         ▼
 pipeline.py  ──→ Firestore (events, daily_summary)
@@ -53,7 +53,7 @@ output/*.json          ▼
 ├── storage.rules            同上
 │
 ├── .github/workflows/
-│   └── daily.yml            每天 00:00 UTC cron
+│   └── daily.yml            每天 22:00 UTC cron
 │
 └── output/                  本地備份 JSON（已 gitignore）
 ```
@@ -125,7 +125,7 @@ python3 scripts/migrate_legacy.py --dry-run   # 先看會匯哪些
 | `AINEWS_LLM_MODEL` | 模型名（例如 `gemma-4-31B-it`） |
 | `HF_TOKEN` | Hugging Face token（用於 FLUX 生封面圖；可留空） |
 
-設好後 [`.github/workflows/daily.yml`](.github/workflows/daily.yml) 會每天 UTC 00:00（台灣 08:00）自動跑。
+設好後 [`.github/workflows/daily.yml`](.github/workflows/daily.yml) 會每天 UTC 22:00（台灣 06:00）自動跑。
 
 ---
 
