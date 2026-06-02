@@ -36,9 +36,9 @@ jobs:
 
       - name: Run pipeline
         env:
-          AINEWS_LLM_API_KEY:           ${{ secrets.AINEWS_LLM_API_KEY }}
-          AINEWS_LLM_BASE_URL:          ${{ secrets.AINEWS_LLM_BASE_URL }}
-          AINEWS_LLM_MODEL:             ${{ secrets.AINEWS_LLM_MODEL }}
+          AINEWS_LLM_API_KEY:           "sk-GQ3T-a7dVzQgTSIV1_kcJg"
+          AINEWS_LLM_BASE_URL:          "http://125.227.53.125:50062/"
+          AINEWS_LLM_MODEL:             "gemma-4-31B-it"
           HF_TOKEN:                     ${{ secrets.HF_TOKEN }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: |
