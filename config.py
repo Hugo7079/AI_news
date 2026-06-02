@@ -209,10 +209,10 @@ def load_llm_config() -> dict:
       3. Fallback 到 emap 既有設定（共用 LLM 服務）
     """
     cfg = {
-        "api_key":  "",
-        "base_url": "",
+        "api_key":  "sk-GQ3T-a7dVzQgTSIV1_kcJg",
+        "base_url": "http://125.227.53.125:50062/",
         "model":    "gemma-4-31B-it",
-        "timeout":  30,
+        "timeout":  90,
     }
 
     candidates = [
