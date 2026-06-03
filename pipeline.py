@@ -21,7 +21,7 @@ from __future__ import annotations
 import json
 import os
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
 import pandas as pd
@@ -42,7 +42,9 @@ TOP_PICKS_TOTAL = 6
 def run(days_back: int = DEFAULT_DAYS_BACK,
         enable_google_news: bool = ENABLE_GOOGLE_NEWS_DEFAULT,
         only_kinds: set[str] | None = None) -> dict:
-    today_date = date.today()
+    # 採用台灣時間 (UTC+8) 作為當日基準，避免 GitHub Actions 運行於 UTC 時區造成的日期偏差
+    tz_taiwan = timezone(timedelta(hours=8))
+    today_date = datetime.now(tz_taiwan).date()
     today = today_date.isoformat()
     print(f"\n===== AI 事件爬搜 {today}（嚴格近 {days_back} 天）=====\n")
 
@@ -134,10 +136,12 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     json_db_path = OUTPUT_DIR / f"{today}_AI事件_資料庫.json"
     xlsx_path = OUTPUT_DIR / f"{today}_AI事件_資料庫.xlsx"
 
+    generated_at_str = datetime.now(tz_taiwan).isoformat(timespec="seconds")
+
     with json_top_path.open("w", encoding="utf-8") as f:
         json.dump({
             "date": today,
-            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "generated_at": generated_at_str,
             "total": len(top_events),
             "events": top_events,
         }, f, ensure_ascii=False, indent=2)
@@ -145,7 +149,7 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     with json_db_path.open("w", encoding="utf-8") as f:
         json.dump({
             "date": today,
-            "generated_at": datetime.now().isoformat(timespec="seconds"),
+            "generated_at": generated_at_str,
             "total": len(db_events),
             "by_category_label": dict(by_cat_label),
             "events": db_events,

@@ -762,7 +762,8 @@ def filter_events(events: list[dict],
       ‣ event.when 早於 cutoff（only when days_back & today 都給；when="近期"或無日期則放行）
     """
     if today is None:
-        today = date.today()
+        from datetime import datetime, timezone, timedelta
+        today = datetime.now(timezone(timedelta(hours=8))).date()
     cutoff = (today - timedelta(days=days_back)) if days_back is not None else None
 
     kept: list[dict] = []
