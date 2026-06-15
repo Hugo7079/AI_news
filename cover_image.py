@@ -25,7 +25,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Optional
 
-from config import OUTPUT_DIR, BASE_DIR, CATEGORY_LABEL_BY_ID
+from config import OUTPUT_DIR, BASE_DIR, CATEGORY_LABEL_BY_ID, IMAGE_CFG
 
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
@@ -172,6 +172,70 @@ def _hf_generate(prompt: str, token: str) -> Optional[bytes]:
 
 
 # ─────────────────────────────────────────────────────────────
+# d8ai gateway 文生圖（OpenAI 相容 /v1/images/generations）
+# ─────────────────────────────────────────────────────────────
+def _images_url(base: str) -> str:
+    base = base.rstrip("/")
+    if base.endswith("/images/generations"):
+        return base
+    if re.search(r"/v\d+\w*$", base):
+        return base + "/images/generations"
+    return base + "/v1/images/generations"
+
+
+def _gateway_generate(prompt: str) -> Optional[bytes]:
+    """呼叫 d8ai gateway 文生圖端點，回傳圖片 bytes；失敗回 None。"""
+    base = IMAGE_CFG.get("base_url", "")
+    key = IMAGE_CFG.get("api_key", "")
+    model = IMAGE_CFG.get("model", "z-image-turbo")
+    if not base or not key:
+        return None
+    url = _images_url(base)
+    body = json.dumps({
+        "model": model,
+        "prompt": prompt,
+        "n": 1,
+        "size": "1024x576",
+    }).encode()
+    req = urllib.request.Request(url, data=body, headers={
+        "Authorization": f"Bearer {key}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=IMAGE_CFG.get("timeout", 90)) as resp:
+            obj = json.loads(resp.read().decode("utf-8", errors="ignore"))
+    except Exception as e:
+        print(f"  [gw-image] {type(e).__name__}: {e}")
+        return None
+
+    data = (obj.get("data") or [{}])[0]
+    # 1) b64_json 直出
+    b64 = data.get("b64_json")
+    if b64:
+        try:
+            import base64
+            return base64.b64decode(b64)
+        except Exception:
+            pass
+    # 2) gateway 回傳暫存 URL（http://...tmp/xxx.png）→ 下載 bytes（tmp 會過期，必須現在抓）
+    img_url = data.get("url")
+    if img_url:
+        try:
+            r = urllib.request.Request(img_url, headers={"User-Agent": UA})
+            with urllib.request.urlopen(r, timeout=IMAGE_CFG.get("timeout", 90)) as resp2:
+                raw = resp2.read()
+            if raw[:8].startswith(b"\x89PNG") or raw[:3] == b"\xff\xd8\xff" or raw[:4] == b"RIFF":
+                return raw
+            print(f"  [gw-image] 下載非圖片：{img_url}")
+        except Exception as e:
+            print(f"  [gw-image] 下載失敗 {type(e).__name__}: {e}")
+        return None
+    print(f"  [gw-image] 回應無 b64_json/url：{json.dumps(obj, ensure_ascii=False)[:200]}")
+    return None
+
+
+# ─────────────────────────────────────────────────────────────
 # 主入口
 # ─────────────────────────────────────────────────────────────
 def _short_id(seed: str) -> str:
@@ -180,44 +244,48 @@ def _short_id(seed: str) -> str:
 
 def attach_cover_images(items: list[dict], date_str: str,
                         generate_fallback: bool = True,
-                        max_generate: int = 20,
-                        max_workers: int = 4) -> None:
+                        max_generate: int = 200,
+                        max_workers: int = 4,
+                        backend: str = "gateway") -> None:
     """
-    平行版：og:image 抓取 + HF 生圖都是 I/O bound，可平行。
-      - max_workers 控制同時最多幾個 worker
-      - HF 生圖份額由 generated_counter 共用，加鎖確保不超過 max_generate
+    對每則事件用文生圖模型產生一張封面圖（I/O bound，平行）。
+      - backend="gateway"（預設）：呼叫 d8ai gateway 的 /v1/images/generations（z-image-turbo）
+      - backend="hf"：沿用舊的 HuggingFace FLUX Inference API
+      - max_generate：生圖總量上限（保護）；超過則落分類 fallback
+    生圖失敗 → 落分類 fallback（report.js / app.js 會渲染漸層底圖）。
     """
     img_dir = OUTPUT_DIR / "images" / date_str
     img_dir.mkdir(parents=True, exist_ok=True)
-    token = _load_hf_token() if generate_fallback else ""
-    if generate_fallback and not token:
-        print("  [cover] 未設定 HF_TOKEN — 將跳過 AI 生圖，使用分類 fallback")
+
+    use_gateway = backend == "gateway" and bool(IMAGE_CFG.get("api_key"))
+    hf_token = _load_hf_token() if (backend == "hf") else ""
+    if not use_gateway and not hf_token:
+        print("  [cover] 未設定文生圖端點（gateway/HF）— 全部使用分類 fallback")
 
     counter_lock = threading.Lock()
-    counters = {"og": 0, "gen": 0, "fallback": 0}
+    counters = {"gen": 0, "fallback": 0}
+
+    def _generate(prompt: str) -> Optional[bytes]:
+        if use_gateway:
+            return _gateway_generate(prompt)
+        if hf_token:
+            return _hf_generate(prompt, hf_token)
+        return None
 
     def _one(it: dict):
         url = it.get("url", "")
         cat = it.get("category") or "uncategorized"
 
-        # 1) og:image
-        og = extract_og_image(url) if url else None
-        if og and _is_image_reachable(og):
-            it["cover_image"] = {"kind": "remote", "url": og}
-            with counter_lock:
-                counters["og"] += 1
-            return
-
-        # 2) HF 生圖（份額上限保護）
+        # 生圖份額保護（先佔位，失敗再還回）
         do_generate = False
-        if token:
+        if use_gateway or hf_token:
             with counter_lock:
                 if counters["gen"] < max_generate:
-                    counters["gen"] += 1   # 先佔位（萬一失敗下面會還回去）
+                    counters["gen"] += 1
                     do_generate = True
         if do_generate:
             prompt = _build_image_prompt(it.get("title", ""), it.get("summary", ""), cat)
-            img_bytes = _hf_generate(prompt, token)
+            img_bytes = _generate(prompt)
             if img_bytes:
                 fname = f"{_short_id(url or it.get('title', ''))}.png"
                 fpath = img_dir / fname
@@ -227,17 +295,17 @@ def attach_cover_images(items: list[dict], date_str: str,
                     return
                 except Exception as e:
                     print(f"  [cover] 寫檔失敗 {fpath.name}: {e}")
-            # 生圖失敗 → 還回份額
             with counter_lock:
                 counters["gen"] -= 1
 
-        # 3) Fallback
+        # Fallback：分類底圖
         it["cover_image"] = {"kind": "fallback", "category": cat}
         with counter_lock:
             counters["fallback"] += 1
 
-    print(f"  封面圖抓取（{len(items)} 則，平行 {max_workers}）...")
+    src = "d8ai gateway" if use_gateway else ("HF FLUX" if hf_token else "fallback only")
+    print(f"  封面圖生成（{len(items)} 則，backend={src}，平行 {max_workers}）...")
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
         list(ex.map(_one, items))
 
-    print(f"  封面圖完成：og {counters['og']} 張 / 生成 {counters['gen']} 張 / fallback {counters['fallback']} 張")
+    print(f"  封面圖完成：生成 {counters['gen']} 張 / fallback {counters['fallback']} 張")

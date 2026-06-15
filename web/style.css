@@ -661,3 +661,67 @@ body::before {
   margin-bottom: 10px;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ───── 報表匯出：勾選框 ───── */
+.pick-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.pick-check input {
+  width: 15px; height: 15px;
+  accent-color: var(--primary);
+  cursor: pointer;
+  margin: 0;
+}
+.pick-check:hover { color: var(--primary); }
+
+/* ───── 報表匯出：浮動工具列 ───── */
+.export-bar {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--surface-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  box-shadow: 0 12px 24px -8px rgba(15, 23, 42, 0.25);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.export-bar.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+.export-count { font-size: 0.85rem; color: var(--text-muted); }
+.export-count b { color: var(--primary); font-size: 1rem; }
+.export-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.export-btn-ghost { background: transparent; color: var(--text-muted); }
+.export-btn-ghost:hover { color: var(--text-main); }
+.export-btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--cyan));
+  color: #fff;
+  box-shadow: 0 4px 12px -4px rgba(79, 70, 229, 0.5);
+}
+.export-btn-primary:hover { filter: brightness(1.06); }

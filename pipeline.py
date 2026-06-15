@@ -31,6 +31,7 @@ from fetcher import fetch_all_sources, google_news_supplement, prefilter
 from sources_extra import fetch_opensource_supplement
 from events import extract_events_from_items, merge_events, filter_events
 from cover_image import attach_cover_images
+from enrich import generate_full_content
 
 
 # 每類事件保留上限（資料庫）
@@ -112,20 +113,17 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     top_events: list[dict] = db_sorted[:TOP_PICKS_TOTAL]
     print(f"    今日精選           合計 {len(top_events)} / 上限 {TOP_PICKS_TOTAL}（跨類別 importance 排序）")
 
-    # 9) 封面圖（只給 top events）
-    print(f"\n取得封面圖（共 {len(top_events)} 個精選事件）...")
-    # cover_image 的 attach 函式以 item.url 抓 og:image；
-    # 對事件，我們把第一個 source 的 url 暫存到 ev["url"] 給它用。
-    for ev in top_events:
+    # 9) 封面圖（給所有 db_events — PDF 報表每一則都要有文生圖封面）
+    print(f"\n用文生圖模型產生封面（共 {len(db_events)} 個事件）...")
+    # _build_image_prompt 用 title/summary 當提示；url 僅作為檔名 seed。
+    for ev in db_events:
         if ev.get("sources"):
             ev["url"] = ev["sources"][0].get("url", "")
-    attach_cover_images(top_events, today)
-    # 同步封面到 db_events（同物件 by event_id）
-    cover_by_id = {ev["event_id"]: ev.get("cover_image")
-                   for ev in top_events if ev.get("event_id")}
-    for ev in db_events:
-        if ev.get("event_id") in cover_by_id and not ev.get("cover_image"):
-            ev["cover_image"] = cover_by_id[ev["event_id"]]
+    attach_cover_images(db_events, today)
+
+    # 9.5) 全文彙整（LLM 把每個事件擴寫成多段內文，供 PDF 報表細節區）
+    #      只對保留下來的 db_events 產生（top_events 為其子集、同物件）。
+    generate_full_content(db_events)
 
     # 10) 輸出
     by_cat_label = defaultdict(int)

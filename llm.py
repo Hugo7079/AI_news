@@ -165,6 +165,17 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
         print(f"  [LLM] 回應不是 JSON：{resp.text[:200]}")
         return ""
 
+    # gateway（litellm proxy）即使後端模型掛掉，仍可能回 HTTP 200 + 錯誤內容，
+    # 例如 {"status":"error","error_message":{...}} 或 {"detail":"Model ... not found"}。
+    # 不在這裡攔截就會被誤判為「成功但沒事件」，整份報表默默變空。
+    if isinstance(obj, dict) and (
+        obj.get("status") == "error" or obj.get("error") or obj.get("detail")
+        or ("choices" not in obj and "object" not in obj)
+    ):
+        body = json.dumps(obj, ensure_ascii=False)[:300]
+        print(f"  [LLM gateway-error] HTTP200 但回傳錯誤內容：{body}")
+        return ""
+
     choices = obj.get("choices") or []
     if not choices:
         return ""

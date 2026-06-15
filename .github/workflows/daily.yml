@@ -39,6 +39,7 @@ jobs:
           AINEWS_LLM_API_KEY:           "sk-yhYo9j0iH3EU9YR5rhmOKWw6uFCnFdOk5win3WTU"
           AINEWS_LLM_BASE_URL:          "https://llm-gateway.d8ai.ai/"
           AINEWS_LLM_MODEL:             "gemma-4-31B-it"
+          AINEWS_IMAGE_MODEL:           "z-image-turbo"
           HF_TOKEN:                     ${{ secrets.HF_TOKEN }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: |

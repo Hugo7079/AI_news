@@ -117,6 +117,7 @@ def _event_to_doc(ev: dict, date_str: str, is_top: bool) -> dict:
         "date":           date_str,
         "title":          ev.get("title", ""),
         "summary":        ev.get("summary", ""),
+        "full_content":   ev.get("full_content", ""),
         "category":       ev.get("category", "uncategorized"),
         "category_label": CATEGORY_LABEL_BY_ID.get(ev.get("category"), "未分類"),
         "importance":     int(ev.get("importance", 0) or 0),

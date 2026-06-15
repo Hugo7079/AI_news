@@ -1,3 +1,4 @@
+import { exportEventsToPdf } from "./report.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import {
   getFirestore,
@@ -72,6 +73,26 @@ let currentDates = [];     // 目前載入的日期集合（desc）
 let currentEvents = [];    // 目前區間內所有事件
 let activeTab = "all";
 let selectedCategories = new Set(CATEGORY_ORDER);  // 預設全選
+
+// ─── 報表匯出：使用者勾選的事件 ───
+const exportSelected = new Map();   // event_id → event 物件
+let currentById = new Map();        // 目前載入事件的 id → event 查找表
+
+function eventKey(ev) {
+  return ev.event_id || `${ev.title || ""}|${(ev.sources || [])[0]?.url || ""}`;
+}
+function isPicked(ev) {
+  return exportSelected.has(eventKey(ev));
+}
+// 勾選框 HTML（放在卡片/列上）
+function pickBoxHtml(ev) {
+  const k = eventKey(ev);
+  return `
+    <label class="pick-check" onclick="event.stopPropagation()">
+      <input type="checkbox" class="export-check" data-eid="${escapeHtml(k)}" ${isPicked(ev) ? "checked" : ""} />
+      <span>加入報表</span>
+    </label>`;
+}
 
 function rangeLabel(days) {
   return days === 1 ? "今日" : `近 ${days} 天`;
@@ -207,6 +228,7 @@ function cardHtml(ev) {
         <div class="card-meta">
           <span class="pill pill-importance">${ICON_STAR} 重要度 ${importance}</span>
           ${mention > 1 ? `<span class="pill pill-mention">${ICON_FIRE} ${mention} 報導</span>` : ""}
+          ${pickBoxHtml(ev)}
         </div>
         ${sourceChips ? `<div class="sources">${sourceChips}</div>` : ""}
       </div>
@@ -393,6 +415,7 @@ function rowHtml(ev) {
         <span class="cat-badge" style="background:${tagColor}">${ICONS[ev.category] || ICONS.uncategorized}${escapeHtml(catLabel(ev.category))}</span>
         <span class="pill pill-importance">★ ${ev.importance || 0}</span>
         ${mention > 1 ? `<span class="pill pill-mention">${mention} 報導</span>` : ""}
+        ${pickBoxHtml(ev)}
       </div>
       <div class="row-title">${titleLink}</div>
       <div class="row-summary">${escapeHtml(ev.summary || "")}</div>
@@ -508,6 +531,51 @@ function renderCatDist(events) {
   $catDist.innerHTML = rows.map((cid) => hbarRow(catLabel(cid), counts[cid], max, catColor(cid))).join("");
 }
 
+// ─── 報表匯出列（浮動工具列） ───
+function ensureExportBar() {
+  if (document.getElementById("export-bar")) return;
+  const bar = document.createElement("div");
+  bar.id = "export-bar";
+  bar.className = "export-bar hidden";
+  bar.innerHTML = `
+    <span class="export-count">已選 <b id="export-n">0</b> 則</span>
+    <button id="export-clear" class="export-btn export-btn-ghost" type="button">清空</button>
+    <button id="export-go" class="export-btn export-btn-primary" type="button">匯出 PDF</button>
+  `;
+  document.body.appendChild(bar);
+  document.getElementById("export-clear").addEventListener("click", () => {
+    exportSelected.clear();
+    // 取消畫面上所有勾選
+    document.querySelectorAll(".export-check").forEach((cb) => { cb.checked = false; });
+    updateExportBar();
+  });
+  document.getElementById("export-go").addEventListener("click", () => {
+    exportEventsToPdf([...exportSelected.values()]);
+  });
+
+  // 勾選 / 取消勾選（事件委派，撐過重繪）
+  document.addEventListener("change", (e) => {
+    const cb = e.target.closest?.(".export-check");
+    if (!cb) return;
+    const id = cb.dataset.eid;
+    if (cb.checked) {
+      const ev = currentById.get(id);
+      if (ev) exportSelected.set(id, ev);
+    } else {
+      exportSelected.delete(id);
+    }
+    updateExportBar();
+  });
+}
+
+function updateExportBar() {
+  const bar = document.getElementById("export-bar");
+  if (!bar) return;
+  const n = exportSelected.size;
+  document.getElementById("export-n").textContent = String(n);
+  bar.classList.toggle("hidden", n === 0);
+}
+
 // ─── Orchestration ───
 function updateSectionTitles() {
   const rl = rangeLabel(currentRange);
@@ -551,8 +619,14 @@ async function showRange(days) {
 
   try {
     currentEvents = await loadEventsForDates(currentDates);
+    // 重建 id → event 查找表，並把已勾選事件同步成新載入的物件
+    currentById = new Map(currentEvents.map((ev) => [eventKey(ev), ev]));
+    for (const id of [...exportSelected.keys()]) {
+      if (currentById.has(id)) exportSelected.set(id, currentById.get(id));
+    }
     activeTab = "all";
     renderAll();
+    updateExportBar();
   } catch (err) {
     console.error(err);
     $topPicks.innerHTML = `<div class="empty">讀取失敗：${escapeHtml(err.message || err)}</div>`;
@@ -561,6 +635,7 @@ async function showRange(days) {
 
 async function main() {
   try {
+    ensureExportBar();
     renderInterestChips();
     availableDates = await loadDates();
     if (!availableDates.length) {

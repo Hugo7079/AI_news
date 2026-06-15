@@ -246,3 +246,19 @@ def load_llm_config() -> dict:
 
 
 LLM_CFG = load_llm_config()
+
+
+# ─────────────────────────────────────────────────────────────
+# 5. 文生圖設定（與 LLM 共用同一個 d8ai gateway / 金鑰）
+#    gateway 提供 OpenAI 相容 /v1/images/generations，模型如 z-image-turbo。
+# ─────────────────────────────────────────────────────────────
+def load_image_config() -> dict:
+    return {
+        "base_url": os.getenv("AINEWS_IMAGE_BASE_URL", "").strip() or LLM_CFG["base_url"],
+        "api_key":  os.getenv("AINEWS_IMAGE_API_KEY", "").strip() or LLM_CFG["api_key"],
+        "model":    os.getenv("AINEWS_IMAGE_MODEL", "").strip() or "z-image-turbo",
+        "timeout":  90,
+    }
+
+
+IMAGE_CFG = load_image_config()

@@ -43,7 +43,7 @@ from llm import chat_json
 # 平行度。Gemini 2.5 Flash 免費版只有 10 RPM，2.0 Flash 也只有 15 RPM；
 # 並行太多會被 throttle 成 429。llm.py 已會自動 retry，但降併發整體比較快。
 EVENT_EXTRACT_WORKERS = 2
-EVENT_BATCH_SIZE = 8           # 8 則 / 次 LLM call
+EVENT_BATCH_SIZE = 5           # 5 則 / 次 LLM call（推理型模型耗 token 思考，batch 放小避免截斷）
 MERGE_LLM_WORKERS = 2
 
 
@@ -174,15 +174,15 @@ def _process_extract_batch(batch: list[dict]) -> tuple[list[dict], int, int]:
     回傳 (events, n_empty_items_in_batch, n_multi_items_in_batch)
     """
     result = chat_json(_build_extract_payload(batch),
-                       system=_EXTRACT_SYSTEM, max_tokens=4000)
+                       system=_EXTRACT_SYSTEM, max_tokens=8000)
 
     # 拆半重試
     if not isinstance(result, list) and len(batch) > 1:
         half = len(batch) // 2
         r1 = chat_json(_build_extract_payload(batch[:half]),
-                       system=_EXTRACT_SYSTEM, max_tokens=3000)
+                       system=_EXTRACT_SYSTEM, max_tokens=6000)
         r2 = chat_json(_build_extract_payload(batch[half:]),
-                       system=_EXTRACT_SYSTEM, max_tokens=3000)
+                       system=_EXTRACT_SYSTEM, max_tokens=6000)
         merged: list = []
         if isinstance(r1, list):
             merged.extend(r1)
