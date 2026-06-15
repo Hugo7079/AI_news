@@ -205,8 +205,9 @@ def _gateway_generate(prompt: str) -> Optional[bytes]:
         "Accept": "application/json",
     }
 
-    max_attempts = 3
-    backoff = 8.0
+    # 502/504/503/429 都當暫時錯誤重試（502 = backend 暫時不可用，gateway 的 vLLM 後端會掛）
+    max_attempts = 4
+    backoff = 10.0
     for attempt in range(1, max_attempts + 1):
         req = urllib.request.Request(url, data=payload, headers=headers)
         try:
@@ -214,13 +215,17 @@ def _gateway_generate(prompt: str) -> Optional[bytes]:
                 obj = json.loads(resp.read().decode("utf-8", errors="ignore"))
             break
         except urllib.error.HTTPError as e:
-            if e.code in (504, 503, 429) and attempt < max_attempts:
+            if e.code in (502, 503, 504, 429) and attempt < max_attempts:
                 _time.sleep(backoff)
                 backoff *= 2
                 continue
             print(f"  [gw-image] HTTPError {e.code} (attempt {attempt}/{max_attempts})")
             return None
         except Exception as e:
+            if attempt < max_attempts:
+                _time.sleep(backoff)
+                backoff *= 2
+                continue
             print(f"  [gw-image] {type(e).__name__}: {e}")
             return None
 
@@ -261,12 +266,14 @@ def attach_cover_images(items: list[dict], date_str: str,
                         generate_fallback: bool = True,
                         max_generate: int = 200,
                         max_workers: int = 1,
-                        backend: str = "gateway") -> None:
+                        backend: str = "gateway",
+                        retry_passes: int = 2) -> None:
     """
-    對每則事件用文生圖模型產生一張封面圖（I/O bound，平行）。
+    對每則事件用文生圖模型產生一張封面圖（順序呼叫 + 重試）。
       - backend="gateway"（預設）：呼叫 d8ai gateway 的 /v1/images/generations（z-image-turbo）
       - backend="hf"：沿用舊的 HuggingFace FLUX Inference API
       - max_generate：生圖總量上限（保護）；超過則落分類 fallback
+      - retry_passes：失敗的事件最多再掃幾輪重試（gateway 偶爾忙會 504，重試多半就成功）
     生圖失敗 → 落分類 fallback（report.js / app.js 會渲染漸層底圖）。
     """
     img_dir = OUTPUT_DIR / "images" / date_str
@@ -322,5 +329,27 @@ def attach_cover_images(items: list[dict], date_str: str,
     print(f"  封面圖生成（{len(items)} 則，backend={src}，平行 {max_workers}）...")
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
         list(ex.map(_one, items))
+    print(f"  封面圖首輪：生成 {counters['gen']} 張 / fallback {counters['fallback']} 張")
 
-    print(f"  封面圖完成：生成 {counters['gen']} 張 / fallback {counters['fallback']} 張")
+    # 重試掃尾：gateway 暫時忙就會 504，掃個一兩輪幾乎都能補齊
+    if (use_gateway or hf_token) and retry_passes > 0:
+        for round_no in range(1, retry_passes + 1):
+            still_failed = [it for it in items
+                            if (it.get("cover_image") or {}).get("kind") != "local"]
+            if not still_failed:
+                break
+            print(f"  封面圖重試第 {round_no} 輪：{len(still_failed)} 則待補...")
+            # 重試前清掉 fallback 標記讓 _one 重新嘗試（但不還回份額計數）
+            for it in still_failed:
+                it["cover_image"] = None
+                with counter_lock:
+                    counters["fallback"] -= 1
+            with ThreadPoolExecutor(max_workers=max_workers) as ex:
+                list(ex.map(_one, still_failed))
+
+    real = sum(1 for it in items
+               if (it.get("cover_image") or {}).get("kind") == "local")
+    fallback = len(items) - real
+    print(f"  封面圖最終：生成 {real} 張 / fallback {fallback} 張")
+    if fallback:
+        print(f"  [warn] 仍有 {fallback} 則使用分類 fallback（gateway 連續失敗）")

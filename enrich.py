@@ -70,21 +70,40 @@ def _clean(text: str) -> str:
     return "\n".join(out).strip()
 
 
+def _is_good(text: str, summary: str) -> bool:
+    """判斷生成的全文是否合格：非空、不等於摘要、長度足夠。"""
+    t = (text or "").strip()
+    s = (summary or "").strip()
+    if not t or t == s:
+        return False
+    # 至少 80 字，且比 summary 長 30% 以上（電子報細節不能跟摘要差不多）
+    if len(t) < 80 or len(t) < len(s) * 1.3:
+        return False
+    return True
+
+
 def _generate_one(ev: dict) -> bool:
     if ev.get("full_content"):
         return False
-    try:
-        # gateway 上的模型（gemma-4-31B-it / Qwen 等）現在都是推理型：會先花 token
-        # 思考（reasoning_content），再寫文章。token 太小會在思考階段就被截斷，
-        # 導致 content 為空 → 退回摘要 → 細節與摘要一模一樣。
-        raw = chat(_build_prompt(ev), system=_SYSTEM, temperature=0.3, max_tokens=6000)
-    except Exception as e:
-        print(f"    [enrich error] {ev.get('title','')[:24]}…：{type(e).__name__}: {e}")
-        raw = ""
-    text = _clean(raw)
+    summary = ev.get("summary", "")
+    text = ""
+    # 最多 2 次：gateway 上的模型（gemma-4-31B-it / Qwen 等）現在都是推理型：會先
+    # 花 token 思考（reasoning_content），再寫文章。token 太小會在思考階段就被截斷，
+    # 導致 content 為空 → 退回摘要 → 細節與摘要一模一樣。
+    for attempt in range(2):
+        try:
+            raw = chat(_build_prompt(ev), system=_SYSTEM,
+                       temperature=0.3 + attempt * 0.2,  # 第二次稍微提高 temperature
+                       max_tokens=6000)
+        except Exception as e:
+            print(f"    [enrich error] {ev.get('title','')[:24]}…：{type(e).__name__}: {e}")
+            raw = ""
+        text = _clean(raw)
+        if _is_good(text, summary):
+            break
     # 失敗時退回摘要，確保 PDF 一定有內容
-    ev["full_content"] = text or ev.get("summary", "")
-    return bool(text)
+    ev["full_content"] = text or summary
+    return _is_good(text, summary)
 
 
 def generate_full_content(events: list[dict],

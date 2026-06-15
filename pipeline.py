@@ -125,6 +125,24 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     #      只對保留下來的 db_events 產生（top_events 為其子集、同物件）。
     generate_full_content(db_events)
 
+    # 9.9) 品質檢查：電子報每一則都該有「真圖 + 比 summary 長的 full_content」。
+    #      不達標就在 log 警示（不 raise，避免 CI 失敗反而不出報）。
+    real_imgs = sum(1 for ev in db_events
+                    if (ev.get("cover_image") or {}).get("kind") in ("local", "remote"))
+    bad_full = []
+    for ev in db_events:
+        fc = (ev.get("full_content") or "").strip()
+        sm = (ev.get("summary") or "").strip()
+        if not fc or fc == sm or len(fc) < max(80, len(sm) * 1.3):
+            bad_full.append(ev.get("title", "?")[:30])
+    print(f"\n[quality] 真圖 {real_imgs}/{len(db_events)}  全文良好 {len(db_events)-len(bad_full)}/{len(db_events)}")
+    if len(db_events) and real_imgs / len(db_events) < 0.8:
+        print(f"  [quality WARN] 真圖比例 {real_imgs/len(db_events):.0%} < 80% — gateway 可能不穩")
+    if bad_full:
+        print(f"  [quality WARN] {len(bad_full)} 則 full_content 過短或等於 summary：")
+        for t in bad_full[:5]:
+            print(f"      - {t}")
+
     # 10) 輸出
     by_cat_label = defaultdict(int)
     for ev in db_events:
