@@ -74,8 +74,14 @@ def _init():
     _bucket = storage.bucket()
 
 
-def _upload_cover(local_rel_url: str, date_str: str) -> Optional[str]:
-    """把 output/images/{date}/{file} 上傳到 Storage，回傳 public URL。"""
+def _upload_cover(local_rel_url: str, date_str: str, overwrite: bool = True) -> Optional[str]:
+    """把 output/images/{date}/{file} 上傳到 Storage，回傳 public URL。
+
+    overwrite=True（預設）：永遠重新上傳本地檔。
+      封面圖檔名是來源 URL 的 hash（固定）。若沿用「blob 已存在就跳過」的舊邏輯，
+      重生（換 prompt）後的新圖會因同名舊 blob 仍在而不上傳，Storage 還是舊圖 —
+      這正是「圖重生了但畫面還是有亂碼文字」的元兇。
+    """
     local_path = OUTPUT_DIR / local_rel_url
     if not local_path.exists():
         # 有時候 cover_image.url 已經是 "images/YYYY-MM-DD/xxx.png" 相對路徑
@@ -88,7 +94,7 @@ def _upload_cover(local_rel_url: str, date_str: str) -> Optional[str]:
 
     blob_name = f"covers/{date_str}/{local_path.name}"
     blob = _bucket.blob(blob_name)
-    if not blob.exists():
+    if overwrite or not blob.exists():
         blob.upload_from_filename(str(local_path), content_type="image/png")
     blob.make_public()
     return blob.public_url
