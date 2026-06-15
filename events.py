@@ -386,6 +386,13 @@ def _is_suspiciously_similar(a: dict, b: dict) -> bool:
             if kw in title_a and kw in title_b:
                 return True
 
+        # E) 同主體 + 標題有基本相似 → 連通成候選群組（不限類別，因為同一事件常被
+        #    不同來源分到不同類別）。跨來源換句話說的同一事件靠規則 A-D 抓不到；
+        #    這裡放寬門檻把它們連起來，最終是否真的合併由 LLM 群組判定把關
+        #    （LLM 會把同主體但不同事件的拆開，所以過度連通是安全的）。
+        if sim >= 0.2:
+            return True
+
     return False
 
 
@@ -658,6 +665,69 @@ def _programmatic_dedup(events: list[dict]) -> list[dict]:
     return current
 
 
+_GLOBAL_DEDUP_SYSTEM = (
+    "你是新聞去重專家。我會給你當天一批 AI 新聞事件（含編號、標題、摘要、主體）。"
+    "有些是『同一件真實事件』被不同媒體用不同措辭、甚至分到不同分類重複報導。"
+    "請找出描述同一件真實事件的群組。判定標準嚴格："
+    "必須是同一個主體、同一個動作、同一個時間點的同一件事，才算重複；"
+    "只是同公司不同消息、相關但不同的事，都不算重複，不要併。"
+    "只輸出 JSON 陣列，每個元素是一個重複群組的編號陣列，例如 [[0,3,5],[2,7]]；"
+    "沒有重複就輸出 []。不要輸出單一元素的群組。"
+)
+
+
+def _llm_global_dedup(events: list[dict]) -> list[dict]:
+    """全域 LLM 語意去重：把全部事件一次交給 LLM 找出同一真實事件的群組再合併。
+    這是補強 —— 字元相似度抓不到的跨來源/跨分類換句話說重複，靠語意判定。
+    失敗（LLM 無回應）時原樣回傳，不影響既有結果。"""
+    if len(events) < 2:
+        return events
+
+    rows = []
+    for idx, ev in enumerate(events):
+        rows.append({
+            "idx": idx,
+            "title": ev.get("title", ""),
+            "who": ev.get("who", []),
+            "summary": (ev.get("summary", "") or "")[:140],
+        })
+    payload = (
+        "請找出下列事件中描述『同一件真實事件』的重複群組：\n\n"
+        + json.dumps(rows, ensure_ascii=False)
+    )
+    res = chat_json(payload, system=_GLOBAL_DEDUP_SYSTEM, max_tokens=8000)
+    if not isinstance(res, list):
+        print("    [global-dedup] LLM 無有效回應，跳過全域去重")
+        return events
+
+    used: set[int] = set()
+    out: list[dict] = []
+    n_merged = 0
+    for group in res:
+        if not isinstance(group, list):
+            continue
+        idxs = [i for i in group if isinstance(i, int) and 0 <= i < len(events) and i not in used]
+        if len(idxs) < 2:
+            continue
+        # 以 importance 最高者為 head，其餘併入
+        idxs.sort(key=lambda i: _safe_int(events[i].get("importance"), 0), reverse=True)
+        head = dict(events[idxs[0]])
+        for j in idxs[1:]:
+            _merge_into(head, events[j])
+            n_merged += 1
+        for i in idxs:
+            used.add(i)
+        out.append(head)
+    # 沒被任何群組用到的原樣保留
+    for idx, ev in enumerate(events):
+        if idx not in used:
+            out.append(ev)
+
+    if n_merged:
+        print(f"    [global-dedup] LLM 全域去重再合併 {n_merged} 筆")
+    return out
+
+
 def merge_events(events: list[dict]) -> list[dict]:
     """
     連通元件與 LLM 群組語意去重 (Deduplication 2.0)
@@ -665,6 +735,7 @@ def merge_events(events: list[dict]) -> list[dict]:
     2. 建立疑似重複的無向圖關係
     3. 劃分連通元件 (Connected Components)
     4. 對大於 1 個節點的元件送 LLM 進行全局判定與合併
+    5. 全域 LLM 語意去重掃尾（抓跨來源/跨分類換句話說的重複）
     """
     if not events:
         return []
@@ -708,6 +779,11 @@ def merge_events(events: list[dict]) -> list[dict]:
         final.extend(r)
     for c in single_comps:
         final.extend(c)
+
+    # 5) 全域 LLM 語意去重掃尾：抓字元相似度漏掉的跨來源/跨分類換句話說重複
+    before_global = len(final)
+    final = _llm_global_dedup(final)
+    n_total_merged += (before_global - len(final))
 
     # 寫入 event_id / mention_count
     for ev in final:

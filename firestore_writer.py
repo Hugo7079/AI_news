@@ -158,13 +158,33 @@ def _event_to_doc(ev: dict, date_str: str, is_top: bool) -> dict:
     }
 
 
+def _delete_day(date_str: str) -> int:
+    """刪除當天既有的所有 events doc，避免重跑時新舊事件累積（同一新聞用不同
+    措辭被多次抽取 → 不同 event_id → 看起來像重複事件）。回傳刪除筆數。"""
+    docs = list(_db.collection("events").where("date", "==", date_str).stream())
+    n = 0
+    batch = _db.batch()
+    for d in docs:
+        batch.delete(d.reference)
+        n += 1
+        if n % 400 == 0:
+            batch.commit()
+            batch = _db.batch()
+    batch.commit()
+    return n
+
+
 def write_run(date_str: str,
               db_events: list[dict],
               top_events: list[dict],
               by_category_label: dict[str, int]) -> None:
-    """主入口：把當日 pipeline 結果寫進 Firestore。"""
+    """主入口：把當日 pipeline 結果寫進 Firestore（先清當天舊資料，再整批寫入）。"""
     _init()
-    print(f"\n[firestore] 寫入 {date_str}：DB {len(db_events)} / Top {len(top_events)}")
+
+    deleted = _delete_day(date_str)
+    if deleted:
+        print(f"\n[firestore] 清除 {date_str} 既有 {deleted} 筆（避免跨次累積重複）")
+    print(f"[firestore] 寫入 {date_str}：DB {len(db_events)} / Top {len(top_events)}")
 
     top_ids = {ev.get("event_id") for ev in top_events if ev.get("event_id")}
 
