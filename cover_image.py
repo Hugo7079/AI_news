@@ -126,17 +126,41 @@ _CATEGORY_STYLE = {
 }
 
 
+_LATIN_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9\-\.]{1,}")
+
+
 def _build_image_prompt(title: str, summary: str, category: str) -> str:
+    """產生純英文 prompt。
+    z-image-turbo 等開源小模型對 CJK 字元理解差、又喜歡在圖上亂寫字，
+    所以：
+      1) 完全不餵中文字進 prompt（只抽英文/品牌名）
+      2) NO TEXT 的指令同時放在 prompt 開頭與結尾、且重複多次
+      3) 用 abstract editorial 風格降低模型「想加 caption」的傾向
+    """
     style = _CATEGORY_STYLE.get(category, _CATEGORY_STYLE["uncategorized"])
-    keywords = (title + " " + summary)[:200]
-    keywords = re.sub(r"[\[\](){}「」『』【】、，。；：！？!?,.;:]", " ", keywords)
-    keywords = re.sub(r"\s+", " ", keywords).strip()
+
+    # 從標題 + 摘要中只抽英文 token（通常是品牌/產品名：Nvidia / OpenAI / GPT-5 / HBM4 ...）
+    tokens = _LATIN_TOKEN_RE.findall(f"{title} {summary}")
+    # 去重保序、最多 5 個
+    seen, kept = set(), []
+    for t in tokens:
+        low = t.lower()
+        if low in seen or low in {"ai", "api", "the", "and", "for", "of"}:
+            continue
+        seen.add(low)
+        kept.append(t)
+        if len(kept) >= 5:
+            break
+    subject = ", ".join(kept) if kept else "AI technology theme"
+
     return (
-        f"Editorial concept cover art for an AI news article. "
-        f"Subject hint: {keywords}. "
+        "NO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY, NO WRITING, NO LABELS, NO CAPTIONS. "
+        "Pure abstract editorial cover illustration, 16:9 wide. "
+        f"Visual concept evoking: {subject}. "
         f"Style: {style}. "
-        f"Clean composition, no text, no logo, no human face, "
-        f"16:9 wide thumbnail."
+        "Composition: blank empty background, clean geometric forms, soft gradient, "
+        "no human faces, no readable signs, no UI mockup with text. "
+        "STRICTLY no text or letters anywhere in the image."
     )
 
 
