@@ -257,7 +257,7 @@ def load_image_config() -> dict:
         "base_url": os.getenv("AINEWS_IMAGE_BASE_URL", "").strip() or LLM_CFG["base_url"],
         "api_key":  os.getenv("AINEWS_IMAGE_API_KEY", "").strip() or LLM_CFG["api_key"],
         "model":    os.getenv("AINEWS_IMAGE_MODEL", "").strip() or "z-image-turbo",
-        "timeout":  90,
+        "timeout":  120,
     }
 
 

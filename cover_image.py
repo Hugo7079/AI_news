@@ -184,30 +184,45 @@ def _images_url(base: str) -> str:
 
 
 def _gateway_generate(prompt: str) -> Optional[bytes]:
-    """呼叫 d8ai gateway 文生圖端點，回傳圖片 bytes；失敗回 None。"""
+    """呼叫 d8ai gateway 文生圖端點，回傳圖片 bytes；失敗回 None。
+    針對 504/503/429 做 3 次指數退避重試（gateway 承載有限，並行容易逾時）。"""
+    import time as _time
     base = IMAGE_CFG.get("base_url", "")
     key = IMAGE_CFG.get("api_key", "")
     model = IMAGE_CFG.get("model", "z-image-turbo")
     if not base or not key:
         return None
     url = _images_url(base)
-    body = json.dumps({
+    payload = json.dumps({
         "model": model,
         "prompt": prompt,
         "n": 1,
         "size": "1024x576",
     }).encode()
-    req = urllib.request.Request(url, data=body, headers={
+    headers = {
         "Authorization": f"Bearer {key}",
         "Content-Type": "application/json",
         "Accept": "application/json",
-    })
-    try:
-        with urllib.request.urlopen(req, timeout=IMAGE_CFG.get("timeout", 90)) as resp:
-            obj = json.loads(resp.read().decode("utf-8", errors="ignore"))
-    except Exception as e:
-        print(f"  [gw-image] {type(e).__name__}: {e}")
-        return None
+    }
+
+    max_attempts = 3
+    backoff = 8.0
+    for attempt in range(1, max_attempts + 1):
+        req = urllib.request.Request(url, data=payload, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=IMAGE_CFG.get("timeout", 120)) as resp:
+                obj = json.loads(resp.read().decode("utf-8", errors="ignore"))
+            break
+        except urllib.error.HTTPError as e:
+            if e.code in (504, 503, 429) and attempt < max_attempts:
+                _time.sleep(backoff)
+                backoff *= 2
+                continue
+            print(f"  [gw-image] HTTPError {e.code} (attempt {attempt}/{max_attempts})")
+            return None
+        except Exception as e:
+            print(f"  [gw-image] {type(e).__name__}: {e}")
+            return None
 
     data = (obj.get("data") or [{}])[0]
     # 1) b64_json 直出
@@ -223,7 +238,7 @@ def _gateway_generate(prompt: str) -> Optional[bytes]:
     if img_url:
         try:
             r = urllib.request.Request(img_url, headers={"User-Agent": UA})
-            with urllib.request.urlopen(r, timeout=IMAGE_CFG.get("timeout", 90)) as resp2:
+            with urllib.request.urlopen(r, timeout=IMAGE_CFG.get("timeout", 120)) as resp2:
                 raw = resp2.read()
             if raw[:8].startswith(b"\x89PNG") or raw[:3] == b"\xff\xd8\xff" or raw[:4] == b"RIFF":
                 return raw
@@ -245,7 +260,7 @@ def _short_id(seed: str) -> str:
 def attach_cover_images(items: list[dict], date_str: str,
                         generate_fallback: bool = True,
                         max_generate: int = 200,
-                        max_workers: int = 4,
+                        max_workers: int = 1,
                         backend: str = "gateway") -> None:
     """
     對每則事件用文生圖模型產生一張封面圖（I/O bound，平行）。
