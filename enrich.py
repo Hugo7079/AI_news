@@ -31,7 +31,7 @@ def _build_prompt(ev: dict) -> str:
         f"- {s.get('source_name', '')}：{s.get('title', '')}"
         for s in (ev.get("sources") or []) if s.get("title")
     ) or "（無）"
-    return f"""請根據以下事件資訊，彙整撰寫成 3 至 4 段、完整通順的繁體中文新聞內文。
+    return f"""請根據以下事件資訊，彙整撰寫成 6 至 8 段、完整深入的繁體中文新聞內文（約 600-800 字）。
 
 【事件標題】{ev.get('title', '')}
 【一句摘要】{ev.get('summary', '')}
@@ -43,9 +43,9 @@ def _build_prompt(ev: dict) -> str:
 {src_lines}
 
 要求：
-1. 只根據上述資訊撰寫，不得杜撰不存在的數據、引述或細節。
-2. 第一段點出事件核心；後續段落補充背景、細節與可能影響。
-3. 每段 2-4 句，段落之間以空行分隔。
+1. 只根據上述資訊與你對該領域的常識背景撰寫，不得杜撰不存在的具體數據、引述或財務數字。
+2. 結構：第一段點出事件核心；中間數段深入展開——技術/產品細節、相關背景脈絡、產業競爭格局、對使用者或市場的意義；最後一段談可能影響與後續觀察點。
+3. 每段 3-5 句，內容要充實有資訊量，避免空泛重複；段落之間以空行分隔。
 4. 直接輸出文章內文，不要標題，不要「以下是」「總結」之類的開場或收尾。"""
 
 
@@ -71,13 +71,13 @@ def _clean(text: str) -> str:
 
 
 def _is_good(text: str, summary: str) -> bool:
-    """判斷生成的全文是否合格：非空、不等於摘要、長度足夠。"""
+    """判斷生成的全文是否合格：非空、不等於摘要、長度足夠（電子報細節要充實）。"""
     t = (text or "").strip()
     s = (summary or "").strip()
     if not t or t == s:
         return False
-    # 至少 80 字，且比 summary 長 30% 以上（電子報細節不能跟摘要差不多）
-    if len(t) < 80 or len(t) < len(s) * 1.3:
+    # 至少 350 字，且比 summary 長 2.5 倍以上（要求深入的長內文，不能只比摘要長一點）
+    if len(t) < 350 or len(t) < len(s) * 2.5:
         return False
     return True
 
@@ -94,7 +94,7 @@ def _generate_one(ev: dict) -> bool:
         try:
             raw = chat(_build_prompt(ev), system=_SYSTEM,
                        temperature=0.3 + attempt * 0.2,  # 第二次稍微提高 temperature
-                       max_tokens=6000)
+                       max_tokens=9000)  # 600-800 字長文 + 推理思考，需要更大預算
         except Exception as e:
             print(f"    [enrich error] {ev.get('title','')[:24]}…：{type(e).__name__}: {e}")
             raw = ""

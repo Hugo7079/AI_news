@@ -128,39 +128,76 @@ _CATEGORY_STYLE = {
 
 _LATIN_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9\-\.]{1,}")
 
+_BRIEF_SYSTEM = (
+    "You are an art director for a tech-news magazine. You turn a Chinese AI-news "
+    "headline into ONE concise English visual scene for a text-to-image model."
+)
 
-def _build_image_prompt(title: str, summary: str, category: str) -> str:
-    """產生純英文 prompt。
-    z-image-turbo 等開源小模型對 CJK 字元理解差、又喜歡在圖上亂寫字，
-    所以：
-      1) 完全不餵中文字進 prompt（只抽英文/品牌名）
-      2) NO TEXT 的指令同時放在 prompt 開頭與結尾、且重複多次
-      3) 用 abstract editorial 風格降低模型「想加 caption」的傾向
+
+def _llm_visual_brief(title: str, summary: str) -> str:
+    """用 LLM 把中文新聞轉成一句具體的英文視覺場景（讓圖片與事件相關）。
+    失敗回空字串（呼叫端會退回品牌名 fallback）。"""
+    try:
+        from llm import chat
+    except Exception:
+        return ""
+    prompt = (
+        "Chinese AI news:\n"
+        f"Title: {title}\n"
+        f"Summary: {summary}\n\n"
+        "Describe ONE concrete, literal visual scene that represents this news, "
+        "for a magazine cover image. Rules:\n"
+        "- 12 to 25 English words, a single phrase, no sentence-ending period needed.\n"
+        "- Focus on PHYSICAL, depictable objects/subjects (e.g. a silicon wafer, a humanoid "
+        "robot, a data center server rack, a GPU chip, a stock-market chart on a screen, "
+        "a self-driving car). Make it specific to THIS news, not generic.\n"
+        "- Absolutely NO text, letters, words, logos, or numbers in the described scene.\n"
+        "- Output ONLY the scene phrase in English, nothing else."
+    )
+    try:
+        raw = chat(prompt, system=_BRIEF_SYSTEM, temperature=0.4, max_tokens=4000)
+    except Exception:
+        return ""
+    brief = (raw or "").strip().strip('"').splitlines()[0] if raw else ""
+    # 去掉模型偶爾加的前綴
+    brief = re.sub(r"^(scene|visual|description|answer)\s*[:：-]\s*", "", brief, flags=re.I)
+    # 太長就截斷
+    return brief[:200].strip()
+
+
+def _build_image_prompt(title: str, summary: str, category: str,
+                        use_llm: bool = True) -> str:
+    """產生純英文 prompt，讓圖片與新聞相關且不含文字。
+    策略：
+      1) 用 LLM 把中文新聞轉成具體英文視覺場景（主要相關性來源）
+      2) LLM 失敗才退回「只抽英文品牌名」的舊 fallback
+      3) NO TEXT 指令放在開頭與結尾、重複多次（z-image-turbo 等小模型愛亂寫字）
     """
     style = _CATEGORY_STYLE.get(category, _CATEGORY_STYLE["uncategorized"])
 
-    # 從標題 + 摘要中只抽英文 token（通常是品牌/產品名：Nvidia / OpenAI / GPT-5 / HBM4 ...）
-    tokens = _LATIN_TOKEN_RE.findall(f"{title} {summary}")
-    # 去重保序、最多 5 個
-    seen, kept = set(), []
-    for t in tokens:
-        low = t.lower()
-        if low in seen or low in {"ai", "api", "the", "and", "for", "of"}:
-            continue
-        seen.add(low)
-        kept.append(t)
-        if len(kept) >= 5:
-            break
-    subject = ", ".join(kept) if kept else "AI technology theme"
+    subject = _llm_visual_brief(title, summary) if use_llm else ""
+    if not subject:
+        # fallback：從標題 + 摘要抽英文 token（品牌/產品名）
+        tokens = _LATIN_TOKEN_RE.findall(f"{title} {summary}")
+        seen, kept = set(), []
+        for t in tokens:
+            low = t.lower()
+            if low in seen or low in {"ai", "api", "the", "and", "for", "of"}:
+                continue
+            seen.add(low)
+            kept.append(t)
+            if len(kept) >= 5:
+                break
+        subject = ", ".join(kept) if kept else "AI technology theme"
 
     return (
-        "NO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY, NO WRITING, NO LABELS, NO CAPTIONS. "
-        "Pure abstract editorial cover illustration, 16:9 wide. "
-        f"Visual concept evoking: {subject}. "
-        f"Style: {style}. "
-        "Composition: blank empty background, clean geometric forms, soft gradient, "
-        "no human faces, no readable signs, no UI mockup with text. "
-        "STRICTLY no text or letters anywhere in the image."
+        "NO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY, NO WRITING, NO LABELS, NO CAPTIONS, NO NUMBERS. "
+        "Editorial magazine cover illustration, 16:9 wide, photographic or clean 3D render. "
+        f"Scene: {subject}. "
+        f"Art direction: {style}. "
+        "Cinematic lighting, clear focal subject, professional composition, "
+        "no human faces, no readable signs, no watermark. "
+        "STRICTLY no text, letters, or numbers anywhere in the image."
     )
 
 
