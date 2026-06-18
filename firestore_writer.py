@@ -19,6 +19,7 @@ Schema:
 """
 
 from __future__ import annotations
+import hashlib
 import json
 import os
 from datetime import datetime
@@ -97,7 +98,12 @@ def _upload_cover(local_rel_url: str, date_str: str, overwrite: bool = True) -> 
     if overwrite or not blob.exists():
         blob.upload_from_filename(str(local_path), content_type="image/png")
     blob.make_public()
-    return blob.public_url
+    # 內容 hash 當 cache-busting 版本參數。封面檔名是來源 URL 的固定 hash，配上
+    # Storage 預設 max-age=3600，就地重生（換 prompt）後 URL 不變 → 瀏覽器/CDN
+    # 仍給舊圖（「圖重生了畫面卻沒變」的元兇）。內容變→hash 變→URL 變→自動破快取；
+    # 內容沒變則 URL 不變、仍可長快取。
+    ver = hashlib.sha1(local_path.read_bytes()).hexdigest()[:8]
+    return f"{blob.public_url}?v={ver}"
 
 
 def _normalize_cover(ev: dict, date_str: str) -> dict:
