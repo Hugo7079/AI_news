@@ -118,12 +118,22 @@ def _is_image_reachable(img_url: str, timeout: int = 6) -> bool:
 # ─────────────────────────────────────────────────────────────
 _CATEGORY_STYLE = {
     "tech_research": "abstract neural network nodes, geometric circuits, deep blue and violet gradient, minimal high-tech",
-    "industry_business": "modern corporate skyline silhouette with abstract data streams, navy and gold, editorial illustration",
+    "industry_business": "modern corporate skyline silhouette with abstract light streams, navy and gold, editorial illustration",
     "hardware_infra": "macro shot of silicon wafer or GPU chip, dark background, cyan glow, photoreal",
-    "products_apps": "clean modern dashboard UI on a tilted device, vibrant accent color, soft studio light, isometric",
+    "products_apps": "a sleek device on a tilted angle with a softly glowing abstract blank screen, vibrant accent color, soft studio light, isometric",
     "policy_society": "abstract symbol of scales and digital network, neutral palette, minimal editorial illustration",
     "uncategorized": "abstract AI motif, minimal geometric, blue gradient",
 }
+
+# 抑制文字必須放「負向 prompt」（gateway 走 diffusers 後端會吃這個欄位）。
+# 千萬別把這些字塞進正向 prompt —— 擴散模型看不懂否定句，只會把 text/letters/word
+# 這些 token 當成「要畫的東西」，反而更愛在圖上寫字。
+NEGATIVE_PROMPT = (
+    "text, words, letters, caption, title, heading, paragraph, typography, font, "
+    "writing, handwriting, calligraphy, signage, label, watermark, signature, "
+    "logo, brand name, trademark, numbers, digits, ui text, menu, button text, "
+    "chart labels, graph axis text, subtitles, gibberish characters, scribbles"
+)
 
 
 _LATIN_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9\-\.]{1,}")
@@ -149,9 +159,17 @@ def _llm_visual_brief(title: str, summary: str) -> str:
         "for a magazine cover image. Rules:\n"
         "- 12 to 25 English words, a single phrase, no sentence-ending period needed.\n"
         "- Focus on PHYSICAL, depictable objects/subjects (e.g. a silicon wafer, a humanoid "
-        "robot, a data center server rack, a GPU chip, a stock-market chart on a screen, "
-        "a self-driving car). Make it specific to THIS news, not generic.\n"
-        "- Absolutely NO text, letters, words, logos, or numbers in the described scene.\n"
+        "robot, a data center server rack, a GPU chip, a self-driving car, a robotic arm). "
+        "Make it specific to THIS news, not generic.\n"
+        "- AVOID anything that forces the image to contain writing: do NOT describe screens "
+        "showing readable content, charts/graphs with axes or labels, dashboards, UI mockups, "
+        "logos, books, newspapers, documents, road signs, or keyboards with letters. If a "
+        "screen or display must appear, describe it as showing abstract glowing visuals only.\n"
+        "- Do NOT use any brand names, company names, product names, acronyms, or proper nouns "
+        "(such as 'OpenAI', 'Google', 'Apple', 'Anthropic', 'Gemini', 'GPT', 'Siri', 'Nvidia', "
+        "'TCS', 'KPMG', etc.). Instead use generic descriptions (e.g. 'a server rack', "
+        "'a microchip', 'a robotic arm').\n"
+        "- The scene must contain NO text, letters, words, logos, or numbers at all.\n"
         "- Output ONLY the scene phrase in English, nothing else."
     )
     try:
@@ -165,39 +183,41 @@ def _llm_visual_brief(title: str, summary: str) -> str:
     return brief[:200].strip()
 
 
+_CATEGORY_FALLBACK_SUBJECTS = {
+    "tech_research": "futuristic glowing holographic network nodes on dark background",
+    "industry_business": "modern glass office towers at dusk with abstract glowing light trails",
+    "hardware_infra": "glowing close-up shot of silicon microchips and electronic circuits",
+    "products_apps": "a sleek smartphone on a stand with a softly glowing blank gradient screen, studio lighting",
+    "policy_society": "abstract minimalist scales of justice on a glowing digital network mesh",
+    "uncategorized": "abstract glowing geometric connections on violet and blue gradient",
+}
+
+
 def _build_image_prompt(title: str, summary: str, category: str,
                         use_llm: bool = True) -> str:
     """產生純英文 prompt，讓圖片與新聞相關且不含文字。
-    策略：
+    策略（皆經 live z-image-turbo 實測）：
       1) 用 LLM 把中文新聞轉成具體英文視覺場景（主要相關性來源）
-      2) LLM 失敗才退回「只抽英文品牌名」的舊 fallback
-      3) NO TEXT 指令放在開頭與結尾、重複多次（z-image-turbo 等小模型愛亂寫字）
+      2) LLM 失敗才退回分類通用主題 fallback
+      3) 正向 prompt 「完全不提」text/letters/word 等字眼——擴散模型看不懂否定，
+         提到反而會畫字。去字一律靠 NEGATIVE_PROMPT（見 _gateway_generate）。
+      4) 絕對不要用 "magazine cover / poster / editorial cover" 之類框架——模型學到
+         「雜誌封面＝頂部要放大標題」，會強制生標題文字。改用純場景「cinematic
+         photograph」描述，實測即可去除頂部標題字。
     """
     style = _CATEGORY_STYLE.get(category, _CATEGORY_STYLE["uncategorized"])
 
     subject = _llm_visual_brief(title, summary) if use_llm else ""
     if not subject:
-        # fallback：從標題 + 摘要抽英文 token（品牌/產品名）
-        tokens = _LATIN_TOKEN_RE.findall(f"{title} {summary}")
-        seen, kept = set(), []
-        for t in tokens:
-            low = t.lower()
-            if low in seen or low in {"ai", "api", "the", "and", "for", "of"}:
-                continue
-            seen.add(low)
-            kept.append(t)
-            if len(kept) >= 5:
-                break
-        subject = ", ".join(kept) if kept else "AI technology theme"
+        # fallback：使用無文字的分類通用科技主題描述
+        subject = _CATEGORY_FALLBACK_SUBJECTS.get(category, _CATEGORY_FALLBACK_SUBJECTS["uncategorized"])
 
     return (
-        "NO TEXT, NO LETTERS, NO WORDS, NO TYPOGRAPHY, NO WRITING, NO LABELS, NO CAPTIONS, NO NUMBERS. "
-        "Editorial magazine cover illustration, 16:9 wide, photographic or clean 3D render. "
-        f"Scene: {subject}. "
+        "A wide 16:9 cinematic photograph or clean 3D render. "
+        f"{subject}. "
         f"Art direction: {style}. "
-        "Cinematic lighting, clear focal subject, professional composition, "
-        "no human faces, no readable signs, no watermark. "
-        "STRICTLY no text, letters, or numbers anywhere in the image."
+        "Cinematic lighting, single clear focal subject, professional composition, "
+        "smooth clean uncluttered surfaces, no human faces."
     )
 
 
@@ -257,6 +277,7 @@ def _gateway_generate(prompt: str) -> Optional[bytes]:
     payload = json.dumps({
         "model": model,
         "prompt": prompt,
+        "negative_prompt": NEGATIVE_PROMPT,  # 去字主力；gateway 不支援時會被忽略，無害
         "n": 1,
         "size": "1024x576",
     }).encode()
