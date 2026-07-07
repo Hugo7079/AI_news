@@ -19,6 +19,7 @@ import json
 import os
 import re
 import threading
+import time
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -288,8 +289,11 @@ def _gateway_generate(prompt: str) -> Optional[bytes]:
     }
 
     # 502/504/503/429 都當暫時錯誤重試（502 = backend 暫時不可用，gateway 的 vLLM 後端會掛）
-    max_attempts = 4
-    backoff = 10.0
+    # 快速失敗：max_attempts 4→2、backoff 10→4，避免單張圖在 gateway 抖動時
+    # 卡掉 (120s×4 + 10+20+40) ≈ 9 分鐘、拖垮整個 90 分鐘 CI 預算。掃尾重試輪
+    # （retry_passes）仍會再給失敗事件機會。
+    max_attempts = 2
+    backoff = 4.0
     for attempt in range(1, max_attempts + 1):
         req = urllib.request.Request(url, data=payload, headers=headers)
         try:
@@ -347,15 +351,20 @@ def _short_id(seed: str) -> str:
 def attach_cover_images(items: list[dict], date_str: str,
                         generate_fallback: bool = True,
                         max_generate: int = 200,
-                        max_workers: int = 1,
+                        max_workers: int = 3,
                         backend: str = "gateway",
-                        retry_passes: int = 2) -> None:
+                        retry_passes: int = 2,
+                        deadline: float | None = None) -> None:
     """
-    對每則事件用文生圖模型產生一張封面圖（順序呼叫 + 重試）。
+    對每則事件用文生圖模型產生一張封面圖（平行呼叫 + 重試）。
       - backend="gateway"（預設）：呼叫 d8ai gateway 的 /v1/images/generations（z-image-turbo）
       - backend="hf"：沿用舊的 HuggingFace FLUX Inference API
       - max_generate：生圖總量上限（保護）；超過則落分類 fallback
+      - max_workers：平行度（生圖走獨立 urllib，不受 llm.py 8 RPM 限制）。預設 3，
+        比舊的順序（1）快 2-3 倍；仍保留 retry_passes 吸收偶發 504。
       - retry_passes：失敗的事件最多再掃幾輪重試（gateway 偶爾忙會 504，重試多半就成功）
+      - deadline：time.monotonic() 時間點；超過就對「尚未產圖」的事件直接落 fallback，
+        確保 CI 90 分鐘預算內一定能寫出報表（不再被 cancel）。
     生圖失敗 → 落分類 fallback（report.js / app.js 會渲染漸層底圖）。
     """
     img_dir = OUTPUT_DIR / "images" / date_str
@@ -379,6 +388,13 @@ def attach_cover_images(items: list[dict], date_str: str,
     def _one(it: dict):
         url = it.get("url", "")
         cat = it.get("category") or "uncategorized"
+
+        # 時間預算保險：超過 deadline 就不再生圖，直接落 fallback（快速收尾）
+        if deadline is not None and time.monotonic() > deadline:
+            it["cover_image"] = {"kind": "fallback", "category": cat}
+            with counter_lock:
+                counters["fallback"] += 1
+            return
 
         # 生圖份額保護（先佔位，失敗再還回）
         do_generate = False
@@ -416,6 +432,9 @@ def attach_cover_images(items: list[dict], date_str: str,
     # 重試掃尾：gateway 暫時忙就會 504，掃個一兩輪幾乎都能補齊
     if (use_gateway or hf_token) and retry_passes > 0:
         for round_no in range(1, retry_passes + 1):
+            if deadline is not None and time.monotonic() > deadline:
+                print("  封面圖：已達時間預算上限，跳過剩餘重試")
+                break
             still_failed = [it for it in items
                             if (it.get("cover_image") or {}).get("kind") != "local"]
             if not still_failed:

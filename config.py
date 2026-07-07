@@ -253,11 +253,14 @@ LLM_CFG = load_llm_config()
 #    gateway 提供 OpenAI 相容 /v1/images/generations，模型如 z-image-turbo。
 # ─────────────────────────────────────────────────────────────
 def load_image_config() -> dict:
+    # timeout 縮短為 60s（原 120s）：gateway 抖動時單張圖不再卡 2 分鐘，
+    # 讓 CI 90 分鐘預算不被少數卡住的生圖請求吃光。可用環境變數覆寫。
+    _img_timeout = os.getenv("AINEWS_IMAGE_TIMEOUT", "").strip()
     return {
         "base_url": os.getenv("AINEWS_IMAGE_BASE_URL", "").strip() or LLM_CFG["base_url"],
         "api_key":  os.getenv("AINEWS_IMAGE_API_KEY", "").strip() or LLM_CFG["api_key"],
         "model":    os.getenv("AINEWS_IMAGE_MODEL", "").strip() or "z-image-turbo",
-        "timeout":  120,
+        "timeout":  int(_img_timeout) if _img_timeout else 60,
     }
 
 

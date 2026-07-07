@@ -20,6 +20,7 @@
 from __future__ import annotations
 import json
 import os
+import time
 from collections import defaultdict
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
@@ -39,6 +40,12 @@ PER_CAT_DB = 25
 # 精選總數（跨所有分類合計），依 importance / mention_count 取前 N
 TOP_PICKS_TOTAL = 6
 
+# 全程時間預算（秒）。GitHub Actions 的 crawl job 硬上限是 90 分鐘，超過會被 cancel
+# → 整份報表消失。這裡設一個較早的軟性 deadline：一旦跑到這個時間，最花時間的兩個
+# 尾段階段（封面生圖、全文彙整）就只對「還沒處理到的事件」直接落 fallback / summary，
+# 立刻收尾去寫 JSON/Excel/Firestore，確保永遠有完整輸出。可用環境變數覆寫。
+DEADLINE_SECONDS = int(os.getenv("AINEWS_DEADLINE_SECONDS", str(72 * 60)))
+
 
 def run(days_back: int = DEFAULT_DAYS_BACK,
         enable_google_news: bool = ENABLE_GOOGLE_NEWS_DEFAULT,
@@ -47,7 +54,10 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     tz_taiwan = timezone(timedelta(hours=8))
     today_date = datetime.now(tz_taiwan).date()
     today = today_date.isoformat()
-    print(f"\n===== AI 事件爬搜 {today}（嚴格近 {days_back} 天）=====\n")
+    # 全程時間預算：超過就讓尾段昂貴階段快速收尾，確保 CI 不被 90 分鐘上限 cancel
+    deadline = time.monotonic() + DEADLINE_SECONDS
+    print(f"\n===== AI 事件爬搜 {today}（嚴格近 {days_back} 天）=====")
+    print(f"（時間預算 {DEADLINE_SECONDS // 60} 分鐘；超過則封面/全文改用 fallback 快速收尾）\n")
 
     # 1) 抓 RSS（fetch_rss 內部會用 cutoff = now - days_back；short window 時也丟無日期條目）
     items = fetch_all_sources(days_back=days_back, only_kinds=only_kinds)
@@ -114,16 +124,17 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     print(f"    今日精選           合計 {len(top_events)} / 上限 {TOP_PICKS_TOTAL}（跨類別 importance 排序）")
 
     # 9) 封面圖（給所有 db_events — PDF 報表每一則都要有文生圖封面）
-    print(f"\n用文生圖模型產生封面（共 {len(db_events)} 個事件）...")
+    remaining = deadline - time.monotonic()
+    print(f"\n用文生圖模型產生封面（共 {len(db_events)} 個事件；剩餘時間預算 {remaining/60:.1f} 分）...")
     # _build_image_prompt 用 title/summary 當提示；url 僅作為檔名 seed。
     for ev in db_events:
         if ev.get("sources"):
             ev["url"] = ev["sources"][0].get("url", "")
-    attach_cover_images(db_events, today)
+    attach_cover_images(db_events, today, deadline=deadline)
 
     # 9.5) 全文彙整（LLM 把每個事件擴寫成多段內文，供 PDF 報表細節區）
     #      只對保留下來的 db_events 產生（top_events 為其子集、同物件）。
-    generate_full_content(db_events)
+    generate_full_content(db_events, deadline=deadline)
 
     # 9.9) 品質檢查：電子報每一則都該有「真圖 + 比 summary 長的 full_content」。
     #      不達標就在 log 警示（不 raise，避免 CI 失敗反而不出報）。

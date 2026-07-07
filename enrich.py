@@ -13,6 +13,7 @@
 
 from __future__ import annotations
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
 
 from llm import chat
@@ -82,10 +83,15 @@ def _is_good(text: str, summary: str) -> bool:
     return True
 
 
-def _generate_one(ev: dict) -> bool:
+def _generate_one(ev: dict, deadline: float | None = None) -> bool:
     if ev.get("full_content"):
         return False
     summary = ev.get("summary", "")
+    # 時間預算保險：超過 deadline 就不再呼叫 LLM，直接用 summary 當內文，
+    # 確保每則事件都有 full_content、報表能順利產出（CI 不被 cancel）。
+    if deadline is not None and time.monotonic() > deadline:
+        ev["full_content"] = summary
+        return False
     text = ""
     # 最多 2 次：gateway 上的模型（gemma-4-31B-it / Qwen 等）現在都是推理型：會先
     # 花 token 思考（reasoning_content），再寫文章。token 太小會在思考階段就被截斷，
@@ -107,8 +113,11 @@ def _generate_one(ev: dict) -> bool:
 
 
 def generate_full_content(events: list[dict],
-                          max_workers: int = FULL_CONTENT_WORKERS) -> None:
-    """為 events 逐一產生 full_content（就地寫入）。已有的會略過。"""
+                          max_workers: int = FULL_CONTENT_WORKERS,
+                          deadline: float | None = None) -> None:
+    """為 events 逐一產生 full_content（就地寫入）。已有的會略過。
+    deadline（time.monotonic() 時間點）過後的事件直接用 summary 當內文，
+    確保 CI 90 分鐘預算內一定能寫出報表。"""
     targets = [ev for ev in events if not ev.get("full_content")]
     if not targets:
         return
@@ -118,7 +127,7 @@ def generate_full_content(events: list[dict],
     lock = threading.Lock()
 
     def _worker(ev: dict):
-        ok = _generate_one(ev)
+        ok = _generate_one(ev, deadline=deadline)
         with lock:
             done["n"] += 1
             done["ok"] += int(ok)
