@@ -92,7 +92,7 @@ _EXTRACT_SYSTEM = (
     "\n"
     "輸入是 JSON array of {idx, title, summary, source}。\n"
     "輸出純 JSON array：每筆 {\"idx\": int, \"events\": [event, ...]}。\n"
-    "若該新聞不含 AI 事件，events 為 []。\n"
+    "若該新聞不含 AI 新聞，events 為 []。\n"
     "不要輸出 JSON 以外的任何文字。"
 )
 
@@ -426,7 +426,7 @@ def _find_connected_components(events: list[dict]) -> list[list[dict]]:
 
 _GROUP_MERGE_SYSTEM = (
     "你是一位精明且擁有極高標準的 AI 新聞總編輯。\n"
-    "你的任務是審查一組疑似重複的 AI 事件，並進行完全去重與合併。\n\n"
+    "你的任務是審查一組疑似重複的 AI 新聞，並進行完全去重與合併。\n\n"
     "【合併標準與原則】\n"
     "  ‣ 只要多個事件在描述「同一個具體的真實世界新聞事件/事件鏈」，就必須合併去重。不要因為措辭不同而分開。\n"
     "  ‣ 請特別注意：不同媒體報導同一個事件時，常使用不同的命名或角度。以下情況均屬於『同一個事件』，必須合併：\n"
@@ -482,7 +482,7 @@ def _llm_group_merge(comp: list[dict]) -> list[dict]:
             "summary": ev.get("summary", "")[:220]
         })
 
-    payload = "請幫我判定並合併以下疑似重複的 AI 事件：\n\n" + json.dumps(rows, ensure_ascii=False)
+    payload = "請幫我判定並合併以下疑似重複的 AI 新聞：\n\n" + json.dumps(rows, ensure_ascii=False)
     res = chat_json(payload, system=_GROUP_MERGE_SYSTEM, max_tokens=4000)
 
     if not isinstance(res, list):
