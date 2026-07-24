@@ -123,7 +123,9 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
         "Content-Type": "application/json",
     }
 
-    # 429 / 503 / 504：等一下再試最多 3 次（指數退避 + Retry-After）
+    # 429 / 502 / 503 / 504：等一下再試最多 3 次（指數退避 + Retry-After）
+    # 502 Bad Gateway：d8ai gateway 後端 vLLM 抖動時 nginx 會吐 502，屬暫時性錯誤，
+    # 一定要重試；否則 merge/enrich 的每個 LLM 呼叫會在 gateway 抖動時直接放棄變空。
     max_attempts = 4
     backoff = 4.0
     resp = None
@@ -141,7 +143,7 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
 
         if resp.status_code == 200:
             break
-        if resp.status_code in (429, 503, 504) and attempt < max_attempts:
+        if resp.status_code in (429, 502, 503, 504) and attempt < max_attempts:
             retry_after = resp.headers.get("Retry-After")
             try:
                 wait = float(retry_after) if retry_after else backoff

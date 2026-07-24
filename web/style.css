@@ -399,13 +399,15 @@ body::before {
 }
 .cat-badge {
   display: inline-flex; align-items: center; gap: 5px;
+  flex: 0 0 auto;
   padding: 2px 9px;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 700;
   color: #fff;
+  white-space: nowrap;
 }
-.cat-badge svg { width: 12px; height: 12px; }
+.cat-badge svg { width: 12px; height: 12px; flex-shrink: 0; }
 
 /* ───── Footer ───── */
 .footer {
@@ -509,7 +511,15 @@ body::before {
   text-align: center;
 }
 .trending-text { display: flex; align-items: center; gap: 8px; min-width: 0; }
+/* 標題可能被包在 <a> 內，真正的 flex 子元素是 <a>；兩種情況都要能收縮 */
+.trending-text > a,
+.trending-text > .title-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.trending-text > a { overflow: hidden; }
 .trending-text .title-text {
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -725,3 +735,133 @@ body::before {
   box-shadow: 0 4px 12px -4px rgba(79, 70, 229, 0.5);
 }
 .export-btn-primary:hover { filter: brightness(1.06); }
+
+/* ─────────────────────────────────────────────
+   手機 / 平板 RWD
+   ───────────────────────────────────────────── */
+
+/* 平板（≤768px）：hero 拆成「圖示+標題」一排、日期控制另一排，
+   避免三欄被擠在一起 */
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "icon text"
+      "controls controls";
+    align-items: center;
+    row-gap: 14px;
+    column-gap: 16px;
+    padding: 16px 18px;
+  }
+  .hero-icon { grid-area: icon; }
+  .hero-text { grid-area: text; }
+  .hero-controls {
+    grid-area: controls;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+  }
+  .hero-controls .select { flex: 1 1 auto; }
+}
+
+/* 手機（≤640px）：縮字級、下拉滿版、各區塊縮邊距 */
+@media (max-width: 640px) {
+  .container { padding: 18px 14px 56px; }
+
+  .hero { padding: 18px 16px; }
+  .hero-icon { width: 48px; height: 48px; border-radius: 12px; }
+  .hero-icon svg { width: 32px; height: 32px; }
+  .hero-title { font-size: 1.6rem; }
+  .hero-sub { font-size: 0.86rem; line-height: 1.45; margin-top: 2px; }
+  .hero-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .hero-label { align-self: flex-start; }
+  .select { width: 100%; min-width: 0; }
+
+  .section-title { font-size: 1.12rem; margin: 28px 0 12px; }
+  .section-title .accent { height: 18px; }
+
+  .interest-panel { padding: 14px 14px; }
+  .interest-title { font-size: 0.98rem; }
+  .interest-sub { font-size: 0.78rem; }
+  .chip { font-size: 0.82rem; padding: 6px 12px; }
+
+  .metrics { gap: 10px; }
+  .metric { padding: 14px 14px; }
+  .metric-value { font-size: 1.45rem; }
+  .metric-label { font-size: 0.7rem; }
+
+  .trending { padding: 14px 16px; }
+  /* 手機：改成「排名 + 主體徽章/標題」一區、事件數另起一行，
+     標題允許換行，徹底避免標題疊到「X 個事件」 */
+  .trending-item {
+    grid-template-columns: 24px 1fr;
+    grid-template-areas:
+      "rank text"
+      "rank count";
+    column-gap: 10px;
+    row-gap: 3px;
+    align-items: start;
+    font-size: 0.86rem;
+  }
+  .trending-rank { grid-area: rank; line-height: 1.5; }
+  .trending-text {
+    grid-area: text;
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+  /* 標題（含被 <a> 包住的情況）強制整行顯示，可換行不截斷 */
+  .trending-text > a,
+  .trending-text > .title-text {
+    flex: 1 1 100%;
+    overflow: visible;
+  }
+  .trending-text .title-text {
+    white-space: normal;
+    overflow: visible;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+  }
+  .trending-count { grid-area: count; text-align: left; }
+
+  .analytics-card { padding: 14px 16px; }
+  .os-card { padding: 14px 16px; }
+
+  .card-body { padding: 16px 16px 18px; gap: 8px; }
+  .card-title { font-size: 1.02rem; }
+  .card-summary { font-size: 0.88rem; }
+
+  /* 水平長條：窄螢幕改成「標籤一行、長條+數字一行」，
+     避免標籤文字疊到長條上、整列超出邊界 */
+  .hbar-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "label label"
+      "track count";
+    gap: 5px 8px;
+    font-size: 0.82rem;
+  }
+  .hbar-label {
+    grid-area: label;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+  }
+  .hbar-track { grid-area: track; }
+  .hbar-count { grid-area: count; text-align: right; }
+
+  /* 匯出工具列改滿版貼底，按鈕不會跑出畫面 */
+  .export-bar {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    justify-content: space-between;
+    border-radius: 16px;
+    padding: 10px 14px;
+  }
+}

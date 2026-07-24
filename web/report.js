@@ -115,13 +115,18 @@ function bodyParagraphs(ev) {
   return paras.map((p) => `<p class="detail-p">${esc(p)}</p>`).join("");
 }
 
-// ── 封面圖（文生圖）：remote → <img>；其餘 → 分類漸層底圖 ──
+// ── 封面圖（文生圖）：remote/local → <img>；其餘 → 分類漸層底圖 ──
 function coverImgHtml(ev) {
   const cover = ev.cover_image || {};
   const color = catColor(ev.category);
-  if (cover.kind === "remote" && cover.url) {
+  const isImage = (cover.kind === "remote" || cover.kind === "local") && cover.url;
+  if (isImage) {
+    let imgUrl = cover.url;
+    if (cover.kind === "local" && !imgUrl.startsWith("http") && !imgUrl.startsWith("/")) {
+      imgUrl = "../output/" + imgUrl;
+    }
     return `<div class="detail-cover">
-      <img src="${esc(cover.url)}" alt="" loading="eager"
+      <img src="${esc(imgUrl)}" alt="" loading="eager"
            onerror="this.parentNode.classList.add('cover-broken')" />
     </div>`;
   }
@@ -195,7 +200,7 @@ function reportDocument(events) {
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8" />
-<title>AI 事件報告${range ? `（${range}）` : ""}</title>
+<title>AI新聞報告${range ? `（${range}）` : ""}</title>
 <style>
   @page { size: A4; margin: 18mm 16mm; }
   * { box-sizing: border-box; }
@@ -306,7 +311,7 @@ function reportDocument(events) {
 </head>
 <body>
   <section class="cover">
-    <div class="cover-kicker">AI 事件報告</div>
+    <div class="cover-kicker">AI新聞報告</div>
     <div class="cover-line"></div>
     <h1 class="cover-title">AI 新聞精選報表</h1>
     <div class="cover-range">${range ? esc(range) : "彙整報告"}</div>

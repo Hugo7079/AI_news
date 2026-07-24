@@ -8,13 +8,7 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(js|css)",
-        "headers": [
-          { "key": "Cache-Control", "value": "no-cache" }
-        ]
-      },
-      {
-        "source": "**/*.html",
+        "source": "**",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" }
         ]

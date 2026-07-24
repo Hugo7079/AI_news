@@ -196,8 +196,13 @@ function coverHtml(ev) {
       <span>${escapeHtml(catLabel(ev.category))}</span>
     </div>
   `;
-  if (cover.kind === "remote" && cover.url) {
-    return `<div class="cover" style="background-image:url('${escapeHtml(cover.url)}')">${tag}</div>`;
+  const isImage = (cover.kind === "remote" || cover.kind === "local") && cover.url;
+  if (isImage) {
+    let imgUrl = cover.url;
+    if (cover.kind === "local" && !imgUrl.startsWith("http") && !imgUrl.startsWith("/")) {
+      imgUrl = "../output/" + imgUrl;
+    }
+    return `<div class="cover" style="background-image:url('${escapeHtml(imgUrl)}')">${tag}</div>`;
   }
   return `
     <div class="cover-fallback" style="background:linear-gradient(135deg, ${tagColor}, ${tagColor}cc)">

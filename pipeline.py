@@ -1,5 +1,5 @@
 """
-每日 AI 事件 pipeline（事件中心）
+每日 AI新聞 pipeline（新聞中心）
 =================================
 
 模型：以「事件」為單位，新聞作為「證據來源」。
@@ -56,7 +56,7 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     today = today_date.isoformat()
     # 全程時間預算：超過就讓尾段昂貴階段快速收尾，確保 CI 不被 90 分鐘上限 cancel
     deadline = time.monotonic() + DEADLINE_SECONDS
-    print(f"\n===== AI 事件爬搜 {today}（嚴格近 {days_back} 天）=====")
+    print(f"\n===== AI新聞爬搜 {today}（嚴格近 {days_back} 天）=====")
     print(f"（時間預算 {DEADLINE_SECONDS // 60} 分鐘；超過則封面/全文改用 fallback 快速收尾）\n")
 
     # 1) 抓 RSS（fetch_rss 內部會用 cutoff = now - days_back；short window 時也丟無日期條目）
@@ -159,9 +159,9 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     for ev in db_events:
         by_cat_label[CATEGORY_LABEL_BY_ID.get(ev.get("category"), "未分類")] += 1
 
-    json_top_path = OUTPUT_DIR / f"{today}_AI事件_精選.json"
-    json_db_path = OUTPUT_DIR / f"{today}_AI事件_資料庫.json"
-    xlsx_path = OUTPUT_DIR / f"{today}_AI事件_資料庫.xlsx"
+    json_top_path = OUTPUT_DIR / f"{today}_AI新聞_精選.json"
+    json_db_path = OUTPUT_DIR / f"{today}_AI新聞_資料庫.json"
+    xlsx_path = OUTPUT_DIR / f"{today}_AI新聞_資料庫.xlsx"
 
     generated_at_str = datetime.now(tz_taiwan).isoformat(timespec="seconds")
 
@@ -240,7 +240,7 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
 
 if __name__ == "__main__":
     import argparse
-    p = argparse.ArgumentParser(description="AI 事件爬搜整理（事件中心）")
+    p = argparse.ArgumentParser(description="AI新聞爬搜整理（新聞中心）")
     p.add_argument("--days", type=int, default=DEFAULT_DAYS_BACK)
     p.add_argument("--google", action="store_true",
                    help="啟用 Google News 即時搜尋補強")

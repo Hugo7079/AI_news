@@ -1,0 +1,28 @@
+[debug] [2026-06-23T04:04:36.517Z] ----------------------------------------------------------------------
+[debug] [2026-06-23T04:04:36.518Z] Command:       /usr/bin/node /tmp/fbcli/node_modules/.bin/firebase deploy --only hosting --project d8ainews --non-interactive
+[debug] [2026-06-23T04:04:36.518Z] CLI Version:   15.22.1
+[debug] [2026-06-23T04:04:36.518Z] Platform:      linux
+[debug] [2026-06-23T04:04:36.519Z] Node Version:  v22.22.3
+[debug] [2026-06-23T04:04:36.519Z] Detected Agent: unknown
+[debug] [2026-06-23T04:04:36.519Z] Time:          Tue Jun 23 2026 04:04:36 GMT+0000 (Coordinated Universal Time)
+[debug] [2026-06-23T04:04:36.519Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-23T04:04:36.520Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-06-23T04:04:36.855Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-23T04:04:36.869Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 403
+[debug] [2026-06-23T04:04:36.869Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json "Connection blocked by network allowlist"
+[warn] ⚠  Unable to fetch the CLI MOTD and remote config. This is not a fatal error, but may indicate an issue with your network connection. 
+[debug] [2026-06-23T04:04:36.869Z] Failed to fetch MOTD FirebaseError: Unable to parse JSON: SyntaxError: Unexpected token 'C', "Connection"... is not valid JSON
+[debug] [2026-06-23T04:04:36.871Z] Error: Connection blocked by network allowlist
+    at Gaxios._request (/tmp/fbcli/node_modules/gaxios/build/src/gaxios.js:142:23)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async GoogleToken._GoogleToken_requestToken (/tmp/fbcli/node_modules/gtoken/build/src/index.js:241:19)
+    at async GoogleToken._GoogleToken_getTokenAsync (/tmp/fbcli/node_modules/gtoken/build/src/index.js:160:16)
+    at async JWT.refreshTokenNoCache (/tmp/fbcli/node_modules/google-auth-library/build/src/auth/jwtclient.js:173:23)
+    at async JWT.refreshAccessTokenAsync (/tmp/fbcli/node_modules/google-auth-library/build/src/auth/oauth2client.js:247:19)
+    at async JWT.getAccessTokenAsync (/tmp/fbcli/node_modules/google-auth-library/build/src/auth/oauth2client.js:276:23)
+    at async GoogleAuth.getAccessToken (/tmp/fbcli/node_modules/google-auth-library/build/src/auth/googleauth.js:723:17)
+    at async autoAuth (/tmp/fbcli/node_modules/firebase-tools/lib/requireAuth.js:28:19)
+    at async requireAuth (/tmp/fbcli/node_modules/firebase-tools/lib/requireAuth.js:90:20)
+[error] 
+[error] Error: Failed to authenticate, have you run firebase login?

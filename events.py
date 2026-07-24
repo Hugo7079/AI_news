@@ -427,10 +427,14 @@ def _find_connected_components(events: list[dict]) -> list[list[dict]]:
 _GROUP_MERGE_SYSTEM = (
     "你是一位精明且擁有極高標準的 AI 新聞總編輯。\n"
     "你的任務是審查一組疑似重複的 AI 事件，並進行完全去重與合併。\n\n"
-    "【合併標準】\n"
-    "  ‣ 只有當多個事件確實在描述「同一個具體的 AI 事件」時，才進行合併。\n"
-    "    例如：「發布 Gemini 3.5 Flash」與「Google 推出 Gemini 3.5 Flash」是同一件事，必須合併。\n"
-    "  ‣ 若描述的是不同事件（例如「微軟發布 A 模型」與「微軟發布 B 模型」，或「OpenAI 發布新模型」與「OpenAI 被起訴」），請絕對不要合併，必須保留為多個獨立事件。\n\n"
+    "【合併標準與原則】\n"
+    "  ‣ 只要多個事件在描述「同一個具體的真實世界新聞事件/事件鏈」，就必須合併去重。不要因為措辭不同而分開。\n"
+    "  ‣ 請特別注意：不同媒體報導同一個事件時，常使用不同的命名或角度。以下情況均屬於『同一個事件』，必須合併：\n"
+    "    1. 模型/產品名稱的代稱或變體（例如：『Claude Fable 5』與『Mythos』與『最新 AI 模型』指同一個被管制的模型，必須合併）。\n"
+    "    2. 主體/機構名稱的不同稱呼（例如：『白宮』與『美國政府』與『川普政府』，必須合併）。\n"
+    "    3. 動作描述的不同切入點（例如：『出口限制』與『禁止外國訪問』與『下架/de-deploy』是同一禁令事件的各個層面，必須合併）。\n"
+    "  ‣ 範例：「發布 Gemini 3.5 Flash」與「Google 推出 Gemini 3.5 Flash」是同一件事，必須合併。\n"
+    "  ‣ 若描述的確實是完全無關的不同事件（例如「微軟發布 A 模型」與「微軟發布 B 模型」，或「OpenAI 發布新模型」與「OpenAI 被起訴」），才不予合併，保留為多個獨立事件。\n\n"
     "【輸出要求】\n"
     "1. 請仔細比對，輸出一個 JSON array，包含去重與合併後的事件列表。\n"
     "2. 對於被判定為「同一件事」而合併的事件群組，請綜合所有輸入事件的細節，重新撰寫：\n"
@@ -666,27 +670,25 @@ def _programmatic_dedup(events: list[dict]) -> list[dict]:
 
 
 _GLOBAL_DEDUP_SYSTEM = (
-    "你是新聞去重專家。我會給你當天一批 AI 新聞事件（含編號、標題、摘要、主體）。"
-    "有些是『同一件真實事件』被不同媒體用不同措辭、甚至分到不同分類重複報導。"
-    "請找出描述同一件真實事件的群組。判定標準嚴格："
-    "必須是同一個主體、同一個動作、同一個時間點的同一件事，才算重複；"
-    "只是同公司不同消息、相關但不同的事，都不算重複，不要併。"
-    "只輸出 JSON 陣列，每個元素是一個重複群組的編號陣列，例如 [[0,3,5],[2,7]]；"
+    "你是新聞去重專家。我會給你當天一批 AI 新聞事件（含編號、標題、摘要、主體）。\n"
+    "有些是『同一件真實事件』被不同媒體用不同措辭、甚至分到不同分類重複報導。\n"
+    "請找出描述同一件真實事件的群組。判定標準靈活但精準：\n"
+    "只要多個事件在描述同一個核心新聞事件或同一條新聞鏈（即使標題措辭不同、主體代稱不同如『白宮/美國政府』、產品稱呼不同如『Fable/Mythos/最新AI模型』），都必須合併為重複群組。\n"
+    "只是同公司完全無關的不同消息、或不同時間點的獨立事件，才不予合併。\n"
+    "只輸出 JSON 陣列，每個元素是一個重複群組的編號陣列，例如 [[0,3,5],[2,7]]；\n"
     "沒有重複就輸出 []。不要輸出單一元素的群組。"
 )
 
 
-def _llm_global_dedup(events: list[dict]) -> list[dict]:
-    """全域 LLM 語意去重：把全部事件一次交給 LLM 找出同一真實事件的群組再合併。
-    這是補強 —— 字元相似度抓不到的跨來源/跨分類換句話說重複，靠語意判定。
-    失敗（LLM 無回應）時原樣回傳，不影響既有結果。"""
-    if len(events) < 2:
-        return events
+def _global_dedup_call(events: list[dict], offset: int = 0) -> list[list[int]] | None:
+    """送一批事件給 LLM 找重複群組，回傳以「全域索引」表示的群組清單；失敗回 None。
 
+    gemma 等推理模型會先花大量 token 思考再輸出，事件越多思考越長。token 不夠就會
+    在思考階段被截斷 → 拿不到合法 JSON。因此 token 預算要大，且失敗要重試。"""
     rows = []
-    for idx, ev in enumerate(events):
+    for local_idx, ev in enumerate(events):
         rows.append({
-            "idx": idx,
+            "idx": local_idx,
             "title": ev.get("title", ""),
             "who": ev.get("who", []),
             "summary": (ev.get("summary", "") or "")[:140],
@@ -695,10 +697,91 @@ def _llm_global_dedup(events: list[dict]) -> list[dict]:
         "請找出下列事件中描述『同一件真實事件』的重複群組：\n\n"
         + json.dumps(rows, ensure_ascii=False)
     )
-    res = chat_json(payload, system=_GLOBAL_DEDUP_SYSTEM, max_tokens=8000)
-    if not isinstance(res, list):
-        print("    [global-dedup] LLM 無有效回應，跳過全域去重")
+    # 推理模型需要大量 token 思考 N 個事件的兩兩比對；不夠就截斷成空。重試 3 次。
+    for attempt in range(3):
+        res = chat_json(payload, system=_GLOBAL_DEDUP_SYSTEM, max_tokens=16000)
+        if isinstance(res, list):
+            groups: list[list[int]] = []
+            for group in res:
+                if isinstance(group, list):
+                    idxs = [offset + i for i in group
+                            if isinstance(i, int) and 0 <= i < len(events)]
+                    if len(idxs) >= 2:
+                        groups.append(idxs)
+            return groups
+        print(f"    [global-dedup] 第 {attempt+1}/3 次無有效回應，重試…")
+    return None
+
+
+def _llm_global_dedup(events: list[dict]) -> list[dict]:
+    """全域 LLM 語意去重：把全部事件交給 LLM 找出同一真實事件的群組再合併。
+    這是補強 —— 字元相似度抓不到的跨來源/跨分類換句話說重複，靠語意判定。
+
+    事件多時（>45）單次呼叫會讓推理模型思考爆 token，改用「重疊分塊」：先依
+    正規化標題排序讓相似事件相鄰，再切成有重疊的視窗各自去重，盡量不漏跨塊重複。
+    失敗時原樣回傳，不影響既有結果。"""
+    if len(events) < 2:
         return events
+
+    CHUNK = 45
+    OVERLAP = 10
+    all_groups: list[list[int]] = []
+    if len(events) <= CHUNK:
+        g = _global_dedup_call(events, offset=0)
+        if g is None:
+            print("    [global-dedup] LLM 無有效回應，跳過全域去重")
+            return events
+        all_groups = g
+    else:
+        # 依正規化標題排序，讓「換句話說的同一則」盡量落在同一個視窗
+        order = sorted(range(len(events)),
+                       key=lambda i: _norm_token(events[i].get("title") or ""))
+        step = CHUNK - OVERLAP
+        any_ok = False
+        seen_windows = set()
+        for start in range(0, len(order), step):
+            window_local = order[start:start + CHUNK]
+            if len(window_local) < 2:
+                continue
+            key = (window_local[0], window_local[-1])
+            if key in seen_windows:
+                continue
+            seen_windows.add(key)
+            sub = [events[i] for i in window_local]
+            g = _global_dedup_call(sub, offset=0)
+            if g is None:
+                continue
+            any_ok = True
+            # 把視窗內的 local idx 映回全域 idx
+            for grp in g:
+                all_groups.append([window_local[i] for i in grp])
+        if not any_ok:
+            print("    [global-dedup] LLM 無有效回應，跳過全域去重")
+            return events
+
+    # 用 union-find 把跨視窗、跨群組但有交集的群組併起來
+    parent = list(range(len(events)))
+
+    def _find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def _union(a, b):
+        ra, rb = _find(a), _find(b)
+        if ra != rb:
+            parent[ra] = rb
+
+    for grp in all_groups:
+        for k in range(1, len(grp)):
+            _union(grp[0], grp[k])
+
+    clusters: dict[int, list[int]] = {}
+    for i in range(len(events)):
+        r = _find(i)
+        clusters.setdefault(r, []).append(i)
+    res = [idxs for idxs in clusters.values() if len(idxs) >= 2]
 
     used: set[int] = set()
     out: list[dict] = []
