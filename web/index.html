@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=20260623a" />
+  <link rel="stylesheet" href="./style.css?v=20260824a" />
 </head>
 <body>
   <main class="container">
@@ -45,19 +45,68 @@
       <div id="interest-chips" class="interest-chips"></div>
     </section>
 
-    <h2 id="top-picks-title" class="section-title"><span class="accent"></span>今日精選</h2>
-    <section id="top-picks" class="card-grid"></section>
+    <h2 class="section-title">
+      <span class="accent"></span><span id="top-picks-title">今日精選</span>
+      <button type="button" id="pick-panel-toggle" class="section-action"
+              aria-expanded="true" aria-controls="pick-panel">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"
+             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
+          <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
+          <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/>
+          <line x1="17" y1="16" x2="23" y2="16"/>
+        </svg>
+        <span id="pick-toggle-label">收合指標</span>
+      </button>
+    </h2>
+    <div class="picks-layout" id="picks-layout">
+      <section id="top-picks" class="card-grid"></section>
+
+      <aside class="pick-panel" id="pick-panel" aria-label="精選指標設定">
+        <div class="pick-panel-head">
+          <span class="pick-panel-title">精選指標</span>
+          <span class="pick-panel-sub">勾選您在意的指標，精選會依這些指標重新排序篩選（可複選）</span>
+        </div>
+        <div id="metric-list" class="metric-list"></div>
+        <div class="pick-panel-foot">
+          <label class="pick-count-label" for="picks-count">顯示則數</label>
+          <select id="picks-count" class="select select-sm">
+            <option value="3">3 則</option>
+            <option value="6" selected>6 則</option>
+            <option value="9">9 則</option>
+            <option value="12">12 則</option>
+            <option value="20">20 則</option>
+          </select>
+          <button type="button" id="metric-reset" class="mini-btn">重設</button>
+          <button type="button" id="metric-add-all" class="mini-btn mini-btn-primary">精選全部加入電子報</button>
+        </div>
+      </aside>
+    </div>
 
     <section id="trending-wrap"></section>
 
-    <h2 id="opensource-title" class="section-title"><span class="accent"></span>開源生態與模型觀測站</h2>
+    <h2 class="section-title">
+      <span class="accent"></span>
+      <button type="button" id="os-toggle" class="collapse-toggle" aria-expanded="true" aria-controls="opensource-grid">
+        <span id="opensource-title">開源生態與模型觀測站</span>
+        <svg class="chev" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"
+             fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+    </h2>
     <section id="opensource-grid" class="opensource-grid"></section>
 
     <h2 class="section-title"><span class="accent"></span>事件資料庫</h2>
+    <div id="db-toolbar" class="db-toolbar"></div>
     <nav id="category-tabs" class="tabs" aria-label="分類篩選"></nav>
     <section id="event-list" class="event-list"></section>
+    <nav id="db-pager" class="pager" aria-label="事件資料庫分頁"></nav>
 
-    <h2 id="metrics-title" class="section-title"><span class="accent"></span>今日 AI 局勢數據看板</h2>
+    <h2 class="section-title">
+      <span class="accent"></span><span id="metrics-title">今日 AI 局勢數據看板</span>
+    </h2>
     <section id="metrics" class="metrics" aria-label="當日統計"></section>
     <div class="analytics-grid">
       <section class="analytics-card">
@@ -75,6 +124,6 @@
     </footer>
   </main>
 
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=20260824a"></script>
 </body>
 </html>

@@ -219,8 +219,25 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     print(f"[done] 精選 JSON：{json_top_path}")
     print(f"[done] Excel：{xlsx_path}")
 
-    # 11) 寫入 Firestore（失敗不阻斷本地輸出）
-    if os.getenv("AINEWS_SKIP_FIRESTORE", "").strip().lower() not in ("1", "true", "yes"):
+    # 11) 寫入資料庫（失敗不阻斷本地輸出）
+    #
+    #   AINEWS_STORE=local      只寫本地 store（output/store/*.json）— Docker 自架用
+    #   AINEWS_STORE=firestore  只寫 Firestore（預設，維持 GitHub Actions 的行為）
+    #   AINEWS_STORE=both       兩邊都寫
+    #   舊的 AINEWS_SKIP_FIRESTORE=1 仍有效，等同 AINEWS_STORE=local
+    skip_fs = os.getenv("AINEWS_SKIP_FIRESTORE", "").strip().lower() in ("1", "true", "yes")
+    store = os.getenv("AINEWS_STORE", "").strip().lower()
+    if store not in ("local", "firestore", "both"):
+        store = "local" if skip_fs else "firestore"
+
+    if store in ("local", "both"):
+        try:
+            from local_store import write_run as local_write
+            local_write(today, db_events, top_events, dict(by_cat_label))
+        except Exception as e:
+            print(f"[local-store] 寫入失敗（本地 JSON 已完成）：{type(e).__name__}: {e}")
+
+    if store in ("firestore", "both") and not skip_fs:
         try:
             from firestore_writer import write_run as firestore_write
             firestore_write(today, db_events, top_events, dict(by_cat_label))
@@ -238,6 +255,19 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     }
 
 
+def _require_llm_key() -> None:
+    """沒有 LLM 金鑰就直接停，不要抓完一整輪才發現每則都抽不出事件。"""
+    from config import LLM_CFG
+    if LLM_CFG.get("api_key"):
+        return
+    raise SystemExit(
+        "[錯誤] 找不到 LLM API key。\n"
+        "  Docker  : 在專案根目錄的 .env 設定 AINEWS_LLM_API_KEY（可從 .env.example 複製）\n"
+        "  本機開發: 設環境變數 AINEWS_LLM_API_KEY，或建立 .ainews_llm_config.json\n"
+        "  Actions : 在 workflow 的 env / repository secrets 設定"
+    )
+
+
 if __name__ == "__main__":
     import argparse
     p = argparse.ArgumentParser(description="AI新聞爬搜整理（新聞中心）")
@@ -247,6 +277,7 @@ if __name__ == "__main__":
     p.add_argument("--kinds", nargs="+",
                    choices=["media", "vendor", "community", "podcast"])
     args = p.parse_args()
+    _require_llm_key()
 
     run(days_back=args.days,
         enable_google_news=args.google,

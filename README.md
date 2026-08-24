@@ -3,19 +3,29 @@
 每天自動抓取 **台灣 + 國際 + AI 廠商 + 社群 + Podcast** 的 AI 相關新聞，
 LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接顯示。
 
+兩套部署可以並存，同一份程式碼，差別只在 `AINEWS_STORE`：
+
 ```
-GitHub Actions cron (06:00 TPE)
-        │
-        ▼
-pipeline.py  ──→ Firestore (events, daily_summary)
-        │              │
-        │              ▼
-        │       Firebase Storage (cover images)
-        ▼              │
-output/*.json          ▼
-(本地備份)        web/index.html  ←  Firebase Hosting
-                  靜態 SPA, 直接用 Firebase Web SDK 讀 Firestore
+A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完全本地）
+
+   Actions cron (06:00 TPE)                     ainews 容器（每天 06:00）
+        │                                              │
+        ▼  AINEWS_STORE=firestore                      ▼  AINEWS_STORE=local
+   src/pipeline.py                                src/pipeline.py
+        │                                              │
+        ▼                                              ▼
+   Firestore + Storage                           output/store/*.json
+        │                                        output/images/*
+        ▼                                              │
+   web/  ← Firebase Hosting                            ▼
+   （前端用 Firebase SDK 讀）                     ainews-web 容器
+                                                 src/server.py :8080
+                                                 （前端打 /api/*，不碰 Firebase）
 ```
+
+前端靠 `web/config.json` 的 `mode` 自動切換：Firebase Hosting 拿到的是靜態檔
+`{"mode":"firestore"}`；本地伺服器會覆寫成 `{"mode":"local"}`。
+**本地模式完全不會載入 Firebase SDK**，內網 / 離線環境也能跑。
 
 舊版本用 Streamlit Cloud 顯示，但 Cloud 是 ephemeral filesystem，重啟就丟資料；
 這版本資料全進 Firestore，網站只負責顯示，徹底解決「昨天的紀錄又不見了」。
@@ -26,26 +36,46 @@ output/*.json          ▼
 
 ```
 .
-├── pipeline.py              主流程（CLI 進入點）
-├── config.py                分類、關鍵字、LLM 設定
-├── sources.py               50+ RSS feed + Google News query
-├── sources_extra.py         HF / GitHub / Ollama / OpenRouter
-├── fetcher.py               RSS / Google News 抓取
-├── llm.py                   OpenAI 相容 LLM 包裝
-├── events.py                LLM 抽事件 + 合併
-├── classifier.py            LLM 分類 + 去重
-├── quality_rank.py          重要度評分 + 過濾
-├── cover_image.py           og:image 抓取 + HF FLUX 生圖
-├── summarize.py             摘要工具
+├── src/                     Python 主程式
+│   ├── pipeline.py          主流程（CLI 進入點）
+│   ├── config.py            分類、關鍵字、LLM / 生圖設定、路徑
+│   ├── sources.py           50+ RSS feed + Google News query
+│   ├── sources_extra.py     HF / GitHub / Ollama / OpenRouter
+│   ├── fetcher.py           RSS / Google News 抓取
+│   ├── llm.py               OpenAI 相容 LLM 包裝
+│   ├── events.py            LLM 抽事件 + 合併
+│   ├── classifier.py        LLM 分類 + 去重
+│   ├── quality_rank.py      重要度評分 + 過濾
+│   ├── cover_image.py       og:image 抓取 + 文生圖
+│   ├── enrich.py            事件全文彙整
+│   ├── summarize.py         摘要工具
+│   ├── doc_model.py         事件文件 schema（兩種儲存共用）
+│   ├── local_store.py       本地資料庫（output/store/*.json）
+│   ├── server.py            自架網站：靜態前端 + /api + /media
+│   └── firestore_writer.py  寫入 Firestore + Storage
 │
-├── firestore_writer.py      ★ 寫入 Firestore + Storage
-├── scripts/
-│   └── migrate_legacy.py    一次性：把舊 output/*.json 灌進 Firestore
+├── docker/                  容器化
+│   ├── Dockerfile
+│   └── entrypoint.sh        schedule / once / 任意指令
+├── compose.yaml             docker compose 設定（放根目錄，會自動讀 .env）
+├── .env.example             環境變數範本（複製成 .env）
 │
-├── web/                     ★ 靜態網站（Firebase Hosting）
+├── web/                     前端（雲端版部署到 Firebase Hosting）
 │   ├── index.html
 │   ├── style.css
-│   └── app.js               用 Firebase Web SDK 讀 Firestore 渲染
+│   ├── app.js               前端主程式（自動切換本地 / Firestore 資料來源）
+│   ├── config.json          資料來源標記（部署到 Firebase 時 = firestore）
+│   ├── report.js            產生「雙週電子報」版面的 PDF（瀏覽器列印）
+│   ├── assets/              電子報版型素材（頁首 logo、主視覺橫幅）
+│   └── _report_test.html    本機預覽電子報版面用（不會部署）
+│
+├── scripts/                 維運腳本
+│   ├── export_firestore_local.py  把 Firestore 歷史資料倒回本地 store
+│   ├── migrate_legacy.py    一次性：把舊 output/*.json 灌進 Firestore
+│   ├── repair_day.py        修某一天的資料
+│   ├── regen_top.py         重跑某天的精選 / 封面
+│   ├── backfill_*.py        補封面圖 / 補全文
+│   └── devserver.js         本機靜態預覽 server
 │
 ├── firebase.json            Hosting + Firestore + Storage 設定
 ├── .firebaserc              project ID
@@ -53,10 +83,16 @@ output/*.json          ▼
 ├── storage.rules            同上
 │
 ├── .github/workflows/
-│   └── daily.yml            每天 22:00 UTC cron
+│   └── daily.yml            每天 22:00 UTC cron（跑 src/pipeline.py）
 │
-└── output/                  本地備份 JSON（已 gitignore）
+└── output/                  資料與產出（已 gitignore）
+    ├── store/               本地資料庫，一天一個 JSON
+    ├── images/              封面圖
+    └── *.json / *.xlsx      每日備份與報表
 ```
+
+> 所有 Python 模組都是**扁平 import**（`from config import ...`）。
+> 直接 `python3 src/pipeline.py` 就會把 `src/` 加進 sys.path，不需要設 PYTHONPATH。
 
 ---
 
@@ -70,7 +106,7 @@ output/*.json          ▼
 | 企業 IT / PM | `products_apps` | 產品上市、企業導入、AI 工具評測 |
 | 政策 / 法務 | `policy_society` | 立法、訴訟、安全、勞動衝擊 |
 
-修改在 [`config.py`](config.py) 的 `CATEGORIES`。
+修改在 [`src/config.py`](src/config.py) 的 `CATEGORIES`。
 
 ---
 
@@ -78,7 +114,7 @@ output/*.json          ▼
 
 ### 1. Firebase 專案
 
-Project ID：**d8ainews**（已建好；如要換別的 project，改 [`firestore_writer.py`](firestore_writer.py) 的常數 + [`.firebaserc`](.firebaserc) + [`web/app.js`](web/app.js) 的 `firebaseConfig`）
+Project ID：**d8ainews**（已建好；如要換別的 project，改 [`src/firestore_writer.py`](src/firestore_writer.py) 的常數 + [`.firebaserc`](.firebaserc) + [`web/app.js`](web/app.js) 的 `firebaseConfig`）
 
 到 Firebase Console 確保以下服務都已啟用：
 - **Firestore Database**（地點建議 `asia-east1`）
@@ -133,17 +169,22 @@ python3 scripts/migrate_legacy.py --dry-run   # 先看會匯哪些
 
 ```bash
 # 本地手動跑（需要 firebase-credentials.json 在根目錄）
-python3 pipeline.py --days 1
-python3 pipeline.py --days 3 --google                  # 加上 Google News 補強
-python3 pipeline.py --kinds vendor podcast             # 只抓某些來源
-AINEWS_SKIP_FIRESTORE=1 python3 pipeline.py --days 1   # 只寫本地 JSON 不上傳
+python3 src/pipeline.py --days 1
+python3 src/pipeline.py --days 3 --google                  # 加上 Google News 補強
+python3 src/pipeline.py --kinds vendor podcast             # 只抓某些來源
+AINEWS_STORE=local python3 src/pipeline.py --days 1         # 只寫本地 store
+AINEWS_STORE=both python3 src/pipeline.py --days 1          # 本地 + Firestore 都寫
 
 # GitHub Actions 也可在 repo Actions 頁面手動觸發（workflow_dispatch）
+# Docker 見第九章
 ```
 
 ---
 
-## 五、Firestore Schema
+## 五、資料 Schema
+
+Firestore 與本地 store 用**同一份** schema（`src/doc_model.py`），
+所以前端不需要分辨資料從哪來，兩種部署也能互相匯出匯入。
 
 ### `events/{date}_{event_id}`
 | 欄位 | 型別 | 說明 |
@@ -183,10 +224,11 @@ GitHub Secret 不會在 logs 顯示，安全的方式是直接複製整段 JSON 
 ## 七、本地預覽前端
 
 ```bash
-# 不用裝任何東西，直接開個小 server
-cd web
-python3 -m http.server 5173
-# 開 http://localhost:5173
+# 自架版（讀本地 output/store，附 /api 與 /media）
+python3 src/server.py --port 8080
+
+# 雲端版（純靜態，前端會去讀 Firestore）
+cd web && python3 -m http.server 5173
 ```
 
 或用 Firebase 模擬器：
@@ -194,3 +236,178 @@ python3 -m http.server 5173
 ```bash
 firebase emulators:start --only hosting
 ```
+
+---
+
+## 八、前端功能
+
+### 1. 精選指標（自己決定「精選」怎麼挑）
+
+精選卡片右邊有一塊「精選指標」面板，勾選你在意的指標，精選就會即時依這些指標重新排序、重新篩選（可複選，選擇會記在瀏覽器 localStorage）：
+
+| 指標 | 依據 |
+| --- | --- |
+| 重要度 | LLM 給的 `importance`（0–10） |
+| 報導熱度 | `mention_count`（同一件事被幾篇報導提到） |
+| 來源多樣性 | 跨幾家媒體、幾種 `source_kind` |
+| 時效性 | 越接近區間最新一天分數越高 |
+| 主體聲量 | 事件主角（`who`）在區間內跨幾個事件出現 |
+| 台灣相關 | 有 `source_region == "TW"` 的來源，或內文提到台灣 |
+| 開源熱度 | GitHub / HuggingFace 的 stars、下載、按讚數 |
+| 深度內容 | `full_content` 長度（有完整內文才適合放進電子報） |
+
+每個指標會先在「目前區間的事件池」內正規化成 0~1，再把被勾選的指標平均成「精選分」（卡片上會顯示，滑上去可看各指標分數）。沒有勾任何指標時，退回預設的「重要度 + 報導熱度」。
+
+顯示則數（3 / 6 / 9 / 12 / 20）也可以在同一塊面板調整；
+點面板標題可以把整塊指標收起來，「開源生態與模型觀測站」也一樣可收合，收合狀態會記住。
+
+### 2. 事件資料庫
+
+- 日期範圍是**真的日曆日**：選「近 14 天」就是用 `date >= 起日 AND date <= 迄日` 直接查 Firestore，範圍內每一天、每一則事件都會列出來（不再只抓「有 daily_summary 的 N 天」）。
+- 清單分頁顯示，每頁 10 / 20 / 50 / 100 則可選，下方有「上一頁 / 下一頁 / 頁碼 / 末頁」。
+
+### 3. 電子報 PDF
+
+在卡片或清單勾選「加入電子報」（或按精選面板的「精選全部加入電子報」），右下角工具列按 **產生電子報 PDF**，會開一個排好版的視窗（彈出視窗被擋時改用頁內全螢幕預覽），在列印對話框選「另存為 PDF」即可。
+
+版面對齊雙週電子報範本：
+
+1. **目錄頁**：頁首（左 logo｜期別 + 日期｜右 logo）→ 主視覺橫幅 + 橘色刊名膠囊 → 分類標籤 → 每頁 3 張新聞卡（縮圖 + 標題 + 摘要 + 日期/來源）→ 右下角換頁按鈕。
+2. **內文頁**：滿版橫幅 + 白色圓角卡（標題 / 日期·來源 / 小標 / 內文），內容太長自動續頁並標「(承上頁)」，右下角有「上一頁 / 首頁 / 下一頁」。
+
+分頁是在瀏覽器裡「實際量測」出來的，所以不會出現半行被切掉或溢出頁面。
+
+**換成自己的品牌**：改 [`web/report.js`](web/report.js) 最上面的 `DEFAULT_CFG`（刊名、期別、日期、四個素材路徑），素材換掉 `web/assets/` 內同名檔案即可；刊名 / 期別 / 日期也可以直接在工具列的「版面設定」填，會存在 localStorage。
+
+---
+
+## 九、自架版：Docker（完全本地，不需要 Firebase）
+
+雲端那套（GitHub Actions + Firebase）**照舊保留**，兩邊可以並存。
+自架版把資料存成本地 JSON、封面圖留在本機、網站也由容器自己提供，
+整台機器斷開外網（除了抓新聞與呼叫 LLM）也能運作。
+
+### 1. 準備
+
+```bash
+cp .env.example .env
+# 至少要填 AINEWS_LLM_API_KEY，其餘有預設值
+```
+
+`.env` 已在 `.gitignore`；程式碼裡不再有任何寫死的金鑰，沒填會直接報錯不會白跑。
+
+### 2. 啟動
+
+```bash
+docker build -f docker/Dockerfile -t ainews:latest .   # 建 image
+docker compose up -d                                   # 排程 + 網站
+open http://localhost:8080
+```
+
+> 一般情況下 `docker compose up -d --build` 一行就好；
+> 但如果專案路徑含有中文之類的非 ASCII 字元，compose 的 bake 會噴
+> `x-docker-expose-session-sharedkey ... non-printable ASCII characters`，
+> 這時就照上面拆成 `docker build` + `docker compose up -d`。
+
+會起兩個容器：
+
+| 容器 | 做什麼 |
+| --- | --- |
+| `ainews` | 排程器，每天 `AINEWS_RUN_AT`（預設 06:00）跑一次 pipeline，寫進 `output/store/` |
+| `ainews-web` | 網站（預設 8080）：靜態前端 + `/api/*` 資料 + `/media/*` 封面圖 |
+
+### 3. 常用指令
+
+```bash
+docker compose run --rm ainews once                      # 立刻抓一次
+docker compose run --rm -e AINEWS_DAYS=3 ainews once     # 抓近 3 天
+docker compose logs -f                                   # 看紀錄
+docker compose restart web                               # 只重啟網站
+docker compose down                                      # 全部停掉
+docker compose run --rm ainews python3 scripts/repair_day.py --date 2026-08-24
+```
+
+### 4. 把雲端歷史資料搬下來
+
+本地 store 一開始是空的，用這支把 Firestore 既有資料倒回來（需要 `firebase-credentials.json`）：
+
+```bash
+python3 scripts/export_firestore_local.py                     # 全部
+python3 scripts/export_firestore_local.py --start 2026-08-01  # 指定區間
+python3 scripts/export_firestore_local.py --download-images   # 順便把封面圖抓成本地檔
+```
+
+不加 `--download-images` 的話，封面仍指向 Firebase Storage 的網址（要外網才看得到）。
+
+### 5. 環境變數
+
+| 變數 | 預設 | 說明 |
+| --- | --- | --- |
+| `AINEWS_LLM_API_KEY` | 無（必填） | LLM 金鑰，沒填 pipeline 會直接停 |
+| `AINEWS_LLM_BASE_URL` / `_MODEL` | d8ai gateway / `gemma-4-31B-it` | LLM 端點與模型 |
+| `AINEWS_STORE` | `local` | `local` / `firestore` / `both` |
+| `AINEWS_RUN_AT` | `06:00` | 每天幾點跑（依 `TZ`） |
+| `AINEWS_DAYS` | `1` | 抓近 N 天 |
+| `AINEWS_ARGS` | 空 | 額外參數，例如 `--google`、`--kinds vendor podcast` |
+| `AINEWS_RUN_ON_START` | `0` | 設 `1` 則容器一啟動先跑一次 |
+| `AINEWS_WEB_PORT` | `8080` | 網站埠號 |
+| `AINEWS_OUTPUT_DIR` | `/app/output` | 資料目錄（compose 已掛到主機 `./output`） |
+| `TZ` | `Asia/Taipei` | 容器時區 |
+
+### 6. 資料放在哪
+
+```
+output/
+├── store/2026-08-24.json     ← 事件資料庫（網站讀這個）
+├── images/2026-08-24/*.png   ← 封面圖（網站以 /media/ 提供）
+└── 2026-08-24_AI新聞_*.json / .xlsx
+```
+
+備份＝直接複製 `output/`；要看資料直接打開 JSON 就行，不用連任何雲端服務。
+
+### 7. 搬到另一台機器（部署包）
+
+一行打包成單一檔案，丟過去解開就能跑：
+
+```bash
+sh scripts/make_bundle.sh --with-data     # image + compose + 說明 + 現有事件資料
+```
+
+參數：
+
+| 參數 | 作用 |
+| --- | --- |
+| （無） | 只包 image + `compose.yaml` + `.env.example` + `README.txt` |
+| `--with-data` | 加上 `output/store/`（既有事件資料，網站一開就有內容） |
+| `--with-images` | 再加上 `output/images/`（封面圖，檔案較大） |
+| `--with-env` | 連 `.env` 一起包（**內含金鑰**，請用安全管道傳輸） |
+
+產出 `dist/ainews-bundle-YYYYMMDD.tar.gz`。目標機器上：
+
+```bash
+tar -xzf ainews-bundle-YYYYMMDD.tar.gz && cd ainews
+docker load < ainews-image.tar.gz
+cp .env.example .env        # 填 AINEWS_LLM_API_KEY（有帶 --with-env 就跳過）
+docker compose up -d
+# 開 http://<這台機器的IP>:8080
+```
+
+部署包裡的 `compose.yaml` 不含 `build:`，也不會掛載 `web/`（前端已經在 image 裡），
+所以目標機器**不需要原始碼**。
+
+**CPU 架構**：打包前建議先建成雙架構 image，x86 伺服器與 ARM 機器都能跑：
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -f docker/Dockerfile -t ainews:latest --load .
+```
+
+只建單一架構的話，image 只能在同架構的機器上跑（例如在 Apple Silicon 建的
+arm64 image 放不到一般 x86 伺服器）。
+
+### 8. 還是想寫回 Firestore？
+
+`.env` 把 `AINEWS_STORE` 改成 `firestore` 或 `both`，並提供憑證（二擇一）：
+
+- `.env` 填 `FIREBASE_SERVICE_ACCOUNT_JSON=<整份 JSON 貼成一行>`
+- 或在 `compose.yaml` 的 volumes 加一行
+  `- ./firebase-credentials.json:/app/firebase-credentials.json:ro`

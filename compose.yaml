@@ -1,0 +1,54 @@
+# ─────────────────────────────────────────────────────────────
+# 全本地版：抓新聞 → 存本地 JSON → 自架網站，完全不需要 Firebase。
+#
+#   cp .env.example .env              # 填 AINEWS_LLM_API_KEY
+#   docker compose up -d --build      # 排程 + 網站一起起來
+#   open http://localhost:8080
+#
+# 立刻抓一次（不等排程）：
+#   docker compose run --rm ainews once
+#
+# 只看紀錄：
+#   docker compose logs -f
+# ─────────────────────────────────────────────────────────────
+name: ainews
+
+x-common: &common
+  build:
+    context: .
+    dockerfile: docker/Dockerfile
+  image: ainews:latest
+  env_file:
+    - path: .env
+      required: false
+  restart: unless-stopped
+  volumes:
+    # 事件資料庫（output/store/*.json）、封面圖、Excel 都留在主機上
+    - ./output:/app/output
+    # 前端檔案掛進來：改 web/ 不用重 build
+    - ./web:/app/web:ro
+
+services:
+  # 排程器：每天 AINEWS_RUN_AT 跑一次 pipeline
+  ainews:
+    <<: *common
+    container_name: ainews
+    environment:
+      TZ: ${TZ:-Asia/Taipei}
+      AINEWS_STORE: ${AINEWS_STORE:-local}
+      AINEWS_RUN_AT: ${AINEWS_RUN_AT:-06:00}
+      AINEWS_DAYS: ${AINEWS_DAYS:-1}
+      AINEWS_ARGS: ${AINEWS_ARGS:-}
+      AINEWS_RUN_ON_START: ${AINEWS_RUN_ON_START:-0}
+    command: ["schedule"]
+
+  # 網站：靜態前端 + /api/* 資料 + /media/* 封面圖
+  web:
+    <<: *common
+    container_name: ainews-web
+    environment:
+      TZ: ${TZ:-Asia/Taipei}
+      AINEWS_WEB_PORT: ${AINEWS_WEB_PORT:-8080}
+    ports:
+      - "${AINEWS_WEB_PORT:-8080}:${AINEWS_WEB_PORT:-8080}"
+    command: ["serve"]

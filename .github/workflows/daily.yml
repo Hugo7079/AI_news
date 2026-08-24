@@ -48,4 +48,4 @@ jobs:
           if [ "${{ github.event.inputs.enable_google_news }}" = "true" ]; then
             GOOGLE_FLAG="--google"
           fi
-          python3 pipeline.py --days "$DAYS" $GOOGLE_FLAG
+          python3 src/pipeline.py --days "$DAYS" $GOOGLE_FLAG

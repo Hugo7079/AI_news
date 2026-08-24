@@ -22,11 +22,11 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from config import BASE_DIR, OUTPUT_DIR, CATEGORY_LABEL_BY_ID
+from config import BASE_DIR, OUTPUT_DIR
+from doc_model import build_docs, build_summary
 
 FIREBASE_PROJECT_ID = "d8ainews"
 FIREBASE_STORAGE_BUCKET = "d8ainews.firebasestorage.app"
@@ -122,48 +122,6 @@ def _normalize_cover(ev: dict, date_str: str) -> dict:
     return {"kind": "fallback", "category": ev.get("category", "uncategorized")}
 
 
-def _event_to_doc(ev: dict, date_str: str, is_top: bool) -> dict:
-    """事件 dict → Firestore document（純 JSON-safe 結構）。"""
-    return {
-        "event_id":       ev.get("event_id", ""),
-        "date":           date_str,
-        "title":          ev.get("title", ""),
-        "summary":        ev.get("summary", ""),
-        "full_content":   ev.get("full_content", ""),
-        "category":       ev.get("category", "uncategorized"),
-        "category_label": CATEGORY_LABEL_BY_ID.get(ev.get("category"), "未分類"),
-        "importance":     int(ev.get("importance", 0) or 0),
-        "mention_count":  int(ev.get("mention_count", 1) or 1),
-        "who":            list(ev.get("who", []) or []),
-        "what":           ev.get("what", ""),
-        "when":           ev.get("when", ""),
-        "where":          ev.get("where", ""),
-        "sources":        [
-            {
-                "url":            s.get("url", ""),
-                "title":          s.get("title", ""),
-                "source_name":    s.get("source_name", ""),
-                "source_kind":    s.get("source_kind", ""),
-                "published":      s.get("published", ""),
-                # 開源生態欄位（HF / GitHub / Ollama / OpenRouter 才有）
-                "is_opensource":  bool(s.get("is_opensource", False)),
-                "stars":          s.get("stars", "") or "",
-                "pulls":          s.get("pulls", "") or "",
-                "downloads":      int(s.get("downloads", 0) or 0),
-                "likes":          int(s.get("likes", 0) or 0),
-                "upvotes":        int(s.get("upvotes", 0) or 0),
-                "context_length": int(s.get("context_length", 0) or 0),
-                "task":           s.get("task", "") or "",
-                "pricing":        s.get("pricing", {}) or {},
-            }
-            for s in (ev.get("sources") or [])
-        ],
-        "cover_image":    _normalize_cover(ev, date_str),
-        "is_top":         bool(is_top),
-        "generated_at":   datetime.utcnow().isoformat(timespec="seconds") + "Z",
-    }
-
-
 def _delete_day(date_str: str) -> int:
     """刪除當天既有的所有 events doc，避免重跑時新舊事件累積（同一新聞用不同
     措辭被多次抽取 → 不同 event_id → 看起來像重複事件）。回傳刪除筆數。"""
@@ -192,16 +150,12 @@ def write_run(date_str: str,
         print(f"\n[firestore] 清除 {date_str} 既有 {deleted} 筆（避免跨次累積重複）")
     print(f"[firestore] 寫入 {date_str}：DB {len(db_events)} / Top {len(top_events)}")
 
-    top_ids = {ev.get("event_id") for ev in top_events if ev.get("event_id")}
+    docs = build_docs(date_str, db_events, top_events, cover_resolver=_normalize_cover)
 
     batch = _db.batch()
     written = 0
-    for ev in db_events:
-        eid = ev.get("event_id")
-        if not eid:
-            continue
-        doc_id = f"{date_str}_{eid}"
-        doc = _event_to_doc(ev, date_str, is_top=eid in top_ids)
+    for doc in docs:
+        doc_id = f"{date_str}_{doc['event_id']}"
         batch.set(_db.collection("events").document(doc_id), doc)
         written += 1
         # Firestore batch 上限 500，分批 commit
@@ -211,12 +165,6 @@ def write_run(date_str: str,
 
     batch.commit()
 
-    summary_doc = {
-        "date":               date_str,
-        "total_db":           len(db_events),
-        "total_top":          len(top_events),
-        "by_category_label":  dict(by_category_label),
-        "generated_at":       datetime.utcnow().isoformat(timespec="seconds") + "Z",
-    }
+    summary_doc = build_summary(date_str, db_events, top_events, by_category_label)
     _db.collection("daily_summary").document(date_str).set(summary_doc)
     print(f"[firestore] 完成 — events {written} 筆 / daily_summary/{date_str}")

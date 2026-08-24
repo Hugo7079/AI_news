@@ -1,0 +1,22 @@
+.git
+.github
+.claude
+.devcontainer
+.firebase
+__pycache__
+**/__pycache__
+*.pyc
+.DS_Store
+**/.DS_Store
+
+# 金鑰與本機設定：絕對不要打進 image
+.env
+firebase-credentials.json
+*-firebase-adminsdk-*.json
+.ainews_llm_config.json
+
+# 本機產出與大檔
+output
+*.pdf
+*.xlsx
+web/_report_test.html

@@ -14,9 +14,11 @@ import json
 import os
 from pathlib import Path
 
-BASE_DIR = Path(__file__).parent
-OUTPUT_DIR = BASE_DIR / "output"
-OUTPUT_DIR.mkdir(exist_ok=True)
+# src/ 的上一層 = 專案根目錄（firebase-credentials.json、.ainews_llm_config.json 都放這）
+BASE_DIR = Path(__file__).resolve().parents[1]
+# 產出目錄：Docker 用 AINEWS_OUTPUT_DIR 指到掛載的 volume
+OUTPUT_DIR = Path(os.getenv("AINEWS_OUTPUT_DIR", "").strip() or (BASE_DIR / "output"))
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ─────────────────────────────────────────────────────────────
 # 1. 分類架構（5 類）
@@ -203,13 +205,16 @@ FETCH_TIMEOUT = 15
 # ─────────────────────────────────────────────────────────────
 def load_llm_config() -> dict:
     """
-    優先序：
-      1. 環境變數 AINEWS_LLM_API_KEY / _BASE_URL / _MODEL / _TIMEOUT
-      2. .ainews_llm_config.json
-      3. Fallback 到 emap 既有設定（共用 LLM 服務）
+    優先序（後面覆蓋前面）：
+      1. 內建預設（只有 base_url / model，沒有金鑰）
+      2. .ainews_llm_config.json（本機開發用，已 gitignore）
+      3. 環境變數 AINEWS_LLM_API_KEY / _BASE_URL / _MODEL / _TIMEOUT
+         （Docker 由 .env 帶入、GitHub Actions 由 workflow 帶入）
     """
+    # 金鑰不寫在程式碼裡：Docker 走 .env、GitHub Actions 走 workflow 的 env /
+    # secrets、本機開發可放 .ainews_llm_config.json（已 gitignore）。
     cfg = {
-        "api_key":  "sk-yhYo9j0iH3EU9YR5rhmOKWw6uFCnFdOk5win3WTU",
+        "api_key":  "",
         "base_url": "https://llm-gateway.d8ai.ai/",
         "model":    "gemma-4-31B-it",
         "timeout":  90,

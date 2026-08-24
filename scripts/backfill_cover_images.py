@@ -21,7 +21,7 @@ import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import firestore_writer as fw
 from cover_image import _gateway_generate, _build_image_prompt

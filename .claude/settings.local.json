@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import ast; ast.parse\\(open\\('/Users/leolee/Desktop/AI新聞爬搜整理/llm.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")",
+      "Bash(git -C /Users/leolee/Desktop/AI新聞爬搜整理 add llm.py)",
+      "Bash(git -C /Users/leolee/Desktop/AI新聞爬搜整理 commit -m ' *)",
+      "Bash(git -C /Users/leolee/Desktop/AI新聞爬搜整理 push origin main)",
+      "Bash(git -C /Users/leolee/Desktop/AI新聞爬搜整理 log --oneline events.py)",
+      "Bash(cat)",
+      "Bash(node /tmp/t.mjs)"
+    ]
+  }
+}

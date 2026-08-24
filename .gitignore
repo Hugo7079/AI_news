@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 .DS_Store
 .ainews_llm_config.json
+.env
 
 # Firebase service account 金鑰絕對不能進 repo
 firebase-credentials.json
@@ -11,6 +12,7 @@ firebase-credentials.json
 output/*.xlsx
 output/*.json
 output/images/
+output/store/
 output/*.log
 
 # Firebase tooling
@@ -18,3 +20,4 @@ output/*.log
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+dist/

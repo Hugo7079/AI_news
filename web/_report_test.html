@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>電子報版面預覽</title>
+</head>
+<body style="font-family:system-ui;padding:24px">
+  <p>載入中…</p>
+  <script type="module">
+    import { buildReportHtml } from "./report.js?v=dev";
+
+    const N = Number(new URLSearchParams(location.search).get("n") || 7);
+    const res = await fetch("/output/2026-06-15_AI事件_資料庫.json");
+    const data = await res.json();
+    const all = data.events || data;
+    // 每個分類挑幾則，讓版面有多個分類群組
+    const byCat = new Map();
+    for (const ev of all) {
+      const c = ev.category || "x";
+      if (!byCat.has(c)) byCat.set(c, []);
+      byCat.get(c).push(ev);
+    }
+    const per = Number(new URLSearchParams(location.search).get("per") || 99);
+    const picked = [];
+    for (const [, arr] of byCat) picked.push(...arr.slice(0, per));
+    const html = buildReportHtml(picked.slice(0, N), { issue: "第0014期" });
+    document.open();
+    document.write(html);
+    document.close();
+  </script>
+</body>
+</html>
