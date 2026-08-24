@@ -1,8 +1,10 @@
 __pycache__/
 *.pyc
+*.pdf
 .DS_Store
 .ainews_llm_config.json
 .env
+.claude
 
 # Firebase service account 金鑰絕對不能進 repo
 firebase-credentials.json
