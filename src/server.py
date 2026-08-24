@@ -15,6 +15,10 @@
 環境變數：
     AINEWS_WEB_PORT   埠號（預設 8080）
     AINEWS_WEB_HOST   綁定位址（預設 0.0.0.0）
+    AINEWS_BASE_PATH  掛在子路徑下時使用（例如 /d8ainews）。設了之後
+                      伺服器會接受帶前綴的 request（`/d8ainews/api/...`）
+                      跟不帶前綴的（`/api/...`）兩種寫法，方便反向代理
+                      不切前綴的情境。
 """
 
 from __future__ import annotations
@@ -34,18 +38,29 @@ WEB_DIR = Path(os.getenv("AINEWS_WEB_DIR", "").strip() or (BASE_DIR / "web"))
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
+def _normalize_base_path(raw: str) -> str:
+    """把 `AINEWS_BASE_PATH` 統一成 `/xxx` 或空字串。"""
+    s = (raw or "").strip().strip("/")
+    return ("/" + s) if s else ""
+
+
+BASE_PATH = _normalize_base_path(os.getenv("AINEWS_BASE_PATH", ""))
+
+
 def _today_tw() -> str:
     return datetime.now(timezone(timedelta(hours=8))).date().isoformat()
 
 
 def _rewrite_cover(ev: dict) -> dict:
-    """本地封面圖（images/{date}/x.png）→ /media/images/{date}/x.png，
-    前端就能當成一般圖片網址直接用。"""
+    """本地封面圖（images/{date}/x.png）→ media/images/{date}/x.png，
+    前端就能當成一般圖片網址直接用。
+    刻意不加開頭斜線，讓瀏覽器把它當成相對路徑解析——這樣不論服務掛在
+    根目錄還是子路徑（例如反向代理下的 /d8ainews/）都能正確組出圖片網址。"""
     cover = ev.get("cover_image")
     if isinstance(cover, dict) and cover.get("kind") == "local" and cover.get("url"):
         url = str(cover["url"]).lstrip("/")
         ev = dict(ev)
-        ev["cover_image"] = {"kind": "remote", "url": "/media/" + url}
+        ev["cover_image"] = {"kind": "remote", "url": "media/" + url}
     return ev
 
 
@@ -83,6 +98,18 @@ class Handler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         route = unquote(parsed.path)
         qs = parse_qs(parsed.query)
+
+        # 反向代理若沒切前綴，收到的會是 /d8ainews/api/... 這種形式；
+        # 這裡把前綴削掉，讓後續路由邏輯不用理會掛在哪。
+        if BASE_PATH:
+            if route == BASE_PATH:
+                # 少了結尾斜線就重導向，否則前端的相對路徑會全部跑到上一層去
+                self.send_response(301)
+                self.send_header("Location", BASE_PATH + "/")
+                self.end_headers()
+                return
+            if route.startswith(BASE_PATH + "/"):
+                route = route[len(BASE_PATH):]
 
         if route in ("/api/health", "/api/config"):
             return self._json({"ok": True, "mode": "local", "today": _today_tw()})
@@ -148,6 +175,8 @@ def main():
     print(f"[web] 資料目錄 : {local_store.store_dir()}")
     print(f"[web] 圖片目錄 : {OUTPUT_DIR}")
     print(f"[web] 已有資料 : {len(local_store.list_dates())} 天")
+    if BASE_PATH:
+        print(f"[web] 掛載前綴 : {BASE_PATH}（同時吃有/沒有前綴的 request）")
     print(f"[web] 監聽 http://{args.host}:{args.port}")
 
     ThreadingHTTPServer((args.host, args.port), Handler).serve_forever()

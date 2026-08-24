@@ -420,8 +420,9 @@ function coverHtml(ev) {
   const isImage = (cover.kind === "remote" || cover.kind === "local") && cover.url;
   if (isImage) {
     let imgUrl = cover.url;
-    if (!imgUrl.startsWith("http") && !imgUrl.startsWith("/")) {
-      imgUrl = "../output/" + imgUrl;   // 本機直接開檔案時的相對路徑
+    // file:// 直接開檔案測試時，把 media/ 或 /media/ 改指向真正的 output/
+    if (location.protocol === "file:" && !imgUrl.startsWith("http")) {
+      imgUrl = imgUrl.replace(/^\/?media\//, "../output/");
     }
     return `<div class="cover" style="background-image:url('${escapeHtml(imgUrl)}')">${tag}</div>`;
   }

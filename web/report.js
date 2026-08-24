@@ -91,7 +91,12 @@ function coverUrl(ev) {
   const cover = ev.cover_image || {};
   if ((cover.kind === "remote" || cover.kind === "local") && cover.url) {
     let u = cover.url;
-    if (cover.kind === "local" && !/^https?:|^\//.test(u)) u = "../output/" + u;
+    // file:// 直接開檔案測試時，把 media/ 或 /media/ 改指向真正的 output/
+    if (location.protocol === "file:" && !/^https?:/.test(u)) {
+      u = u.replace(/^\/?media\//, "../output/");
+    } else if (cover.kind === "local" && !/^https?:|^\//.test(u)) {
+      u = "../output/" + u;
+    }
     return abs(u);
   }
   return "";
@@ -325,7 +330,7 @@ const LAYOUT_JS = String.raw`
 
   function headHtml() {
     var a = data.assets, bits = [];
-    bits.push(a.clientLogo ? '<img class="c" src="' + esc(a.clientLogo) + '" alt="" />' : '<span></span>');
+    bits.push('<span></span>');
     var mid = [data.issue, data.dateLabel].filter(Boolean).join("　");
     bits.push('<div class="nl-issue">' + esc(mid) + '</div>');
     bits.push(a.brandLogo ? '<img class="b" src="' + esc(a.brandLogo) + '" alt="" />' : '<span></span>');
