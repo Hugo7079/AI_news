@@ -117,7 +117,6 @@ const $metricAddAll  = document.getElementById("metric-add-all");
 const $pickToggle    = document.getElementById("pick-panel-toggle");
 const $pickToggleLbl = document.getElementById("pick-toggle-label");
 const $picksLayout   = document.getElementById("picks-layout");
-const $trendingWrap  = document.getElementById("trending-wrap");
 const $opensource    = document.getElementById("opensource-grid");
 const $dbToolbar     = document.getElementById("db-toolbar");
 const $tabs          = document.getElementById("category-tabs");
@@ -485,75 +484,6 @@ function renderTopPicks(events) {
   $topPicks.innerHTML = currentPicks.map(cardHtml).join("");
 }
 
-// ─── Trending list ───
-// 按「主體跨事件出現次數」計算：同一個 who 出現在 N 個事件 → N 個事件熱度。
-function trendingTitleText() {
-  return `${rangeWord(currentRange)}最受關注主體`;
-}
-
-function renderTrending(events) {
-  const filtered = applyInterestFilter(events);
-
-  const byKey = new Map();   // key → { display, events: [] }
-  for (const ev of filtered) {
-    const seenInThisEvent = new Set();
-    for (const w of (ev.who || [])) {
-      const k = _entityKey(w);
-      if (!k || k.length < 2 || seenInThisEvent.has(k)) continue;
-      seenInThisEvent.add(k);
-      if (!byKey.has(k)) byKey.set(k, { display: String(w).trim(), events: [] });
-      byKey.get(k).events.push(ev);
-    }
-  }
-
-  const ranked = [...byKey.entries()]
-    .map(([k, v]) => ({ key: k, display: v.display, events: v.events }))
-    .filter((e) => e.events.length >= 2)
-    .sort((a, b) => {
-      if (b.events.length !== a.events.length) return b.events.length - a.events.length;
-      const ai = Math.max(...a.events.map((x) => x.importance || 0));
-      const bi = Math.max(...b.events.map((x) => x.importance || 0));
-      return bi - ai;
-    })
-    .slice(0, 5);
-
-  if (!ranked.length) {
-    $trendingWrap.innerHTML = "";
-    return;
-  }
-
-  const rows = ranked.map((entry, i) => {
-    const repEvent = [...entry.events].sort((a, b) => {
-      const di = (b.importance || 0) - (a.importance || 0);
-      if (di !== 0) return di;
-      return (b.mention_count || 0) - (a.mention_count || 0);
-    })[0];
-    const rank = String(i + 1).padStart(2, "0");
-    const color = catColor(repEvent.category);
-    const primarySrc = (repEvent.sources || [])[0] || {};
-    const titleNode = primarySrc.url
-      ? `<a href="${escapeHtml(primarySrc.url)}" target="_blank" rel="noopener noreferrer"><span class="title-text">${escapeHtml(repEvent.title)}</span></a>`
-      : `<span class="title-text">${escapeHtml(repEvent.title)}</span>`;
-    return `
-      <div class="trending-item">
-        <div class="trending-rank">${rank}</div>
-        <div class="trending-text">
-          <span class="cat-badge" style="background:${color}">${catIcon(repEvent.category)}${escapeHtml(entry.display)}</span>
-          ${titleNode}
-        </div>
-        <div class="trending-count">${entry.events.length} 個事件</div>
-      </div>
-    `;
-  }).join("");
-
-  $trendingWrap.innerHTML = `
-    <div class="trending">
-      <div class="trending-title">${ICON_FIRE}${escapeHtml(trendingTitleText())}</div>
-      <div class="trending-list">${rows}</div>
-    </div>
-  `;
-}
-
 // ─── Open Source Radar ───
 const ICON_CODE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`;
 const ICON_STAR_OS = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
@@ -792,15 +722,23 @@ function hbarRow(label, count, max, color) {
 
 function renderTopEntities(events) {
   const filtered = applyInterestFilter(events);
-  const counts = new Map();
+  // 與「最受關注主體」同一套計數規則：正規化主體名 + 同一事件內只算一次，
+  // 兩個區塊的數字才不會互相打架
+  const counts = new Map();   // key → { display, n }
   for (const ev of filtered) {
+    const seenInThisEvent = new Set();
     for (const w of (ev.who || [])) {
-      const k = String(w).trim();
-      if (!k) continue;
-      counts.set(k, (counts.get(k) || 0) + 1);
+      const k = _entityKey(w);
+      if (!k || seenInThisEvent.has(k)) continue;
+      seenInThisEvent.add(k);
+      if (!counts.has(k)) counts.set(k, { display: String(w).trim(), n: 0 });
+      counts.get(k).n += 1;
     }
   }
-  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const sorted = [...counts.values()]
+    .map((v) => [v.display, v.n])
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10);
   if (!sorted.length) {
     $topEntities.innerHTML = `<div class="empty" style="padding:8px">無資料</div>`;
     return;
@@ -809,6 +747,7 @@ function renderTopEntities(events) {
   $topEntities.innerHTML = sorted.map(([k, v]) => hbarRow(k, v, max, "#4f46e5")).join("");
 }
 
+// 分類分佈用甜甜圈圖：分類是「整體的組成」，佔比比長度更好讀
 function renderCatDist(events) {
   const filtered = applyInterestFilter(events);
   const counts = {};
@@ -823,12 +762,59 @@ function renderCatDist(events) {
     $catDist.innerHTML = `<div class="empty" style="padding:8px">無資料</div>`;
     return;
   }
-  const max = Math.max(...rows.map((cid) => counts[cid]));
-  $catDist.innerHTML = rows.map((cid) => hbarRow(
-    cid === "_other" ? FALLBACK_CAT.label : catLabel(cid),
-    counts[cid], max,
-    cid === "_other" ? FALLBACK_CAT.color : catColor(cid),
-  )).join("");
+  const total = rows.reduce((n, cid) => n + counts[cid], 0);
+  const R = 54;
+  const C = 2 * Math.PI * R;
+
+  let offset = 0;
+  const arcs = rows.map((cid) => {
+    const n = counts[cid];
+    const label = cid === "_other" ? FALLBACK_CAT.label : catLabel(cid);
+    const color = cid === "_other" ? FALLBACK_CAT.color : catColor(cid);
+    const len = (n / total) * C;
+    // 每段之間留 1.5 的縫；整圈只有一段時不留，避免圓環斷開
+    const gap = rows.length > 1 ? Math.min(1.5, len / 2) : 0;
+    const seg = Math.max(0, len - gap);
+    const arc = `
+      <circle class="donut-arc" r="${R}" cx="70" cy="70"
+        fill="none" stroke="${color}" stroke-width="20"
+        stroke-dasharray="${seg} ${C - seg}"
+        stroke-dashoffset="${-offset}">
+        <title>${escapeHtml(label)}：${n} 則（${Math.round((n / total) * 100)}%）</title>
+      </circle>
+    `;
+    offset += len;
+    return arc;
+  }).join("");
+
+  const legend = rows.map((cid) => {
+    const n = counts[cid];
+    const label = cid === "_other" ? FALLBACK_CAT.label : catLabel(cid);
+    const color = cid === "_other" ? FALLBACK_CAT.color : catColor(cid);
+    return `
+      <div class="donut-legend-row">
+        <span class="donut-swatch" style="background:${color}"></span>
+        <span class="donut-legend-label">${escapeHtml(label)}</span>
+        <span class="donut-legend-pct">${Math.round((n / total) * 100)}%</span>
+        <span class="donut-legend-count">${n}</span>
+      </div>
+    `;
+  }).join("");
+
+  $catDist.innerHTML = `
+    <div class="donut-wrap">
+      <div class="donut-chart">
+        <svg viewBox="0 0 140 140" role="img" aria-label="事件分類分佈">
+          <g transform="rotate(-90 70 70)">${arcs}</g>
+        </svg>
+        <div class="donut-center">
+          <div class="donut-total">${total}</div>
+          <div class="donut-total-label">則事件</div>
+        </div>
+      </div>
+      <div class="donut-legend">${legend}</div>
+    </div>
+  `;
 }
 
 // ─── 電子報匯出列（浮動工具列 + 設定） ───
@@ -919,7 +905,6 @@ function renderAll() {
   updateSectionTitles();
   updateRangeHint();
   renderTopPicks(currentEvents);
-  renderTrending(currentEvents);
   renderOpenSource(currentEvents);
   renderTabsAndList(currentEvents);
   renderMetrics(currentEvents);
@@ -936,7 +921,6 @@ async function showRange(days) {
   rangeStart = shiftDate(anchor, -(days - 1));
 
   $topPicks.innerHTML = `<div class="loading"><div class="spinner"></div><div>讀取中…</div></div>`;
-  $trendingWrap.innerHTML = "";
   $opensource.innerHTML = "";
   $eventList.innerHTML = "";
   $dbPager.innerHTML = "";
