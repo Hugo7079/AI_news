@@ -31,6 +31,16 @@ COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && mkdir -p /app/output
 
+# ── 不用 root 跑 ──
+# 反向代理後面只需要一個 >1024 的埠（預設 8080），沒有任何動作需要 root。
+# UID/GID 固定成 10001，方便主機上把 ./output 的擁有者對齊：
+#   sudo chown -R 10001:10001 output
+# 主機的 uid 不是 10001 時，改用 compose 的 user: 覆蓋（見 compose.yaml）。
+RUN groupadd -g 10001 ainews \
+ && useradd -u 10001 -g 10001 -m -s /usr/sbin/nologin ainews \
+ && chown -R ainews:ainews /app
+USER ainews:ainews
+
 # 憑證與金鑰一律不打包進 image：用 volume 掛載或環境變數帶入
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["schedule"]

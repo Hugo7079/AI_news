@@ -1,6 +1,7 @@
 __pycache__/
 *.pyc
 *.pdf
+*.tar
 .DS_Store
 .ainews_llm_config.json
 .env
@@ -23,3 +24,4 @@ firebase-debug.log
 firestore-debug.log
 ui-debug.log
 dist/
+*.tar.gz

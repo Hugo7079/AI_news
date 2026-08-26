@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────
 # 部署包用的 compose（目標機器上不需要原始碼、不會 build）
 #
-#   docker load < ainews-image.tar.gz
+#   docker load < ainews-image.tar
 #   cp .env.example .env      # 填 AINEWS_LLM_API_KEY
 #   docker compose up -d
 #   瀏覽器開 http://<這台機器>:8080
@@ -14,6 +14,9 @@ x-common: &common
     - path: .env
       required: false
   restart: unless-stopped
+  # 不用 root 跑。image 內建的 ainews 使用者是 10001；主機的 ./output 若屬於
+  # 別的 uid，在 .env 設 AINEWS_UID / AINEWS_GID 對齊即可（id -u / id -g）。
+  user: "${AINEWS_UID:-10001}:${AINEWS_GID:-10001}"
   volumes:
     # 事件資料庫、封面圖、Excel 都留在主機的 ./output
     - ./output:/app/output
@@ -39,6 +42,8 @@ services:
     environment:
       TZ: ${TZ:-Asia/Taipei}
       AINEWS_WEB_PORT: ${AINEWS_WEB_PORT:-8080}
+      # 掛在反向代理子路徑下時填 /xxx（例如 /d8ainews），沒有就留空
+      AINEWS_BASE_PATH: ${AINEWS_BASE_PATH:-}
     ports:
       - "${AINEWS_WEB_PORT:-8080}:${AINEWS_WEB_PORT:-8080}"
     command: ["serve"]

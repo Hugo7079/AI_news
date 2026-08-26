@@ -110,6 +110,9 @@ class Handler(SimpleHTTPRequestHandler):
                 return
             if route.startswith(BASE_PATH + "/"):
                 route = route[len(BASE_PATH):]
+                # SimpleHTTPRequestHandler 是看 self.path 找檔案的，這裡一併削掉
+                # 前綴，否則 /d8ainews/app.js 會被翻譯成 web/d8ainews/app.js → 404
+                self.path = self.path[len(BASE_PATH):]
 
         if route in ("/api/health", "/api/config"):
             return self._json({"ok": True, "mode": "local", "today": _today_tw()})

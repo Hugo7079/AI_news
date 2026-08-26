@@ -22,6 +22,9 @@ x-common: &common
     - path: .env
       required: false
   restart: unless-stopped
+  # 不用 root 跑。image 內建的 ainews 使用者是 10001；主機的 ./output 若屬於
+  # 別的 uid，在 .env 設 AINEWS_UID / AINEWS_GID 對齊即可（id -u / id -g）。
+  user: "${AINEWS_UID:-10001}:${AINEWS_GID:-10001}"
   volumes:
     # 事件資料庫（output/store/*.json）、封面圖、Excel 都留在主機上
     - ./output:/app/output
