@@ -42,13 +42,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import firestore_writer as fw
 import r2_storage
 from cover_image import (_build_image_prompt, _cf_generate, _gateway_generate,
+                         cf_quota_exhausted,
                          _hf_generate, _load_hf_token, check_cf_config, verify_cf_token, image_ext,
                          postprocess_cover)
 from config import OUTPUT_DIR, IMAGE_CFG
 
-# Cloudflare 計價：4 tiles × 4.80 + 4 steps × 9.60（1024×1024 / 4 steps）
-NEURONS_PER_IMAGE = 57.6
+# 實測值：2026-09-01 跑了 121 張就把 10,000 neurons 用完 → 約 82/張。
+# （官方計價表推算是 4 tiles × 4.80 + 4 steps × 9.60 = 57.6，但實際更高，
+#  所以這裡用實測數字抓，寧可保守。）
+NEURONS_PER_IMAGE = 83.0
 CF_DAILY_FREE_NEURONS = 10_000
+# 每天留給 06:00 排程的額度。排程跑在 UTC 22:00，跟白天手動補圖是同一個
+# UTC 日 —— 不留量的話手動補圖會把當晚 CI 的圖吃光。
+CF_RESERVE_FOR_CRON = 6_000
 
 
 def _today_taiwan() -> str:
@@ -157,10 +163,14 @@ def main() -> None:
     if backend_label.startswith("Cloudflare"):
         print(f"預估耗用 {est:,.0f} neurons"
               f"（每日免費額度 {CF_DAILY_FREE_NEURONS:,}，約占 {est / CF_DAILY_FREE_NEURONS:.0%}）")
-        if est > CF_DAILY_FREE_NEURONS:
-            need = -(-len(jobs) // int(CF_DAILY_FREE_NEURONS // NEURONS_PER_IMAGE))
-            print(f"⚠ 超過單日免費額度 —— 跑到一半會開始吃 429。"
-                  f"建議用 --top 減量，或分 {need} 天跑。")
+        budget = CF_DAILY_FREE_NEURONS - CF_RESERVE_FOR_CRON
+        safe_n = int(budget // NEURONS_PER_IMAGE)
+        print(f"  （手動補圖建議一天不超過 {safe_n} 張 —— 06:00 的排程跑在同一個 "
+              f"UTC 日，要留 {CF_RESERVE_FOR_CRON:,} neurons 給它）")
+        if est > budget:
+            need = -(-len(jobs) // max(1, safe_n))
+            print(f"⚠ 這批會吃掉排程要用的額度。建議加 --limit {safe_n}，"
+                  f"分 {need} 天跑完。")
 
     if not args.yes:
         try:
@@ -196,6 +206,11 @@ def main() -> None:
             print(f"  [skip] 生圖失敗 ({dt:.1f}s)", flush=True)
             fail += 1
             consecutive_fail += 1
+            if cf_quota_exhausted():
+                print(f"\n[abort] Cloudflare 當日免費額度已用完 —— "
+                      f"UTC 隔日 00:00（台灣早上 8 點）重置後再跑同一行即可續補。\n"
+                      f"        本次已完成 {ok} 張。")
+                break
             if consecutive_fail >= ABORT_AFTER:
                 print(f"\n[abort] 連續 {ABORT_AFTER} 張生圖失敗 —— 多半是設定問題"
                       f"（account id / token / 模型名稱），先修好再重跑。\n"

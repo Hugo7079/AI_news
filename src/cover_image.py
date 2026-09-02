@@ -263,6 +263,13 @@ def _hf_generate(prompt: str, token: str) -> Optional[bytes]:
 # ─────────────────────────────────────────────────────────────
 _CF_ACCOUNT_RE = re.compile(r"^[0-9a-f]{32}$")
 
+# 撞到「當日額度用完」就設起來 —— 這種 429 重試沒有意義，整批作業該直接收手
+_cf_quota_exhausted = False
+
+
+def cf_quota_exhausted() -> bool:
+    return _cf_quota_exhausted
+
 
 def check_cf_config() -> Optional[str]:
     """檢查 Cloudflare 設定是否像樣；有問題回一句人話，沒問題回 None。
@@ -363,6 +370,17 @@ def _cf_generate(prompt: str) -> Optional[bytes]:
                 body = e.read().decode("utf-8", errors="ignore")[:200]
             except Exception:
                 pass
+            # 429 有兩種：短時間內請求太密（等一下就好），以及當日免費額度用完
+            # （等到 UTC 隔天才會恢復，重試再多次都沒用）。用訊息內容區分。
+            # 注意 body 上面已經讀過了 —— HTTPError 的 body 只能讀一次，
+            # 這裡不能再 e.read()，否則永遠拿到空字串、判斷不出是哪一種 429。
+            if e.code == 429 and ("daily free allocation" in body
+                                  or "used up your daily" in body):
+                global _cf_quota_exhausted
+                _cf_quota_exhausted = True
+                print("  [cf-image] 今日 Cloudflare 免費額度（10,000 neurons）已用完，"
+                      "UTC 隔日 00:00（台灣時間早上 8 點）才會重置")
+                return None
             if e.code in (429, 500, 502, 503, 504) and attempt < max_attempts:
                 _time.sleep(backoff)
                 backoff *= 2
