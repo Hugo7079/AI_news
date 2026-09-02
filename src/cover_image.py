@@ -287,6 +287,41 @@ def check_cf_config() -> Optional[str]:
     return None
 
 
+def verify_cf_token(timeout: int = 15) -> Optional[str]:
+    """跟 Cloudflare 確認 token 本身有效；有問題回一句人話，沒問題回 None。
+
+    這是網路呼叫，只在批次作業開跑前做一次 —— 比讓每一張圖各自撞 401 便宜太多
+    （每次撞牆前都會先花一次 LLM 呼叫去產視覺提示）。"""
+    problem = check_cf_config()
+    if problem:
+        return problem
+    token = IMAGE_CFG.get("cf_api_token", "")
+    req = urllib.request.Request(
+        "https://api.cloudflare.com/client/v4/user/tokens/verify",
+        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            obj = json.loads(resp.read().decode("utf-8", errors="ignore"))
+    except urllib.error.HTTPError as e:
+        if e.code == 401:
+            return (f"Cloudflare 不認這把 token（長度 {len(token)}、"
+                    f"開頭 {token[:4]!r}）。\n"
+                    f"    標準的 Cloudflare API token 是 40 個字元、沒有前綴。\n"
+                    f"    到 dash.cloudflare.com/profile/api-tokens → Create Token，\n"
+                    f"    用 Workers AI 範本（或 Custom：Account → Workers AI → Read），\n"
+                    f"    再把它填進 .ainews_llm_config.json 的 cf_api_token。")
+        return f"驗證 token 時收到 HTTP {e.code}"
+    except Exception as e:
+        # 網路問題不該擋住整批作業，交給實際呼叫去處理
+        print(f"  [cf-image] token 預檢跳過（{type(e).__name__}）")
+        return None
+
+    status = (obj.get("result") or {}).get("status")
+    if status and status != "active":
+        return f"token 狀態是 {status!r}，不是 active —— 可能已被停用或過期"
+    return None
+
+
 def _cf_generate(prompt: str) -> Optional[bytes]:
     import base64
     import time as _time
@@ -567,6 +602,16 @@ def attach_cover_images(items: list[dict], date_str: str,
         IMAGE_CFG.get("cf_account_id") and IMAGE_CFG.get("cf_api_token"))
     use_gateway = backend == "gateway" and bool(IMAGE_CFG.get("api_key"))
     hf_token = _load_hf_token() if (backend == "hf") else ""
+    # Cloudflare 憑證先驗一次：錯的話 68 張圖會各撞一次 401，而每次撞牆前
+    # 都先花一次 LLM 呼叫產視覺提示 —— 白燒 68 次額度還拖慢整個 run。
+    # 這裡不 raise，改成安靜退回分類 fallback，報表照樣產得出來。
+    if use_cf:
+        problem = verify_cf_token()
+        if problem:
+            print(f"  [cover] Cloudflare 憑證有問題，本次全部改用分類 fallback：\n"
+                  f"          {problem}")
+            use_cf = False
+
     can_generate = bool(use_cf or use_gateway or hf_token)
     if not can_generate:
         if backend == "cloudflare":

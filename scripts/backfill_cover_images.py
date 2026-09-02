@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import firestore_writer as fw
 import r2_storage
 from cover_image import (_build_image_prompt, _cf_generate, _gateway_generate,
-                         _hf_generate, _load_hf_token, check_cf_config, image_ext,
+                         _hf_generate, _load_hf_token, check_cf_config, verify_cf_token, image_ext,
                          postprocess_cover)
 from config import OUTPUT_DIR, IMAGE_CFG
 
@@ -63,7 +63,9 @@ def _pick_generator():
     """依 IMAGE_CFG['backend'] 決定生圖函式；回傳 (fn, 標籤)。"""
     backend = (IMAGE_CFG.get("backend") or "cloudflare").lower()
     if backend == "cloudflare":
-        problem = check_cf_config()
+        # 先本地檢查格式，再跟 Cloudflare 確認 token 真的有效 ——
+        # 憑證錯的話一張都不要開始跑
+        problem = verify_cf_token()
         if problem:
             sys.exit(f"Cloudflare 設定有問題：{problem}")
         return _cf_generate, f"Cloudflare {IMAGE_CFG.get('cf_model')}"
