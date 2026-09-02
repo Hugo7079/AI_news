@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "ledger",
     "public": "web",
     "ignore": [
       "firebase.json",
@@ -11,18 +12,24 @@
       {
         "source": "**",
         "headers": [
-          { "key": "Cache-Control", "value": "no-cache" }
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
         ]
       }
     ],
     "rewrites": [
-      { "source": "**", "destination": "/index.html" }
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   },
   "firestore": {
-    "rules": "firestore.rules"
+    "rules": "firebase/firestore.rules"
   },
   "storage": {
-    "rules": "storage.rules"
+    "rules": "firebase/storage.rules"
   }
 }

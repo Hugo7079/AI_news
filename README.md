@@ -1,7 +1,25 @@
-# AI新聞
+# 晨誌 Morning Ledger
 
 每天自動抓取 **台灣 + 國際 + AI 廠商 + 社群 + Podcast** 的 AI 相關新聞，
 LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接顯示。
+
+外部服務全部走免費額度：
+
+| 用途 | 服務 | 免費額度 | 本專案每天用量 |
+|---|---|---|---|
+| 抽事件 / 去重 / 全文 | Mistral `mistral-small-latest` | 1 RPS、500K TPM、10 億 token/月 | 約 220 次呼叫、60 萬 token |
+| 封面生圖 | Cloudflare Workers AI `flux-1-schnell` | 10,000 neurons/天（約 173 張） | 約 68 張 |
+| 封面存放 | Firebase Storage | 5 GB 存放、5,000 上傳操作/月 | 68KB × 68 張/天 ≈ 4.6MB/天、約 2,040 次/月 |
+
+> 封面存放需要 Firebase **Blaze** 方案 —— Spark 方案寫入會回
+> `403 The billing account for the owning project is disabled`。Blaze 要綁付款方式，
+> 但以上表的用量算，實際費用是 $0（都在免費額度內）。建議在 GCP billing 設個
+> 預算警示，量爆掉時會通知而不是直接開帳單。
+>
+> 不想用 Blaze 的話，`src/r2_storage.py` 提供 Cloudflare R2 作為替代：設好
+> `AINEWS_R2_*` 環境變數後 `_upload_cover()` 會自動改走 R2，程式不用改。
+> 但 R2 開通同樣需要填付款方式，所以除非你已經在用 Cloudflare 生態，
+> 沒必要為此多接一個服務。
 
 兩套部署可以並存，同一份程式碼，差別只在 `AINEWS_STORE`：
 
@@ -132,12 +150,32 @@ Console → Project settings → Service accounts → **Generate new private key
 npm install -g firebase-tools          # 第一次
 firebase login                          # 用 Google 帳號登入
 
+# 第一次：在 d8ainews 專案下開一個新的 hosting site，並綁到 "ledger" target
+firebase hosting:sites:create morning-ledger
+firebase target:apply hosting ledger morning-ledger
+
+# 之後每次部署（都在 repo 根目錄執行）
 firebase deploy --only firestore:rules
 firebase deploy --only storage
-firebase deploy --only hosting
+firebase deploy --only hosting:ledger
 ```
 
-部署完會得到一個 `https://d8ainews.web.app` 的網址。
+部署完會得到 `https://morning-ledger.web.app`。site id 若已被占用，
+換一個名字，`target:apply` 跟著改即可（`firebase.json` 裡的 `target` 名稱不用動）。
+
+> `firebase.json` 與 `.firebaserc` 一定要放在 repo 根目錄。firebase CLI 只在
+> **當前目錄**找這兩個檔，而且 `hosting.public` 是相對於 **`firebase.json` 自己的
+> 位置**解析的 —— 放進子目錄會變成找 `firebase/web`，然後報
+> `Directory 'web' for Hosting does not exist`。規則檔留在 `firebase/` 沒問題，
+> 因為 `firebase.json` 裡已經寫成 `firebase/firestore.rules`。
+
+舊站 `d8ainews.web.app` 確認新站正常後再停用：
+
+```bash
+firebase hosting:sites:delete d8ainews
+```
+
+（刪的是 hosting site，Firestore 資料與專案本身都不受影響。）
 
 ### 4. 灌入歷史資料
 

@@ -8,8 +8,9 @@ Schema:
 
 封面圖：
   - kind == "remote"   → 直接保留外站 URL
-  - kind == "local"    → 把 output/images/{date}/{file} 上傳到 Firebase Storage
-                         並改成 public download URL
+  - kind == "local"    → 把 output/images/{date}/{file} 上傳到物件儲存，
+                         改成 public URL。有設定 R2 就走 R2（見 r2_storage.py），
+                         否則退回 Firebase Storage（需要 Blaze 方案）。
   - kind == "fallback" → 不上傳，前端依 category 自畫色塊
 
 憑證載入順序：
@@ -25,6 +26,7 @@ import os
 from pathlib import Path
 from typing import Optional
 
+import r2_storage
 from config import BASE_DIR, OUTPUT_DIR
 from doc_model import build_docs, build_summary
 
@@ -49,13 +51,15 @@ def _load_credentials():
         data = json.loads(raw_json)
         return credentials.Certificate(data)
 
-    local_path = BASE_DIR / "firebase-credentials.json"
-    if local_path.exists():
-        return credentials.Certificate(str(local_path))
+    # firebase/ 是現在的擺放位置；根目錄是舊版位置，留著相容
+    for local_path in (BASE_DIR / "firebase" / "firebase-credentials.json",
+                       BASE_DIR / "firebase-credentials.json"):
+        if local_path.exists():
+            return credentials.Certificate(str(local_path))
 
     raise RuntimeError(
         "找不到 Firebase service account 憑證。請設定 GOOGLE_APPLICATION_CREDENTIALS "
-        "或 FIREBASE_SERVICE_ACCOUNT_JSON，或把 firebase-credentials.json 放在專案根目錄。"
+        "或 FIREBASE_SERVICE_ACCOUNT_JSON，或把 firebase-credentials.json 放在 firebase/ 底下。"
     )
 
 
@@ -72,7 +76,9 @@ def _init():
         "storageBucket": FIREBASE_STORAGE_BUCKET,
     })
     _db = firestore.client()
-    _bucket = storage.bucket()
+    # 走 R2 時完全不需要 Firebase Storage；Spark 方案下取 bucket 也可能出問題，
+    # 所以只有真的要用才初始化。
+    _bucket = None if r2_storage.is_configured() else storage.bucket()
 
 
 def _upload_cover(local_rel_url: str, date_str: str, overwrite: bool = True) -> Optional[str]:
@@ -94,9 +100,18 @@ def _upload_cover(local_rel_url: str, date_str: str, overwrite: bool = True) -> 
             return None
 
     blob_name = f"covers/{date_str}/{local_path.name}"
+
+    # 優先走 R2：Firebase Storage 在 Spark 方案下寫不進去（403 billing disabled），
+    # 而 R2 免費額度足夠且流量不計費。沒設定 R2 才退回 Firebase Storage。
+    if r2_storage.is_configured():
+        return r2_storage.upload(local_path, blob_name)
+
     blob = _bucket.blob(blob_name)
+    # content-type 依實際副檔名 —— 後端不同格式不同（Cloudflare 回 JPEG）
+    ctype = {"jpg": "image/jpeg", "jpeg": "image/jpeg",
+             "webp": "image/webp"}.get(local_path.suffix.lstrip(".").lower(), "image/png")
     if overwrite or not blob.exists():
-        blob.upload_from_filename(str(local_path), content_type="image/png")
+        blob.upload_from_filename(str(local_path), content_type=ctype)
     blob.make_public()
     # 內容 hash 當 cache-busting 版本參數。封面檔名是來源 URL 的固定 hash，配上
     # Storage 預設 max-age=3600，就地重生（換 prompt）後 URL 不變 → 瀏覽器/CDN

@@ -1,16 +1,15 @@
 """
-封面圖：og:image 抓取 + HF Inference API 生圖（FLUX.1-schnell）
-==============================================================
+封面圖：文生圖（預設 Cloudflare Workers AI 的 FLUX.1 [schnell]）
+==================================================================
 
-對每則「今日精選」呼叫 attach_cover_images()：
-  1) 先試 extract_og_image(url)：抓 <meta property="og:image">
-  2) 若失敗（或圖片載不到）→ 用 HF Inference API 生一張 (FLUX.1-schnell)
-  3) 寫入 item["cover_image"]：可能是外站 URL 或本地相對路徑
+對每則事件呼叫 attach_cover_images()，產生一張封面並寫入
+item["cover_image"]（本地相對路徑）；失敗則落分類 fallback 底圖。
 
-設定（兩種來源任一）：
-  ‣ 環境變數 HF_TOKEN
-  ‣ st.secrets["HF_TOKEN"]（streamlit 部署）
-  ‣ .ainews_llm_config.json 的 "hf_token" 欄位
+backend 由 AINEWS_IMAGE_BACKEND 決定，預設 "cloudflare"：
+  ‣ cloudflare — 需要 AINEWS_CF_ACCOUNT_ID + AINEWS_CF_API_TOKEN
+                 免費額度 10,000 neurons/天，一張約 57.6 neurons
+  ‣ gateway    — d8ai gateway 的 /v1/images/generations
+  ‣ hf         — HuggingFace Inference API（api-inference host 已下線）
 """
 
 from __future__ import annotations
@@ -254,6 +253,133 @@ def _hf_generate(prompt: str, token: str) -> Optional[bytes]:
 
 
 # ─────────────────────────────────────────────────────────────
+# Cloudflare Workers AI 文生圖（FLUX.1 [schnell]）
+#
+# 端點：POST /client/v4/accounts/{account_id}/ai/run/{model}
+# 入參只吃 prompt / steps（上限 8）/ seed —— 沒有 width / height，
+# 出圖固定正方形。前端 .lead-cover 是 aspect-ratio 16/9 + cover，
+# 瀏覽器會自己置中裁切，所以不需要在這裡再處理比例。
+# 回應是 JSON：{"result": {"image": "<base64 JPEG>"}, "success": true}
+# ─────────────────────────────────────────────────────────────
+_CF_ACCOUNT_RE = re.compile(r"^[0-9a-f]{32}$")
+
+
+def check_cf_config() -> Optional[str]:
+    """檢查 Cloudflare 設定是否像樣；有問題回一句人話，沒問題回 None。
+
+    account id 是 32 位小寫十六進位、token 是純 ASCII。先擋掉明顯不對的值，
+    否則中文佔位字會一路帶到 urllib 才炸出 UnicodeEncodeError，訊息完全看不出
+    是設定沒填。"""
+    account = IMAGE_CFG.get("cf_account_id", "")
+    token = IMAGE_CFG.get("cf_api_token", "")
+    if not account:
+        return "AINEWS_CF_ACCOUNT_ID 沒有設定"
+    if not token:
+        return "AINEWS_CF_API_TOKEN 沒有設定"
+    if not _CF_ACCOUNT_RE.match(account):
+        return (f"AINEWS_CF_ACCOUNT_ID 格式不對：{account!r}\n"
+                f"    應該是 32 位小寫十六進位（例如 8f14e45fceea167a5a36dedd4bea2543）。\n"
+                f"    在 dash.cloudflare.com 的網址列，或 Workers & Pages 右側欄可以找到。")
+    if not token.isascii():
+        return (f"AINEWS_CF_API_TOKEN 含有非 ASCII 字元 —— 看起來是佔位文字沒換掉。\n"
+                f"    到 dash.cloudflare.com/profile/api-tokens 建一把，"
+                f"權限選 Account → Workers AI → Read。")
+    return None
+
+
+def _cf_generate(prompt: str) -> Optional[bytes]:
+    import base64
+    import time as _time
+
+    problem = check_cf_config()
+    if problem:
+        print(f"  [cf-image] {problem}")
+        return None
+
+    account = IMAGE_CFG.get("cf_account_id", "")
+    token = IMAGE_CFG.get("cf_api_token", "")
+    model = IMAGE_CFG.get("cf_model", "@cf/black-forest-labs/flux-1-schnell")
+
+    url = (f"https://api.cloudflare.com/client/v4/accounts/{account}"
+           f"/ai/run/{model}")
+    payload = json.dumps({
+        "prompt": prompt[:2048],           # 官方上限 2048 字元
+        "steps": max(1, min(8, int(IMAGE_CFG.get("cf_steps", 4)))),
+    }).encode()
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "User-Agent": UA,
+    }
+
+    # 429 = 當天 neuron 用完或瞬間超速；5xx = 暫時性。退避重試 3 次。
+    max_attempts = 3
+    backoff = 3.0
+    for attempt in range(1, max_attempts + 1):
+        req = urllib.request.Request(url, data=payload, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=IMAGE_CFG.get("timeout", 60)) as resp:
+                ctype = resp.headers.get("Content-Type", "")
+                raw = resp.read()
+        except urllib.error.HTTPError as e:
+            body = ""
+            try:
+                body = e.read().decode("utf-8", errors="ignore")[:200]
+            except Exception:
+                pass
+            if e.code in (429, 500, 502, 503, 504) and attempt < max_attempts:
+                _time.sleep(backoff)
+                backoff *= 2
+                continue
+            # 401/403 = token 沒權限或過期；404 = account id 或 model 名稱不對。
+            # 這幾種重試再多次也一樣，直接講清楚要去改什麼。
+            if e.code in (401, 403):
+                print(f"  [cf-image] {e.code}：AINEWS_CF_API_TOKEN 無效或缺少 "
+                      f"Workers AI 權限")
+            elif e.code == 404:
+                print(f"  [cf-image] 404：AINEWS_CF_ACCOUNT_ID（目前 "
+                      f"{account!r}）或模型名稱不對")
+            else:
+                print(f"  [cf-image] HTTPError {e.code} "
+                      f"(attempt {attempt}/{max_attempts}): {body}")
+            return None
+        except Exception as e:
+            if attempt < max_attempts:
+                _time.sleep(backoff)
+                backoff *= 2
+                continue
+            print(f"  [cf-image] {type(e).__name__}: {e}")
+            return None
+
+        # 少數模型直接回二進位圖
+        if ctype.startswith("image/"):
+            return raw
+        try:
+            obj = json.loads(raw.decode("utf-8", errors="ignore"))
+        except ValueError:
+            print(f"  [cf-image] 回應不是 JSON：{raw[:120]!r}")
+            return None
+
+        if not obj.get("success", True):
+            errs = obj.get("errors") or obj.get("messages") or obj
+            print(f"  [cf-image] API 回報失敗：{json.dumps(errs, ensure_ascii=False)[:200]}")
+            return None
+
+        b64 = ((obj.get("result") or {}).get("image")) or ""
+        if not b64:
+            print(f"  [cf-image] 回應無 result.image：{json.dumps(obj, ensure_ascii=False)[:200]}")
+            return None
+        try:
+            return base64.b64decode(b64)
+        except Exception as e:
+            print(f"  [cf-image] base64 解碼失敗：{e}")
+            return None
+
+    return None
+
+
+# ─────────────────────────────────────────────────────────────
 # d8ai gateway 文生圖（OpenAI 相容 /v1/images/generations）
 # ─────────────────────────────────────────────────────────────
 def _images_url(base: str) -> str:
@@ -348,18 +474,83 @@ def _short_id(seed: str) -> str:
     return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:10]
 
 
+# 封面在網站上是 16:9（.lead-cover），PDF 是 52mm 橫幅。生圖後端給的是
+# 1024×1024 正方形、約 485KB，直接存等於讓瀏覽器載三倍體積再自己裁掉。
+COVER_WIDTH = int(os.getenv("AINEWS_COVER_WIDTH", "1024"))
+COVER_RATIO = (16, 9)
+COVER_QUALITY = int(os.getenv("AINEWS_COVER_QUALITY", "82"))
+
+
+def postprocess_cover(data: bytes) -> bytes:
+    """置中裁成 16:9、縮到 COVER_WIDTH、輸出 JPEG。
+
+    Pillow 沒裝就原樣回傳 —— 圖還是能用，只是檔案大一點，不該為了瘦身讓整條
+    pipeline 掛掉。"""
+    try:
+        import io
+        from PIL import Image
+    except ImportError:
+        return data
+
+    try:
+        im = Image.open(io.BytesIO(data))
+        im.load()
+        if im.mode not in ("RGB", "L"):
+            im = im.convert("RGB")
+
+        tw, th = COVER_RATIO
+        w, h = im.size
+        # 置中裁出最大的 16:9 區域
+        if w * th > h * tw:
+            new_w = int(round(h * tw / th))
+            left = (w - new_w) // 2
+            im = im.crop((left, 0, left + new_w, h))
+        else:
+            new_h = int(round(w * th / tw))
+            top = (h - new_h) // 2
+            im = im.crop((0, top, w, top + new_h))
+
+        target = (COVER_WIDTH, int(round(COVER_WIDTH * th / tw)))
+        if im.size[0] > target[0]:
+            im = im.resize(target, Image.LANCZOS)
+
+        buf = io.BytesIO()
+        im.save(buf, format="JPEG", quality=COVER_QUALITY, optimize=True, progressive=True)
+        return buf.getvalue()
+    except Exception as e:
+        print(f"  [cover] 後處理失敗（保留原圖）：{type(e).__name__}: {e}")
+        return data
+
+
+def image_ext(data: bytes) -> str:
+    """看 magic bytes 判斷副檔名。不同後端吐的格式不一樣 ——
+    Cloudflare flux-1-schnell 回 JPEG、gateway 回 PNG —— 一律寫死 .png
+    會產生副檔名與內容不符的檔案，上傳時 content-type 也會標錯。"""
+    if data[:3] == b"\xff\xd8\xff":
+        return "jpg"
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return "png"
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return "webp"
+    return "png"
+
+
 def attach_cover_images(items: list[dict], date_str: str,
                         generate_fallback: bool = True,
-                        max_generate: int = 200,
+                        max_generate: int = 150,
                         max_workers: int = 3,
-                        backend: str = "gateway",
+                        backend: str | None = None,
                         retry_passes: int = 2,
                         deadline: float | None = None) -> None:
     """
     對每則事件用文生圖模型產生一張封面圖（平行呼叫 + 重試）。
-      - backend="gateway"（預設）：呼叫 d8ai gateway 的 /v1/images/generations（z-image-turbo）
-      - backend="hf"：沿用舊的 HuggingFace FLUX Inference API
-      - max_generate：生圖總量上限（保護）；超過則落分類 fallback
+      - backend=None（預設）：讀 IMAGE_CFG["backend"]（環境變數 AINEWS_IMAGE_BACKEND）
+        ‣ "cloudflare"：Cloudflare Workers AI 的 FLUX.1 [schnell]（目前的預設）
+        ‣ "gateway"   ：d8ai gateway 的 /v1/images/generations（z-image-turbo）
+        ‣ "hf"        ：HuggingFace Inference API（host 已下線，僅為相容保留）
+      - max_generate：生圖總量上限（保護）；超過則落分類 fallback。
+        預設 150 是照 Cloudflare 免費額度抓的：10,000 neurons/天 ÷ 約 57.6
+        neurons/張 ≈ 173 張，留一點餘裕給重試。
       - max_workers：平行度（生圖走獨立 urllib，不受 llm.py 8 RPM 限制）。預設 3，
         比舊的順序（1）快 2-3 倍；仍保留 retry_passes 吸收偶發 504。
       - retry_passes：失敗的事件最多再掃幾輪重試（gateway 偶爾忙會 504，重試多半就成功）
@@ -370,15 +561,26 @@ def attach_cover_images(items: list[dict], date_str: str,
     img_dir = OUTPUT_DIR / "images" / date_str
     img_dir.mkdir(parents=True, exist_ok=True)
 
+    backend = (backend or IMAGE_CFG.get("backend") or "cloudflare").lower()
+
+    use_cf = backend == "cloudflare" and bool(
+        IMAGE_CFG.get("cf_account_id") and IMAGE_CFG.get("cf_api_token"))
     use_gateway = backend == "gateway" and bool(IMAGE_CFG.get("api_key"))
     hf_token = _load_hf_token() if (backend == "hf") else ""
-    if not use_gateway and not hf_token:
-        print("  [cover] 未設定文生圖端點（gateway/HF）— 全部使用分類 fallback")
+    can_generate = bool(use_cf or use_gateway or hf_token)
+    if not can_generate:
+        if backend == "cloudflare":
+            print("  [cover] 未設定 AINEWS_CF_ACCOUNT_ID / AINEWS_CF_API_TOKEN"
+                  " — 全部使用分類 fallback")
+        else:
+            print(f"  [cover] backend={backend} 未設定完整 — 全部使用分類 fallback")
 
     counter_lock = threading.Lock()
     counters = {"gen": 0, "fallback": 0}
 
     def _generate(prompt: str) -> Optional[bytes]:
+        if use_cf:
+            return _cf_generate(prompt)
         if use_gateway:
             return _gateway_generate(prompt)
         if hf_token:
@@ -398,7 +600,7 @@ def attach_cover_images(items: list[dict], date_str: str,
 
         # 生圖份額保護（先佔位，失敗再還回）
         do_generate = False
-        if use_gateway or hf_token:
+        if can_generate:
             with counter_lock:
                 if counters["gen"] < max_generate:
                     counters["gen"] += 1
@@ -407,7 +609,8 @@ def attach_cover_images(items: list[dict], date_str: str,
             prompt = _build_image_prompt(it.get("title", ""), it.get("summary", ""), cat)
             img_bytes = _generate(prompt)
             if img_bytes:
-                fname = f"{_short_id(url or it.get('title', ''))}.png"
+                img_bytes = postprocess_cover(img_bytes)
+                fname = f"{_short_id(url or it.get('title', ''))}.{image_ext(img_bytes)}"
                 fpath = img_dir / fname
                 try:
                     fpath.write_bytes(img_bytes)
@@ -423,14 +626,16 @@ def attach_cover_images(items: list[dict], date_str: str,
         with counter_lock:
             counters["fallback"] += 1
 
-    src = "d8ai gateway" if use_gateway else ("HF FLUX" if hf_token else "fallback only")
+    src = ("Cloudflare FLUX.1-schnell" if use_cf else
+           "d8ai gateway" if use_gateway else
+           "HF FLUX" if hf_token else "fallback only")
     print(f"  封面圖生成（{len(items)} 則，backend={src}，平行 {max_workers}）...")
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
         list(ex.map(_one, items))
     print(f"  封面圖首輪：生成 {counters['gen']} 張 / fallback {counters['fallback']} 張")
 
     # 重試掃尾：gateway 暫時忙就會 504，掃個一兩輪幾乎都能補齊
-    if (use_gateway or hf_token) and retry_passes > 0:
+    if can_generate and retry_passes > 0:
         for round_no in range(1, retry_passes + 1):
             if deadline is not None and time.monotonic() > deadline:
                 print("  封面圖：已達時間預算上限，跳過剩餘重試")

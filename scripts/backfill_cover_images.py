@@ -2,15 +2,31 @@
 回填封面圖到既有 Firestore events
 ==================================
 
-之前 pipeline 用 parallel=4 呼叫 gateway 文生圖，41/43 都 504。改成 sequential
-+ retry 後沒問題，但 Firestore 裡的 cover_image 還是 fallback。這支只補圖、
-不重跑整個 pipeline。
+pipeline 只在當天跑的時候生圖；封面後端換掉（或壞掉）期間留下的事件會一直是
+fallback 底圖。這支只補圖、不重跑整個 pipeline。
+
+生圖後端沿用 src/cover_image.py 的設定（AINEWS_IMAGE_BACKEND），預設是
+Cloudflare Workers AI 的 FLUX.1 [schnell]。
+
+⚠ 免費額度：Cloudflare 每天 10,000 neurons，一張 1024×1024 / 4 steps 約
+   57.6 neurons ≈ 173 張/天。補多天時務必用 --top 只挑每天最重要的幾則，
+   否則會在中途撞到 429。腳本開跑前會估算並要你確認。
 
 用法：
-  python scripts/backfill_cover_images.py                    # 補今天
-  python scripts/backfill_cover_images.py --date 2026-06-15  # 指定日期
-  python scripts/backfill_cover_images.py --limit 5          # 測試
-  python scripts/backfill_cover_images.py --force            # 連已有圖的也重生
+  # 補最近 10 天，每天挑重要度最高的 12 則（約 138 張 / 7,900 neurons）
+  python scripts/backfill_cover_images.py --days 10 --top 12
+
+  # 只補某一天，全部補滿
+  python scripts/backfill_cover_images.py --date 2026-08-28
+
+  # 先試 3 張看看成品
+  python scripts/backfill_cover_images.py --date 2026-08-28 --limit 3
+
+  # 連已經有圖的也重生
+  python scripts/backfill_cover_images.py --date 2026-08-28 --force
+
+  # 不問直接跑（排程用）
+  python scripts/backfill_cover_images.py --days 10 --top 12 --yes
 """
 
 from __future__ import annotations
@@ -24,8 +40,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 import firestore_writer as fw
-from cover_image import _gateway_generate, _build_image_prompt
-from config import OUTPUT_DIR
+import r2_storage
+from cover_image import (_build_image_prompt, _cf_generate, _gateway_generate,
+                         _hf_generate, _load_hf_token, check_cf_config, image_ext,
+                         postprocess_cover)
+from config import OUTPUT_DIR, IMAGE_CFG
+
+# Cloudflare 計價：4 tiles × 4.80 + 4 steps × 9.60（1024×1024 / 4 steps）
+NEURONS_PER_IMAGE = 57.6
+CF_DAILY_FREE_NEURONS = 10_000
 
 
 def _today_taiwan() -> str:
@@ -36,74 +59,168 @@ def _short_id(seed: str) -> str:
     return hashlib.sha1(seed.encode("utf-8")).hexdigest()[:10]
 
 
+def _pick_generator():
+    """依 IMAGE_CFG['backend'] 決定生圖函式；回傳 (fn, 標籤)。"""
+    backend = (IMAGE_CFG.get("backend") or "cloudflare").lower()
+    if backend == "cloudflare":
+        problem = check_cf_config()
+        if problem:
+            sys.exit(f"Cloudflare 設定有問題：{problem}")
+        return _cf_generate, f"Cloudflare {IMAGE_CFG.get('cf_model')}"
+    if backend == "gateway":
+        if not IMAGE_CFG.get("api_key"):
+            sys.exit("backend=gateway 但沒有 API key")
+        return _gateway_generate, f"d8ai gateway {IMAGE_CFG.get('model')}"
+    if backend == "hf":
+        tok = _load_hf_token()
+        if not tok:
+            sys.exit("backend=hf 但沒有 HF_TOKEN")
+        return (lambda p: _hf_generate(p, tok)), "HuggingFace FLUX"
+    sys.exit(f"未知的 AINEWS_IMAGE_BACKEND：{backend}")
+
+
+def _needs_cover(ev: dict, force: bool) -> bool:
+    if force:
+        return True
+    cover = ev.get("cover_image") or {}
+    return cover.get("kind") not in ("remote", "local") or not cover.get("url")
+
+
+def _collect(db, dates: list[str], top: int, force: bool, limit: int):
+    """回傳 [(date, doc_id, event)]，每天依重要度取前 top 則。"""
+    jobs = []
+    for d in dates:
+        docs = list(db.collection("events").where("date", "==", d).stream())
+        rows = [(doc.id, doc.to_dict() or {}) for doc in docs]
+        pending = [(i, ev) for i, ev in rows if _needs_cover(ev, force)]
+        # 重要度高、被報導多的優先 —— 頭版與電子報用得到的就是這些
+        pending.sort(key=lambda t: (t[1].get("importance", 0), t[1].get("mention_count", 0)),
+                     reverse=True)
+        if top:
+            pending = pending[:top]
+        print(f"  {d}：{len(rows):3d} 則，待補 {len(pending):3d}")
+        jobs.extend((d, doc_id, ev) for doc_id, ev in pending)
+    if limit and len(jobs) > limit:
+        jobs = jobs[:limit]
+        print(f"--limit：只處理前 {len(jobs)} 張")
+    return jobs
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--date", default=_today_taiwan(), help="處理某一天（YYYY-MM-DD）")
-    ap.add_argument("--limit", type=int, default=0, help="最多處理幾筆（0=不限）")
-    ap.add_argument("--force", action="store_true", help="連已有 remote 圖的也重生")
+    ap.add_argument("--date", help="只處理某一天（YYYY-MM-DD）")
+    ap.add_argument("--days", type=int, default=0,
+                    help="從今天往回算 N 天（與 --date 二選一）")
+    ap.add_argument("--top", type=int, default=0,
+                    help="每天最多補幾則（依重要度排序，0=不限）")
+    ap.add_argument("--limit", type=int, default=0, help="總張數上限（0=不限）")
+    ap.add_argument("--force", action="store_true", help="連已有圖的也重生")
+    ap.add_argument("--yes", action="store_true", help="不詢問直接開跑")
     args = ap.parse_args()
+
+    generate, backend_label = _pick_generator()
+
+    # 上傳目的地也先檢查 —— 生完圖才發現傳不上去最浪費
+    if r2_storage.is_configured():
+        problem = r2_storage.check_config()
+        if problem:
+            sys.exit(f"R2 設定有問題：{problem}")
+        if not r2_storage.ensure_bucket():
+            sys.exit("R2 bucket 不可用，先處理再重跑。")
+        store_label = f"Cloudflare R2 ({r2_storage.config()['bucket']})"
+    else:
+        store_label = "Firebase Storage（需要 Blaze 方案）"
+
+    if args.days:
+        today = datetime.now(timezone(timedelta(hours=8))).date()
+        dates = [(today - timedelta(days=i)).isoformat() for i in range(args.days)]
+    else:
+        dates = [args.date or _today_taiwan()]
 
     fw._init()
     db = fw._db
-
     col = db.collection("events")
-    docs = list(col.where("date", "==", args.date).stream())
-    print(f"Firestore events {args.date}：共 {len(docs)} 筆")
 
-    targets = []
-    for d in docs:
-        data = d.to_dict() or {}
-        cover = data.get("cover_image") or {}
-        if args.force or cover.get("kind") != "remote" or not cover.get("url"):
-            targets.append((d.id, data))
-    print(f"待補圖：{len(targets)} 筆")
+    print(f"生圖：{backend_label}")
+    print(f"儲存：{store_label}")
+    print(f"掃描 {len(dates)} 天：")
+    jobs = _collect(db, dates, args.top, args.force, args.limit)
 
-    if args.limit and len(targets) > args.limit:
-        targets = targets[: args.limit]
-        print(f"--limit：只處理前 {len(targets)} 筆")
-    if not targets:
-        print("沒有需要補圖的事件。")
+    if not jobs:
+        print("\n沒有需要補圖的事件。")
         return
 
-    img_dir = OUTPUT_DIR / "images" / args.date
-    img_dir.mkdir(parents=True, exist_ok=True)
+    est = len(jobs) * NEURONS_PER_IMAGE
+    print(f"\n總計要生 {len(jobs)} 張")
+    if backend_label.startswith("Cloudflare"):
+        print(f"預估耗用 {est:,.0f} neurons"
+              f"（每日免費額度 {CF_DAILY_FREE_NEURONS:,}，約占 {est / CF_DAILY_FREE_NEURONS:.0%}）")
+        if est > CF_DAILY_FREE_NEURONS:
+            need = -(-len(jobs) // int(CF_DAILY_FREE_NEURONS // NEURONS_PER_IMAGE))
+            print(f"⚠ 超過單日免費額度 —— 跑到一半會開始吃 429。"
+                  f"建議用 --top 減量，或分 {need} 天跑。")
 
-    ok = 0
-    fail = 0
-    for i, (doc_id, ev) in enumerate(targets, 1):
-        title = (ev.get("title") or "")[:40]
-        print(f"[{i}/{len(targets)}] {title}", flush=True)
+    if not args.yes:
+        try:
+            if input("繼續？[y/N] ").strip().lower() not in ("y", "yes"):
+                print("取消。")
+                return
+        except EOFError:
+            print("\n非互動環境，請加 --yes。")
+            return
+
+    ok = fail = 0
+    consecutive_fail = 0
+    # 憑證錯的話每一張都會失敗，而且每張失敗前都先燒一次 LLM 呼叫去產視覺提示。
+    # 連續失敗就停手，不要把整批額度浪費在同一個設定錯誤上。
+    ABORT_AFTER = 3
+
+    for i, (date_str, doc_id, ev) in enumerate(jobs, 1):
+        title = (ev.get("title") or "")[:36]
+        print(f"[{i}/{len(jobs)}] {date_str} {title}", flush=True)
+
+        img_dir = OUTPUT_DIR / "images" / date_str
+        img_dir.mkdir(parents=True, exist_ok=True)
+
         prompt = _build_image_prompt(
             ev.get("title", ""),
             ev.get("summary", ""),
             ev.get("category", "uncategorized"),
         )
         t0 = time.monotonic()
-        img_bytes = _gateway_generate(prompt)
+        img_bytes = generate(prompt)
         dt = time.monotonic() - t0
         if not img_bytes:
             print(f"  [skip] 生圖失敗 ({dt:.1f}s)", flush=True)
             fail += 1
+            consecutive_fail += 1
+            if consecutive_fail >= ABORT_AFTER:
+                print(f"\n[abort] 連續 {ABORT_AFTER} 張生圖失敗 —— 多半是設定問題"
+                      f"（account id / token / 模型名稱），先修好再重跑。\n"
+                      f"        已完成的不會重做，直接重跑同一行指令即可續補。")
+                break
             continue
+        consecutive_fail = 0
 
-        seed = ev.get("sources", [{}])[0].get("url", "") or ev.get("title", "") or doc_id
-        fname = f"{_short_id(seed)}.png"
+        img_bytes = postprocess_cover(img_bytes)
+        seed = (ev.get("sources") or [{}])[0].get("url", "") or ev.get("title", "") or doc_id
+        fname = f"{_short_id(seed)}.{image_ext(img_bytes)}"
         fpath = img_dir / fname
         fpath.write_bytes(img_bytes)
 
-        public_url = fw._upload_cover(f"images/{args.date}/{fname}", args.date)
+        public_url = fw._upload_cover(f"images/{date_str}/{fname}", date_str)
         if not public_url:
-            print(f"  [skip] Storage 上傳失敗", flush=True)
+            print("  [skip] Storage 上傳失敗", flush=True)
             fail += 1
             continue
 
         col.document(doc_id).update({"cover_image": {"kind": "remote", "url": public_url}})
         ok += 1
-        print(f"  [ok] {dt:.1f}s → {public_url[:80]}", flush=True)
-        # gateway 順序測試證明每張 15s 內，但保險起見讓 server 喘一下
-        time.sleep(1.0)
+        print(f"  [ok] {dt:.1f}s → {public_url[:76]}", flush=True)
 
-    print(f"\n[done] 成功 {ok} / 失敗 {fail}（共 {len(targets)}）")
+    print(f"\n[done] 成功 {ok} / 失敗 {fail}（共 {len(jobs)}）")
+    if ok and backend_label.startswith("Cloudflare"):
+        print(f"本次約耗用 {ok * NEURONS_PER_IMAGE:,.0f} neurons")
 
 
 if __name__ == "__main__":

@@ -18,9 +18,10 @@ from config import LLM_CFG
 
 
 # ─── 全域速率限制 ───
-# Gemini 2.5 Flash 免費版只有 10 RPM；2.0 Flash 是 15 RPM。
-# 預設 8 RPM，留 buffer 給 retry。可用 AINEWS_LLM_RPM 環境變數覆寫。
-_RPM_LIMIT = int(os.getenv("AINEWS_LLM_RPM", "8"))
+# Mistral 免費 Experiment tier 是 1 RPS（＝60 RPM）、500K TPM。
+# 預設 45 RPM，留 buffer 給 retry 與並行誤差。換別家記得跟著調：
+# Groq 免費版 30 RPM、OpenRouter free 20 RPM。可用 AINEWS_LLM_RPM 覆寫。
+_RPM_LIMIT = int(os.getenv("AINEWS_LLM_RPM", "45"))
 
 
 class _RateLimiter:
@@ -85,7 +86,7 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
     global _logged_url
     api_key = LLM_CFG.get("api_key", "")
     base_url = LLM_CFG.get("base_url", "")
-    model = LLM_CFG.get("model", "gemma-4-31B-it")
+    model = LLM_CFG.get("model", "mistral-small-latest")
     if not api_key:
         if not _logged_url:
             print("  [LLM] api_key 為空 — 跳過所有 LLM 呼叫")
@@ -124,8 +125,8 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
     }
 
     # 429 / 502 / 503 / 504：等一下再試最多 3 次（指數退避 + Retry-After）
-    # 502 Bad Gateway：d8ai gateway 後端 vLLM 抖動時 nginx 會吐 502，屬暫時性錯誤，
-    # 一定要重試；否則 merge/enrich 的每個 LLM 呼叫會在 gateway 抖動時直接放棄變空。
+    # 429 在 Mistral 上代表撞到 1 RPS 或 500K TPM，等一下就會過；5xx 是後端暫時
+    # 不可用。這些一定要重試，否則 merge/enrich 的呼叫會直接放棄、整份報表變空。
     max_attempts = 4
     backoff = 4.0
     resp = None

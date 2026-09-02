@@ -93,7 +93,7 @@ def _generate_one(ev: dict, deadline: float | None = None) -> bool:
         ev["full_content"] = summary
         return False
     text = ""
-    # 最多 2 次：gateway 上的模型（gemma-4-31B-it / Qwen 等）現在都是推理型：會先
+    # 最多 2 次：現在的模型（mistral-small-latest 等）多半是混合推理型：會先
     # 花 token 思考（reasoning_content），再寫文章。token 太小會在思考階段就被截斷，
     # 導致 content 為空 → 退回摘要 → 細節與摘要一模一樣。
     for attempt in range(2):

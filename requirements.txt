@@ -5,3 +5,7 @@ requests>=2.31
 beautifulsoup4>=4.12
 python-dateutil>=2.8
 firebase-admin>=6.5
+# 封面圖後處理（裁 16:9 / 壓縮）
+Pillow>=10.0
+# Cloudflare R2 走 S3 相容介面
+boto3>=1.34

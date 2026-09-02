@@ -215,8 +215,10 @@ def load_llm_config() -> dict:
     # secrets、本機開發可放 .ainews_llm_config.json（已 gitignore）。
     cfg = {
         "api_key":  "",
-        "base_url": "https://llm-gateway.d8ai.ai/",
-        "model":    "gemma-4-31B-it",
+        # Mistral La Plateforme：OpenAI 相容，免費 Experiment tier 每月 10 億 token、
+        # 每秒 1 次請求。本專案每天約 220 次呼叫 / 60 萬 token，用掉約 2% 月額度。
+        "base_url": "https://api.mistral.ai/v1",
+        "model":    "mistral-small-latest",
         "timeout":  90,
     }
 
@@ -254,17 +256,62 @@ LLM_CFG = load_llm_config()
 
 
 # ─────────────────────────────────────────────────────────────
-# 5. 文生圖設定（與 LLM 共用同一個 d8ai gateway / 金鑰）
-#    gateway 提供 OpenAI 相容 /v1/images/generations，模型如 z-image-turbo。
+# 5. 文生圖設定
+#
+# backend 三選一（AINEWS_IMAGE_BACKEND）：
+#   cloudflare（預設）— Cloudflare Workers AI 的 FLUX.1 [schnell]
+#                       免費額度每天 10,000 neurons；1024×1024 / 4 steps
+#                       約 57.6 neurons 一張 → 每天約 173 張，本專案每天
+#                       約 68 張，用掉四成不到。
+#   gateway           — d8ai gateway 的 OpenAI 相容 /v1/images/generations
+#   hf                — HuggingFace Inference API（api-inference 這個 host
+#                       已下線，留著只為相容舊設定，實際上叫不通）
 # ─────────────────────────────────────────────────────────────
+def _local_json_cfg() -> dict:
+    """讀 .ainews_llm_config.json（本機開發用，已 gitignore）。讀不到回空 dict。"""
+    fp = BASE_DIR / ".ainews_llm_config.json"
+    if not fp.exists():
+        return {}
+    try:
+        with fp.open(encoding="utf-8") as f:
+            return json.load(f) or {}
+    except Exception:
+        return {}
+
+
 def load_image_config() -> dict:
-    # timeout 縮短為 60s（原 120s）：gateway 抖動時單張圖不再卡 2 分鐘，
+    """生圖設定。
+
+    來源優先序（後面覆蓋前面）：
+      1. 內建預設
+      2. .ainews_llm_config.json — 本機開發用，設一次就好，不必每開一個終端機
+         都重新 export（cf_account_id / cf_api_token / cf_model 等欄位）
+      3. 環境變數 AINEWS_CF_* — CI 與 Docker 走這條
+    """
+    file_cfg = _local_json_cfg()
+
+    def pick(env_key: str, file_key: str, default: str = "") -> str:
+        return (os.getenv(env_key, "").strip()
+                or str(file_cfg.get(file_key, "") or "").strip()
+                or default)
+
+    # timeout 縮短為 60s（原 120s）：後端抖動時單張圖不再卡 2 分鐘，
     # 讓 CI 90 分鐘預算不被少數卡住的生圖請求吃光。可用環境變數覆寫。
     _img_timeout = os.getenv("AINEWS_IMAGE_TIMEOUT", "").strip()
+    _cf_steps = pick("AINEWS_CF_IMAGE_STEPS", "cf_image_steps")
     return {
+        "backend":  pick("AINEWS_IMAGE_BACKEND", "image_backend", "cloudflare").lower(),
+        # d8ai gateway（backend="gateway" 時才用得到）
         "base_url": os.getenv("AINEWS_IMAGE_BASE_URL", "").strip() or LLM_CFG["base_url"],
         "api_key":  os.getenv("AINEWS_IMAGE_API_KEY", "").strip() or LLM_CFG["api_key"],
-        "model":    os.getenv("AINEWS_IMAGE_MODEL", "").strip() or "z-image-turbo",
+        "model":    pick("AINEWS_IMAGE_MODEL", "image_model", "z-image-turbo"),
+        # Cloudflare Workers AI
+        "cf_account_id": pick("AINEWS_CF_ACCOUNT_ID", "cf_account_id"),
+        "cf_api_token":  pick("AINEWS_CF_API_TOKEN", "cf_api_token"),
+        "cf_model":      pick("AINEWS_CF_IMAGE_MODEL", "cf_image_model",
+                              "@cf/black-forest-labs/flux-1-schnell"),
+        # steps 上限 8；4 是官方預設，也是 neuron 花費與品質的平衡點
+        "cf_steps":      int(_cf_steps) if _cf_steps else 4,
         "timeout":  int(_img_timeout) if _img_timeout else 60,
     }
 

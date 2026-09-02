@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "d8ainews"
+  },
+  "targets": {
+    "d8ainews": {
+      "hosting": {
+        "ledger": [
+          "morning-ledger"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
