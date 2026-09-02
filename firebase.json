@@ -1,31 +1,47 @@
 {
-  "hosting": {
-    "target": "ledger",
-    "public": "web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**",
-      "_report_test.html"
-    ],
-    "headers": [
-      {
-        "source": "**",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      }
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  },
+  "hosting": [
+    {
+      "target": "ledger",
+      "public": "web",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**",
+        "_report_test.html"
+      ],
+      "headers": [
+        {
+          "source": "**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        }
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "legacy",
+      "public": "firebase/legacy",
+      "ignore": [
+        "**/.*"
+      ],
+      "redirects": [
+        {
+          "source": "/**",
+          "destination": "https://morning-ledger.web.app/:splat",
+          "type": 301
+        }
+      ]
+    }
+  ],
   "firestore": {
     "rules": "firebase/firestore.rules"
   },
