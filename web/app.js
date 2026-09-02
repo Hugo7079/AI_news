@@ -77,15 +77,16 @@ async function createDataSource() {
 }
 
 // ─── 分類元資料（與 config.py 同步；「未分類」不再出現在 UI） ───
+// 顏色一律走 CSS 自訂屬性，夜間版才會跟著換墨色（定義在 style.css 的 :root）
 const CATEGORIES = {
-  tech_research:     { label: "技術突破與研究", color: "#4f46e5" },
-  industry_business: { label: "產業動態與商業", color: "#059669" },
-  hardware_infra:    { label: "硬體與基礎建設", color: "#d97706" },
-  products_apps:     { label: "產品與應用",     color: "#0891b2" },
-  policy_society:    { label: "政策法規與社會影響", color: "#db2777" },
+  tech_research:     { label: "技術突破與研究", color: "var(--cat-tech_research)" },
+  industry_business: { label: "產業動態與商業", color: "var(--cat-industry_business)" },
+  hardware_infra:    { label: "硬體與基礎建設", color: "var(--cat-hardware_infra)" },
+  products_apps:     { label: "產品與應用",     color: "var(--cat-products_apps)" },
+  policy_society:    { label: "政策法規與社會影響", color: "var(--cat-policy_society)" },
 };
 const CATEGORY_ORDER = ["tech_research","industry_business","hardware_infra","products_apps","policy_society"];
-const FALLBACK_CAT = { label: "其他", color: "#64748b" };
+const FALLBACK_CAT = { label: "其他", color: "var(--cat-other)" };
 
 const ICONS = {
   tech_research: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></svg>`,
@@ -103,6 +104,7 @@ const ICON_GAUGE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" 
 // ─── DOM refs ───
 const $rangeSelect   = document.getElementById("range-select");
 const $rangeHint     = document.getElementById("range-hint");
+const $editionNo     = document.getElementById("edition-no");
 const $interestChips = document.getElementById("interest-chips");
 const $metrics       = document.getElementById("metrics");
 const $topPicks      = document.getElementById("top-picks");
@@ -276,8 +278,8 @@ function renderInterestChips() {
     const color = catColor(cid);
     return `
       <button type="button" class="chip ${active ? "active" : ""}" data-cid="${cid}"
-              style="${active ? `background:${color};` : `color:${color};`}">
-        ${catIcon(cid)}<span>${catLabel(cid)}</span>
+              style="--chip-color:${color}">
+        <span>${catLabel(cid)}</span>
       </button>
     `;
   }).join("");
@@ -406,32 +408,7 @@ function rankedPicks(events) {
   return (hit.length ? hit : sorted).slice(0, picksCount);
 }
 
-// ─── Top picks ───
-function coverHtml(ev) {
-  const cover = ev.cover_image || {};
-  const tagColor = catColor(ev.category);
-  const tag = `
-    <div class="cover-tag" style="background:${tagColor}cc">
-      ${catIcon(ev.category)}
-      <span>${escapeHtml(catLabel(ev.category))}</span>
-    </div>
-  `;
-  const isImage = (cover.kind === "remote" || cover.kind === "local") && cover.url;
-  if (isImage) {
-    let imgUrl = cover.url;
-    // file:// 直接開檔案測試時，把 media/ 或 /media/ 改指向真正的 output/
-    if (location.protocol === "file:" && !imgUrl.startsWith("http")) {
-      imgUrl = imgUrl.replace(/^\/?media\//, "../output/");
-    }
-    return `<div class="cover" style="background-image:url('${escapeHtml(imgUrl)}')">${tag}</div>`;
-  }
-  return `
-    <div class="cover-fallback" style="background:linear-gradient(135deg, ${tagColor}, ${tagColor}cc)">
-      <div class="fallback-icon">${catIcon(ev.category)}</div>
-      ${tag}
-    </div>
-  `;
-}
+// ─── 頭版 ───
 
 function scorePillHtml(ev) {
   const s = scoreById.get(eventKey(ev));
@@ -443,31 +420,85 @@ function scorePillHtml(ev) {
   return `<span class="pill pill-score" title="${escapeHtml(tip)}">${ICON_GAUGE} 精選分 ${Math.round(s.total * 100)}</span>`;
 }
 
-function cardHtml(ev) {
-  const importance = Number(ev.importance || 0);
-  const mention = Number(ev.mention_count || 1);
+// 頭條導言：優先用全文的第一段，太長就截到句號；沒有全文就退回摘要
+function leadParagraph(ev) {
+  const full = String(ev.full_content || "").trim();
+  const summary = String(ev.summary || "").trim();
+  if (!full) return summary;
+  const first = full.split(/\n+/)[0].trim() || full;
+  if (first.length <= 320) return first;
+  const cut = first.slice(0, 320);
+  const stop = Math.max(cut.lastIndexOf("。"), cut.lastIndexOf("．"), cut.lastIndexOf("."));
+  return stop > 160 ? cut.slice(0, stop + 1) : `${cut}…`;
+}
+
+function titleLinkHtml(ev) {
   const primarySrc = (ev.sources || [])[0] || {};
-  const titleLink = primarySrc.url
+  return primarySrc.url
     ? `<a href="${escapeHtml(primarySrc.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ev.title)}</a>`
     : escapeHtml(ev.title);
+}
+
+// 頭條：大圖 + 欄目 + 大標 + 導言 + 出處
+function leadHtml(ev) {
+  const importance = Number(ev.importance || 0);
+  const mention = Number(ev.mention_count || 1);
+  const cover = ev.cover_image || {};
+  const isImage = (cover.kind === "remote" || cover.kind === "local") && cover.url;
+
+  let coverBlock;
+  if (isImage) {
+    let imgUrl = cover.url;
+    if (location.protocol === "file:" && !imgUrl.startsWith("http")) {
+      imgUrl = imgUrl.replace(/^\/?media\//, "../output/");
+    }
+    coverBlock = `<div class="lead-cover" style="background-image:url('${escapeHtml(imgUrl)}')"></div>`;
+  } else {
+    coverBlock = `
+      <div class="lead-cover-fallback" style="background:${catColor(ev.category)}">
+        ${catIcon(ev.category)}
+      </div>`;
+  }
+
   const sourceChips = (ev.sources || []).slice(0, 5).map((s) => `
     <a class="source-chip" href="${escapeHtml(s.url || "#")}" target="_blank" rel="noopener noreferrer">
       ${escapeHtml(s.source_name || "?")}
     </a>
   `).join("");
+
   return `
-    <article class="card">
-      ${coverHtml(ev)}
-      <div class="card-body">
-        <h3 class="card-title">${titleLink}</h3>
-        <p class="card-summary">${escapeHtml(ev.summary || "")}</p>
-        <div class="card-meta">
+    <article class="lead" style="--dept-color:${catColor(ev.category)}">
+      ${coverBlock}
+      <p class="lead-dept">${escapeHtml(catLabel(ev.category))}</p>
+      <h3 class="lead-title">${titleLinkHtml(ev)}</h3>
+      <p class="lead-summary">${escapeHtml(leadParagraph(ev))}</p>
+      <div class="lead-meta">
+        ${scorePillHtml(ev)}
+        <span class="pill pill-importance">${ICON_STAR} 重要度 ${importance}</span>
+        ${mention > 1 ? `<span class="pill pill-mention">${ICON_FIRE} ${mention} 家報導</span>` : ""}
+        ${pickBoxHtml(ev)}
+      </div>
+      ${sourceChips ? `<div class="sources">${sourceChips}</div>` : ""}
+    </article>
+  `;
+}
+
+// 右欄要聞：編號 + 標題 + 欄目 + 重要度
+function briefHtml(ev, no) {
+  const importance = Number(ev.importance || 0);
+  const mention = Number(ev.mention_count || 1);
+  return `
+    <article class="brief" style="--brief-color:${catColor(ev.category)}">
+      <span class="brief-no">${String(no).padStart(2, "0")}</span>
+      <div class="brief-body">
+        <p class="brief-title">${titleLinkHtml(ev)}</p>
+        <p class="brief-dept">${escapeHtml(catLabel(ev.category))}</p>
+        <div class="brief-meta">
           ${scorePillHtml(ev)}
-          <span class="pill pill-importance">${ICON_STAR} 重要度 ${importance}</span>
-          ${mention > 1 ? `<span class="pill pill-mention">${ICON_FIRE} ${mention} 報導</span>` : ""}
+          <span class="pill pill-importance">${ICON_STAR} ${importance}</span>
+          ${mention > 1 ? `<span class="pill pill-mention">${mention} 家報導</span>` : ""}
           ${pickBoxHtml(ev)}
         </div>
-        ${sourceChips ? `<div class="sources">${sourceChips}</div>` : ""}
       </div>
     </article>
   `;
@@ -478,10 +509,20 @@ let currentPicks = [];
 function renderTopPicks(events) {
   currentPicks = rankedPicks(events);
   if (!currentPicks.length) {
-    $topPicks.innerHTML = `<div class="empty">您關注的領域中${escapeHtml(rangeWord(currentRange))}暫無事件。</div>`;
+    $topPicks.classList.add("single");
+    $topPicks.innerHTML = `<div class="empty">您關注的欄目中${escapeHtml(rangeWord(currentRange))}暫無事件。</div>`;
     return;
   }
-  $topPicks.innerHTML = currentPicks.map(cardHtml).join("");
+  const [lead, ...rest] = currentPicks;
+  // 只有一則時不留空欄，頭條直接佔滿版面
+  $topPicks.classList.toggle("single", rest.length === 0);
+  const briefs = rest.length
+    ? `<aside class="briefs">
+         <p class="briefs-head">其餘要聞</p>
+         ${rest.map((ev, i) => briefHtml(ev, i + 2)).join("")}
+       </aside>`
+    : "";
+  $topPicks.innerHTML = leadHtml(lead) + briefs;
 }
 
 // ─── Open Source Radar ───
@@ -545,7 +586,7 @@ function applyPicksPanelCollapse() {
   $picksLayout.classList.toggle("collapsed", picksPanelCollapsed);
   $pickToggle.setAttribute("aria-expanded", picksPanelCollapsed ? "false" : "true");
   $pickToggle.classList.toggle("is-collapsed", picksPanelCollapsed);
-  if ($pickToggleLbl) $pickToggleLbl.textContent = picksPanelCollapsed ? "精選指標" : "收合指標";
+  if ($pickToggleLbl) $pickToggleLbl.textContent = picksPanelCollapsed ? "展開編輯台" : "收合編輯台";
 }
 
 function applyOsCollapse() {
@@ -578,7 +619,7 @@ function rowHtml(ev) {
   return `
     <article class="event-row">
       <div class="row-head">
-        <span class="cat-badge" style="background:${tagColor}">${catIcon(ev.category)}${escapeHtml(catLabel(ev.category))}</span>
+        <span class="cat-badge" style="--badge-color:${tagColor}">${escapeHtml(catLabel(ev.category))}</span>
         ${ev.date ? `<span class="row-date">${escapeHtml(fmtDateShort(ev.date))}</span>` : ""}
         <span class="pill pill-importance">${ICON_STAR} ${ev.importance || 0}</span>
         ${mention > 1 ? `<span class="pill pill-mention">${mention} 報導</span>` : ""}
@@ -744,7 +785,7 @@ function renderTopEntities(events) {
     return;
   }
   const max = sorted[0][1];
-  $topEntities.innerHTML = sorted.map(([k, v]) => hbarRow(k, v, max, "#4f46e5")).join("");
+  $topEntities.innerHTML = sorted.map(([k, v]) => hbarRow(k, v, max, "var(--blue)")).join("");
 }
 
 // 分類分佈用甜甜圈圖：分類是「整體的組成」，佔比比長度更好讀
@@ -775,9 +816,10 @@ function renderCatDist(events) {
     // 每段之間留 1.5 的縫；整圈只有一段時不留，避免圓環斷開
     const gap = rows.length > 1 ? Math.min(1.5, len / 2) : 0;
     const seg = Math.max(0, len - gap);
+    // stroke 走 style（XML 屬性不吃 var()），夜間版才能換墨色
     const arc = `
       <circle class="donut-arc" r="${R}" cx="70" cy="70"
-        fill="none" stroke="${color}" stroke-width="20"
+        fill="none" stroke-width="20" style="stroke:${color}"
         stroke-dasharray="${seg} ${C - seg}"
         stroke-dashoffset="${-offset}">
         <title>${escapeHtml(label)}：${n} 則（${Math.round((n / total) * 100)}%）</title>
@@ -832,8 +874,8 @@ function ensureExportBar() {
       <button id="export-go" class="export-btn export-btn-primary" type="button">產生電子報 PDF</button>
     </div>
     <div id="export-cfg-panel" class="export-cfg hidden">
-      <label>刊名<input id="cfg-title" type="text" value="${escapeHtml(cfg.title)}" placeholder="洞悉AI雙週報" /></label>
-      <label>期別<input id="cfg-issue" type="text" value="${escapeHtml(cfg.issue)}" placeholder="第0014期" /></label>
+      <label>刊名<input id="cfg-title" type="text" value="${escapeHtml(cfg.title)}" placeholder="晨誌" /></label>
+      <label>期別<input id="cfg-issue" type="text" value="${escapeHtml(cfg.issue)}" placeholder="第0134期" /></label>
       <label>日期<input id="cfg-date" type="text" value="${escapeHtml(cfg.dateLabel)}" placeholder="留空＝自動用最新日期" /></label>
     </div>
   `;
@@ -887,9 +929,18 @@ function syncExportChecks() {
 // ─── Orchestration ───
 function updateSectionTitles() {
   const rl = rangeLabel(currentRange);
-  if ($topPicksTitle) $topPicksTitle.textContent = `${rl}精選`;
+  if ($topPicksTitle) $topPicksTitle.textContent = `${rl}頭版`;
   if ($osTitle)       $osTitle.textContent       = `開源生態與模型觀測站（${rl}）`;
-  if ($metricsTitle)  $metricsTitle.textContent  = `${rl} AI 局勢數據看板`;
+  if ($metricsTitle)  $metricsTitle.textContent  = `${rl}統計`;
+}
+
+// 期別：以資料庫最早一天為創刊日，往後每一個日曆日算一期
+function updateEdition() {
+  if (!$editionNo) return;
+  const first = availableDates[availableDates.length - 1];
+  if (!first || !rangeEnd) { $editionNo.textContent = ""; return; }
+  const no = dayDiff(rangeEnd, first) + 1;
+  $editionNo.textContent = `第 ${String(no).padStart(4, "0")} 期`;
 }
 
 function updateRangeHint() {
@@ -904,6 +955,7 @@ function updateRangeHint() {
 function renderAll() {
   updateSectionTitles();
   updateRangeHint();
+  updateEdition();
   renderTopPicks(currentEvents);
   renderOpenSource(currentEvents);
   renderTabsAndList(currentEvents);
@@ -930,6 +982,7 @@ async function showRange(days) {
   $catDist.innerHTML = "";
   updateSectionTitles();
   updateRangeHint();
+  updateEdition();
 
   try {
     currentEvents = await loadEventsInRange(rangeStart, rangeEnd);

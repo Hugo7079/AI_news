@@ -1,11 +1,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// report.js — 產生「雙週電子報」格式的 PDF（瀏覽器列印成 PDF）
+// report.js — 產生「晨誌」電子報 PDF（瀏覽器列印成 PDF）
 //
-// 版面完全對齊範例電子報：
-//   1) 目錄頁：頁首（客戶 logo｜期別 + 日期｜品牌 logo）→ 主視覺橫幅 + 橘色標題膠囊
-//      → 分類標籤 → 每頁 3 張新聞卡（縮圖 + 標題 + 摘要 + 日期/來源/記者）
-//      → 右下角換頁按鈕
-//   2) 內文頁：滿版橫幅 + 白色圓角卡（標題 / 日期·來源·記者 / 小標 / 內文）
+// 視覺與網站同一套：印刷藍 #17337A、低彩度欄目墨色、Noto Serif TC 報頭、
+// 分隔靠細線與留白，不用陰影與圓角。
+//
+//   1) 目錄頁：第一頁是完整報頭（刊名 + 期別 + 日期），後續頁改小報眉；
+//      欄目名當分節標題，每則是一條有細線分隔的索引列
+//      （編號 + 縮圖 + 欄目 + 標題 + 摘要 + 日期/來源/記者）
+//   2) 內文頁：小報眉 + 該則自己的封面圖 + 欄目 + 大標 + meta + 內文；
 //      內容過長自動續頁，續頁標「(承上頁)」，右下角有上一頁 / 首頁 / 下一頁
 //
 // 分頁採「實際量測」：在開啟的視窗裡逐段塞進固定高度的內文框，
@@ -16,14 +18,12 @@
 const CFG_KEY = "ainews_newsletter_cfg";
 
 export const DEFAULT_CFG = {
-  title: "洞悉AI雙週報",       // 橘色膠囊上的刊名
-  issue: "",                   // 期別，例：第0014期（留空則不顯示）
-  dateLabel: "",               // 頁首日期，留空 = 自動用最新事件日期
-  clientLogo: "./assets/logo-client.png",   // 頁首左側 logo（換成自己的即可）
-  brandLogo: "./assets/logo-brand.png",     // 頁首右側 logo
-  heroBanner: "./assets/hero-banner.jpg",   // 目錄頁主視覺
-  detailBanner: "./assets/detail-banner.jpg", // 內文頁主視覺
-  perPage: 3,                  // 目錄頁每頁幾則
+  title: "晨誌",               // 報頭刊名
+  latin: "MORNING LEDGER",     // 報頭下方的拉丁副名
+  issue: "",                   // 期別，例：第0134期（留空則不顯示）
+  dateLabel: "",               // 報頭日期，留空 = 自動用最新事件日期
+  perPage: 6,                  // 目錄頁每頁幾則（索引列比舊卡片矮，A4 放得下 6 則）
+                               // 排版引擎會實際量測，塞不下會自動往下一頁擠，不會溢出
 };
 
 export function getNewsletterConfig() {
@@ -42,15 +42,16 @@ export function saveNewsletterConfig(patch) {
 }
 
 // ── 分類 metadata（與 app.js / config.py 對齊；不含未分類） ──────────────────
+// 色值與 web/style.css 的 :root 淺色版一致（PDF 是獨立文件，不能用 CSS 變數）
 const CAT_META = {
-  tech_research:     { label: "技術突破與研究",     color: "#4f46e5" },
-  industry_business: { label: "產業動態與商業",     color: "#059669" },
-  hardware_infra:    { label: "硬體與基礎建設",     color: "#d97706" },
-  products_apps:     { label: "產品與應用",         color: "#0891b2" },
-  policy_society:    { label: "政策法規與社會影響", color: "#db2777" },
+  tech_research:     { label: "技術突破與研究",     color: "#1F3D7A" },
+  industry_business: { label: "產業動態與商業",     color: "#1E5F4B" },
+  hardware_infra:    { label: "硬體與基礎建設",     color: "#8A5A1B" },
+  products_apps:     { label: "產品與應用",         color: "#2A6E86" },
+  policy_society:    { label: "政策法規與社會影響", color: "#7A2340" },
 };
 const CAT_ORDER = ["tech_research", "industry_business", "hardware_infra", "products_apps", "policy_society"];
-const CAT_FALLBACK = { label: "其他 AI 新聞", color: "#64748b" };
+const CAT_FALLBACK = { label: "其他 AI 新聞", color: "#5E626C" };
 
 const CAT_ICON = {
   tech_research: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></svg>',
@@ -160,6 +161,7 @@ function buildModel(events, cfg) {
         source: m.source,
         reporter: m.reporter,
         cover: coverUrl(ev),
+        catLabel: meta.label,
         color: meta.color,
         icon: CAT_ICON[cid] || CAT_ICON._default,
         blocks: contentBlocks(ev),
@@ -173,21 +175,19 @@ function buildModel(events, cfg) {
   const newest = events.map(eventDate).filter(Boolean).sort().slice(-1)[0] || "";
   return {
     title: cfg.title || DEFAULT_CFG.title,
+    latin: cfg.latin === undefined ? DEFAULT_CFG.latin : cfg.latin,
     issue: cfg.issue || "",
     dateLabel: cfg.dateLabel || newest,
-    perPage: Number(cfg.perPage) || 3,
-    assets: {
-      clientLogo: abs(cfg.clientLogo),
-      brandLogo: abs(cfg.brandLogo),
-      hero: abs(cfg.heroBanner),
-      detail: abs(cfg.detailBanner),
-    },
+    perPage: Number(cfg.perPage) || DEFAULT_CFG.perPage,
     groups,
     items,
   };
 }
 
-// ── 版面 CSS（A4 固定頁，列印 1:1） ─────────────────────────────────────────
+// ── 版面 CSS（A4 固定頁，列印 1:1）─────────────────────────────────────────
+//
+// 色值對齊 web/style.css 的淺色版；差別只在紙底改成純白 —— 螢幕上的 #EDEEF0
+// 印出來會整頁鋪滿灰墨，紙本用白底、灰只留給細線與底紋。
 const STYLE = `
 @page { size: A4; margin: 0; }
 * { box-sizing: border-box; }
@@ -195,7 +195,7 @@ html, body { margin: 0; padding: 0; background: #fff; }
 body {
   font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC",
                -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #333;
+  color: #16181D;
   -webkit-print-color-adjust: exact; print-color-adjust: exact;
 }
 .pg {
@@ -204,100 +204,163 @@ body {
 }
 .pg:last-of-type { page-break-after: auto; break-after: auto; }
 
-/* 頁首 */
-.nl-head {
-  position: absolute; top: 0; left: 0; right: 0; height: 15mm; z-index: 3;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 9mm; background: #fff;
+/* ── 報頭（只有第一頁）── */
+.nl-masthead {
+  position: absolute; top: 14mm; left: 14mm; right: 14mm; height: 30mm;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 10mm;
+  border-bottom: 1.1mm solid #16181D; padding-bottom: 3mm;
 }
-.nl-head img { display: block; }
-.nl-head img.c { height: 6.2mm; }
-.nl-head img.b { height: 7.2mm; }
-.nl-issue { font-size: 9pt; font-weight: 600; color: #8e8e8e; letter-spacing: .18em; white-space: nowrap; }
-
-/* 主視覺 + 橘色刊名膠囊 */
-.nl-hero { position: absolute; left: 0; right: 0; height: 64mm; overflow: hidden; background: #2fb2e0; }
-.pg-index .nl-hero { top: 15mm; }
-.pg-detail .nl-hero { top: 0; }
-.nl-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.nl-pill {
-  position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%);
-  background: #ff8902; color: #fff; font-size: 21pt; font-weight: 800;
-  letter-spacing: .04em; padding: 4.6mm 13mm; border-radius: 999px; white-space: nowrap;
-  box-shadow: 0 0 0 1.3mm rgba(117,223,234,.95), 0 3mm 8mm rgba(180,80,0,.30);
+.nl-name {
+  font-family: "Noto Serif TC", serif; font-weight: 900;
+  font-size: 34pt; letter-spacing: .1em; line-height: 1; margin: 0;
 }
+.nl-latin {
+  font-family: "Newsreader", Georgia, serif; font-size: 8pt;
+  letter-spacing: .26em; color: #5E626C; margin: 2.6mm 0 0;
+}
+.nl-edition {
+  text-align: right; font-family: "Newsreader", Georgia, serif;
+  font-variant-numeric: tabular-nums; line-height: 1.6; white-space: nowrap;
+}
+.nl-edition .no { font-size: 10pt; font-weight: 600; letter-spacing: .12em; }
+.nl-edition .dt { font-size: 8.5pt; color: #5E626C; letter-spacing: .08em; margin-top: .8mm; }
 
-/* 目錄頁 */
-.idx-body { position: absolute; top: 79mm; left: 0; right: 0; bottom: 24mm; padding: 0 11mm; overflow: hidden; }
-.idx-cat { height: 22mm; display: flex; align-items: center; gap: 3mm; }
-.idx-cat .spark { color: #f6a723; display: inline-flex; }
-.idx-cat .spark svg { width: 4.2mm; height: 4.2mm; display: block; }
+/* ── 報眉（後續每一頁）── */
+.nl-runhead {
+  position: absolute; top: 14mm; left: 14mm; right: 14mm; height: 8mm;
+  display: flex; align-items: center; justify-content: space-between; gap: 6mm;
+  border-bottom: .3mm solid #C9CCD3; padding-bottom: 2mm;
+  font-family: "Newsreader", Georgia, serif; font-size: 8pt;
+  letter-spacing: .2em; text-transform: uppercase; color: #5E626C;
+}
+.nl-runhead .rh-name {
+  font-family: "Noto Serif TC", serif; font-weight: 900;
+  font-size: 10pt; letter-spacing: .12em; text-transform: none; color: #16181D;
+}
+.nl-runhead .rh-edition { font-variant-numeric: tabular-nums; text-align: right; min-width: 40mm; }
+
+/* ── 目錄頁 ── */
+.idx-body { position: absolute; left: 14mm; right: 14mm; bottom: 18mm; overflow: hidden; }
+.pg-index .idx-body { top: 28mm; }
+.pg-index.first .idx-body { top: 50mm; }
+
+.idx-cat {
+  display: flex; align-items: baseline; gap: 4mm;
+  padding-bottom: 2mm; margin-bottom: 1mm;
+  border-bottom: .8mm solid #16181D;
+}
 .idx-cat .name {
-  border: .35mm solid #b9cfe8; color: #1a3c6d; background: #fff;
-  font-weight: 700; font-size: 10.5pt; padding: 1.8mm 5.5mm; border-radius: 999px;
+  font-family: "Noto Serif TC", serif; font-weight: 900;
+  font-size: 12pt; letter-spacing: .08em;
 }
+.idx-cat .en {
+  font-family: "Newsreader", Georgia, serif; font-size: 7.5pt;
+  letter-spacing: .2em; text-transform: uppercase; color: #5E626C; margin-left: auto;
+}
+.idx-cat:empty { border-bottom: 0; padding: 0; margin: 0; height: 0; }
+
 .idx-card {
-  display: grid; grid-template-columns: 30mm 1fr; gap: 6mm; align-items: center;
-  background: #fff; border-radius: 4mm; padding: 5mm; margin-bottom: 6mm;
-  min-height: 48mm; text-decoration: none; color: inherit;
-  box-shadow: 0 1.2mm 3.6mm rgba(23,63,120,.13);
+  display: grid; grid-template-columns: 9mm 32mm 1fr; gap: 5mm; align-items: start;
+  padding: 4.5mm 0; border-top: .25mm solid #DEE0E5;
+  text-decoration: none; color: inherit;
+}
+.idx-card:first-of-type { border-top: 0; }
+.idx-no {
+  font-family: "Newsreader", Georgia, serif; font-size: 13pt;
+  font-variant-numeric: tabular-nums; line-height: 1.2; color: #17337A;
 }
 .idx-thumb {
-  width: 30mm; height: 30mm; border-radius: 3mm; overflow: hidden;
-  display: flex; align-items: center; justify-content: center; color: #fff;
+  width: 32mm; height: 24mm; overflow: hidden; border: .25mm solid #C9CCD3;
+  display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.8);
 }
 .idx-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.idx-thumb svg { width: 12mm; height: 12mm; }
+.idx-thumb svg { width: 9mm; height: 9mm; }
+.idx-dept {
+  font-family: "Newsreader", Georgia, serif; font-size: 7.5pt;
+  letter-spacing: .2em; text-transform: uppercase; font-weight: 600; margin-bottom: 1.2mm;
+}
 .idx-title {
-  font-size: 13pt; font-weight: 800; color: #222; line-height: 1.5;
+  font-family: "Noto Serif TC", serif; font-size: 12.5pt; font-weight: 600;
+  color: #16181D; line-height: 1.5;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 .idx-sum {
-  font-size: 10pt; color: #0099cc; line-height: 1.65; margin-top: 2mm;
+  font-size: 9pt; color: #2C3038; line-height: 1.75; margin-top: 1.6mm;
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.idx-meta { font-size: 8.5pt; color: #888; line-height: 1.75; margin-top: 3mm; }
+.idx-meta {
+  font-family: "Newsreader", Georgia, serif; font-size: 8pt; color: #5E626C;
+  line-height: 1.6; margin-top: 2mm; font-variant-numeric: tabular-nums;
+}
 
-/* 內文頁 */
+/* ── 內文頁 ── */
 .nl-card {
-  position: absolute; top: 48mm; left: 12mm; right: 12mm; bottom: 10mm;
-  background: #fff; border-radius: 5mm; padding: 12mm 12mm 22mm;
+  position: absolute; top: 28mm; left: 14mm; right: 14mm; bottom: 18mm;
   display: flex; flex-direction: column;
-  box-shadow: 0 2mm 9mm rgba(150,110,50,.18);
 }
-.nl-cont { font-size: 9.5pt; color: #9aa4b2; margin-bottom: 4mm; }
-.nl-title { font-size: 19pt; font-weight: 800; color: #1a3c6d; line-height: 1.5; margin: 0 0 4mm; }
-.nl-meta { font-size: 9pt; color: #888; margin: 0 0 6mm; }
+.nl-cover {
+  width: 100%; height: 52mm; overflow: hidden; border: .25mm solid #C9CCD3;
+  margin-bottom: 4mm; flex: none;
+  display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.8);
+}
+.nl-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nl-cover svg { width: 16mm; height: 16mm; }
+.nl-dept {
+  font-family: "Newsreader", Georgia, serif; font-size: 8pt; font-weight: 600;
+  letter-spacing: .22em; text-transform: uppercase; margin-bottom: 1.5mm; flex: none;
+}
+.nl-title {
+  font-family: "Noto Serif TC", serif; font-size: 21pt; font-weight: 900;
+  color: #16181D; line-height: 1.36; letter-spacing: -.01em; margin: 0 0 3mm; flex: none;
+}
+.nl-meta {
+  font-family: "Newsreader", Georgia, serif; font-size: 8.5pt; color: #5E626C;
+  margin: 0 0 4mm; padding-bottom: 3mm; border-bottom: .8mm solid #16181D;
+  font-variant-numeric: tabular-nums; flex: none;
+}
+/* 續頁那行含文章標題（可能中英混排）→ 不做 uppercase，字距也放小 */
+.nl-cont {
+  font-family: "Noto Sans TC", sans-serif; font-size: 8.5pt; color: #5E626C;
+  letter-spacing: .04em;
+  margin-bottom: 4mm; padding-bottom: 2.5mm; border-bottom: .3mm solid #C9CCD3; flex: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 .nl-flow { flex: 1 1 auto; overflow: hidden; }
-.nl-h { font-size: 13pt; font-weight: 800; color: #333; line-height: 1.7; margin: 0 0 4mm; }
-.nl-p { font-size: 11pt; color: #333; line-height: 1.95; margin: 0 0 4.5mm; text-align: justify; }
-.nl-s { font-size: 8.5pt; color: #9aa4b2; margin: 4mm 0 0; word-break: break-all; }
-.nl-s a { color: #0099cc; text-decoration: none; }
-
-/* 換頁按鈕：目錄頁貼版心、內文頁貼白卡內側（不可超出卡片） */
-.nl-nav { position: absolute; right: 11mm; bottom: 11mm; display: flex; gap: 3mm; z-index: 4; }
-.pg-detail .nl-nav { right: 20mm; bottom: 15mm; }
-.nl-nav a {
-  display: inline-flex; align-items: center; gap: 1.5mm;
-  border: .3mm solid #cfe0f2; border-radius: 999px; background: #fff;
-  padding: 1.9mm 5.5mm; font-size: 9pt; font-weight: 600; color: #1a3c6d; text-decoration: none;
+.nl-h {
+  font-family: "Noto Serif TC", serif; font-size: 12pt; font-weight: 900;
+  color: #16181D; line-height: 1.65; margin: 0 0 3mm;
 }
-.nl-nav svg { width: 3.4mm; height: 3.4mm; display: block; }
+.nl-p { font-size: 10.5pt; color: #2C3038; line-height: 2.0; margin: 0 0 4mm; text-align: justify; }
+.nl-s {
+  font-family: "Newsreader", Georgia, serif; font-size: 8pt; color: #5E626C;
+  margin: 4mm 0 0; padding-top: 2.5mm; border-top: .25mm solid #DEE0E5; word-break: break-all;
+}
+.nl-s a { color: #17337A; text-decoration: none; }
 
-/* 螢幕預覽 */
+/* ── 換頁按鈕 ── */
+.nl-nav { position: absolute; right: 14mm; bottom: 9mm; display: flex; gap: 2mm; z-index: 4; }
+.nl-nav a {
+  display: inline-flex; align-items: center; gap: 1.4mm;
+  border: .25mm solid #C9CCD3; background: #fff;
+  padding: 1.6mm 4.5mm; font-family: "Newsreader", Georgia, serif;
+  font-size: 8.5pt; letter-spacing: .05em; color: #17337A; text-decoration: none;
+}
+.nl-nav svg { width: 3.2mm; height: 3.2mm; display: block; }
+
+/* ── 螢幕預覽 ── */
 @media screen {
-  body { background: #e8edf4; padding: 26px 0 60px; }
-  .pg { margin: 0 auto 22px; box-shadow: 0 8px 28px rgba(15,45,90,.18); }
+  body { background: #EDEEF0; padding: 26px 0 60px; }
+  .pg { margin: 0 auto 22px; box-shadow: 0 8px 28px rgba(22,24,29,.18); }
   .nl-toolbar {
     position: fixed; top: 14px; right: 18px; z-index: 99; display: flex; gap: 8px;
-    background: #fff; border-radius: 999px; padding: 8px 10px;
-    box-shadow: 0 6px 18px rgba(15,45,90,.18); font-size: 13px;
+    background: #fff; border: 1px solid #C9CCD3; padding: 8px 10px;
+    box-shadow: 0 6px 18px rgba(22,24,29,.16); font-size: 13px;
   }
   .nl-toolbar button {
-    border: 0; border-radius: 999px; padding: 7px 16px; cursor: pointer;
-    font-weight: 700; font-size: 13px; background: #ff8902; color: #fff;
+    border: 0; padding: 7px 16px; cursor: pointer;
+    font-weight: 600; font-size: 13px; background: #17337A; color: #fff;
   }
-  .nl-toolbar span { align-self: center; color: #64748b; padding-left: 6px; }
+  .nl-toolbar span { align-self: center; color: #5E626C; padding-left: 6px; }
 }
 @media print { .nl-toolbar { display: none !important; } }
 `;
@@ -308,8 +371,6 @@ const LAYOUT_JS = String.raw`
   var data = JSON.parse(document.getElementById("nl-data").textContent);
   var doc = document.getElementById("doc");
   var pageSeq = 0;
-  var ICON_SPARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
-    '<path d="M12 2.2l2.1 6.1 6.1 2.1-6.1 2.1L12 21.8l-2.1-9.3L3.8 10.4l6.1-2.1z"/></svg>';
   var ICON_HOME = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.6V21h13V9.6"/></svg>';
@@ -328,39 +389,52 @@ const LAYOUT_JS = String.raw`
     return el;
   }
 
-  function headHtml() {
-    var a = data.assets, bits = [];
-    bits.push('<span></span>');
-    var mid = [data.issue, data.dateLabel].filter(Boolean).join("　");
-    bits.push('<div class="nl-issue">' + esc(mid) + '</div>');
-    bits.push(a.brandLogo ? '<img class="b" src="' + esc(a.brandLogo) + '" alt="" />' : '<span></span>');
-    return '<header class="nl-head">' + bits.join("") + '</header>';
+  // 第一頁：完整報頭
+  function mastheadHtml() {
+    return '<header class="nl-masthead">' +
+        '<div>' +
+          '<h1 class="nl-name">' + esc(data.title) + '</h1>' +
+          (data.latin ? '<p class="nl-latin">' + esc(data.latin) + '</p>' : '') +
+        '</div>' +
+        '<div class="nl-edition">' +
+          (data.issue ? '<div class="no">' + esc(data.issue) + '</div>' : '') +
+          (data.dateLabel ? '<div class="dt">' + esc(data.dateLabel) + '</div>' : '') +
+        '</div>' +
+      '</header>';
   }
 
-  function heroHtml(src) {
-    return '<div class="nl-hero"><img src="' + esc(src) + '" alt="" />' +
-           (data.title ? '<div class="nl-pill">' + esc(data.title) + '</div>' : '') + '</div>';
+  // 後續每一頁：小報眉（刊名 · 欄目／目錄 · 期別日期）
+  function runheadHtml(mid) {
+    var edition = [data.issue, data.dateLabel].filter(Boolean).join(" \u00B7 ");
+    return '<header class="nl-runhead">' +
+        '<span class="rh-name">' + esc(data.title) + '</span>' +
+        '<span>' + esc(mid || "") + '</span>' +
+        '<span class="rh-edition">' + esc(edition) + '</span>' +
+      '</header>';
   }
 
   function thumbHtml(it) {
     if (it.cover) {
       return '<div class="idx-thumb"><img src="' + esc(it.cover) + '" alt="" ' +
-             'onerror="this.parentNode.style.background=\'linear-gradient(135deg,' + it.color + ',' + it.color + 'aa)\';this.remove()" /></div>';
+             'onerror="this.parentNode.style.background=\'' + it.color + '\';this.remove()" /></div>';
     }
-    return '<div class="idx-thumb" style="background:linear-gradient(135deg,' + it.color + ',' + it.color + 'aa)">' + it.icon + '</div>';
+    return '<div class="idx-thumb" style="background:' + it.color + '">' + it.icon + '</div>';
   }
 
   function cardHtml(it) {
     var meta = [];
-    if (it.date) meta.push("日期: " + esc(it.date));
-    if (it.source) meta.push("來源: " + esc(it.source));
-    if (it.reporter) meta.push("記者: " + esc(it.reporter));
+    if (it.date) meta.push(esc(it.date));
+    if (it.source) meta.push(esc(it.source));
+    if (it.reporter) meta.push("記者 " + esc(it.reporter));
+    var no = String(it.id).length < 2 ? "0" + it.id : it.id;
     return '<a class="idx-card" href="#ev-' + it.id + '">' +
+      '<div class="idx-no">' + no + '</div>' +
       thumbHtml(it) +
       '<div class="idx-text">' +
+        '<div class="idx-dept" style="color:' + it.color + '">' + esc(it.catLabel || "") + '</div>' +
         '<div class="idx-title">' + esc(it.title) + '</div>' +
         '<div class="idx-sum">' + esc(it.summary) + '</div>' +
-        '<div class="idx-meta">' + meta.join("<br />") + '</div>' +
+        '<div class="idx-meta">' + meta.join(" \u00B7 ") + '</div>' +
       '</div>' +
     '</a>';
   }
@@ -369,12 +443,16 @@ const LAYOUT_JS = String.raw`
   var indexPages = [];
 
   function newIndexPage(g, withChip) {
-    var page = newPage("pg-index");
+    var isFirst = indexPages.length === 0;
+    var page = newPage("pg-index" + (isFirst ? " first" : ""));
     page.innerHTML =
-      headHtml() + heroHtml(data.assets.hero) +
+      (isFirst ? mastheadHtml() : runheadHtml("本期目錄")) +
       '<div class="idx-body">' +
         (withChip
-          ? '<div class="idx-cat"><span class="spark">' + ICON_SPARK + '</span><span class="name">' + esc(g.label) + '</span></div>'
+          ? '<div class="idx-cat">' +
+              '<span class="name" style="color:' + g.color + '">' + esc(g.label) + '</span>' +
+              '<span class="en">' + g.items.length + ' 則</span>' +
+            '</div>'
           : '<div class="idx-cat"></div>') +
       '</div>' +
       '<nav class="nl-nav"></nav>';
@@ -409,16 +487,23 @@ const LAYOUT_JS = String.raw`
   function detailPage(it, first) {
     var page = newPage("pg-detail");
     var meta = [];
-    if (it.date) meta.push("日期: " + esc(it.date));
-    if (it.source) meta.push("來源: " + esc(it.source));
-    if (it.reporter) meta.push("記者: " + esc(it.reporter));
+    if (it.date) meta.push(esc(it.date));
+    if (it.source) meta.push(esc(it.source));
+    if (it.reporter) meta.push("記者 " + esc(it.reporter));
+    var coverBlock = it.cover
+      ? '<div class="nl-cover"><img src="' + esc(it.cover) + '" alt="" ' +
+        'onerror="this.parentNode.style.background=\'' + it.color + '\';this.remove()" /></div>'
+      : '<div class="nl-cover" style="background:' + it.color + '">' + it.icon + '</div>';
+
     page.innerHTML =
-      '<div class="nl-hero"><img src="' + esc(data.assets.detail) + '" alt="" /></div>' +
+      runheadHtml(it.catLabel || "") +
       '<article class="nl-card">' +
         (first
-          ? '<h1 class="nl-title">' + esc(it.title) + '</h1>' +
-            (meta.length ? '<div class="nl-meta">' + meta.join(" &#124; ") + '</div>' : '')
-          : '<div class="nl-cont">(承上頁)</div>') +
+          ? coverBlock +
+            '<div class="nl-dept" style="color:' + it.color + '">' + esc(it.catLabel || "") + '</div>' +
+            '<h1 class="nl-title">' + esc(it.title) + '</h1>' +
+            (meta.length ? '<div class="nl-meta">' + meta.join(" \u00B7 ") + '</div>' : '')
+          : '<div class="nl-cont">承上頁 &#183; ' + esc(it.title) + '</div>') +
         '<div class="nl-flow"></div>' +
       '</article>' +
       '<nav class="nl-nav"></nav>';
@@ -536,7 +621,7 @@ function reportDocument(events, cfg) {
 <title>${esc(docTitle)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet" />
 <style>${STYLE}</style>
 </head>
 <body>

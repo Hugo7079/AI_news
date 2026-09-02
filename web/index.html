@@ -3,29 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI新聞</title>
+  <title>晨誌 Morning Ledger</title>
+  <meta name="description" content="每日 AI 情報日報：50+ 來源、LLM 抽事件、重要度排序。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=20260826a" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css?v=20260901a" />
 </head>
 <body>
-  <main class="container">
-    <header class="hero">
-      <div class="hero-icon" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="40" height="40"
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="1"/>
-          <path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/>
-          <path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/>
-        </svg>
+  <main class="sheet">
+
+    <!-- ───────── 報頭 ───────── -->
+    <header class="masthead">
+      <div class="masthead-main">
+        <h1 class="masthead-name">晨誌</h1>
+        <p class="masthead-latin">Morning Ledger · AI Intelligence Daily</p>
       </div>
-      <div class="hero-text">
-        <h1 class="hero-title">AI新聞</h1>
-        <p class="hero-sub">每日抓取 50+ 來源，LLM 抽事件 + 合併 + 重要度排序</p>
+
+      <div class="masthead-edition">
+        <p class="edition-no" id="edition-no">—</p>
+        <p class="edition-date" id="range-hint"></p>
       </div>
-      <div class="hero-controls">
-        <label for="range-select" class="hero-label">日期範圍</label>
+
+      <div class="masthead-control">
+        <label for="range-select" class="field-label">收錄範圍</label>
         <select id="range-select" class="select">
           <option value="1">今日</option>
           <option value="3">近 3 天</option>
@@ -33,92 +34,99 @@
           <option value="14">近 14 天</option>
           <option value="30">近 30 天</option>
         </select>
-        <span id="range-hint" class="hero-hint"></span>
       </div>
     </header>
 
-    <section class="interest-panel" aria-label="客製化簡報視角">
-      <div class="interest-header">
-        <span class="interest-title">客製化簡報視角 / 您的關注領域</span>
-        <span class="interest-sub">點擊選擇或移除有興趣的領域，下方所有區塊會即時過濾</span>
+    <!-- ───────── 欄目列（分類篩選） ───────── -->
+    <nav class="kicker" aria-label="欄目">
+      <span class="kicker-label">欄目</span>
+      <div id="interest-chips" class="kicker-items"></div>
+    </nav>
+
+    <!-- ───────── 頭版 ───────── -->
+    <section class="plate" aria-labelledby="top-picks-title">
+      <div class="plate-head">
+        <h2 class="rubric" id="top-picks-title">今日頭版</h2>
+        <button type="button" id="pick-panel-toggle" class="rubric-action"
+                aria-expanded="true" aria-controls="pick-panel">
+          <span id="pick-toggle-label">收合編輯台</span>
+        </button>
       </div>
-      <div id="interest-chips" class="interest-chips"></div>
+
+      <div class="picks-layout" id="picks-layout">
+        <div id="top-picks" class="frontpage"></div>
+
+        <aside class="deskpanel" id="pick-panel" aria-label="編輯台：頭版取材標準">
+          <div class="deskpanel-head">
+            <p class="deskpanel-title">編輯台</p>
+            <p class="deskpanel-sub">勾選取材標準，頭版會依這些標準重新選稿與排序</p>
+          </div>
+          <div id="metric-list" class="metric-list"></div>
+          <div class="deskpanel-foot">
+            <label class="field-label" for="picks-count">刊登則數</label>
+            <select id="picks-count" class="select select-sm">
+              <option value="3">3 則</option>
+              <option value="6" selected>6 則</option>
+              <option value="9">9 則</option>
+              <option value="12">12 則</option>
+              <option value="20">20 則</option>
+            </select>
+            <button type="button" id="metric-reset" class="btn btn-ghost">重設</button>
+            <button type="button" id="metric-add-all" class="btn btn-solid">頭版全部收入電子報</button>
+          </div>
+        </aside>
+      </div>
     </section>
 
-    <h2 class="section-title">
-      <span class="accent"></span><span id="top-picks-title">今日精選</span>
-      <button type="button" id="pick-panel-toggle" class="section-action"
-              aria-expanded="true" aria-controls="pick-panel">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/>
-          <line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/>
-          <line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/>
-          <line x1="17" y1="16" x2="23" y2="16"/>
-        </svg>
-        <span id="pick-toggle-label">收合指標</span>
-      </button>
-    </h2>
-    <div class="picks-layout" id="picks-layout">
-      <section id="top-picks" class="card-grid"></section>
+    <!-- ───────── 開源生態 ───────── -->
+    <section class="plate" aria-labelledby="opensource-title">
+      <div class="plate-head">
+        <button type="button" id="os-toggle" class="rubric-toggle" aria-expanded="true" aria-controls="opensource-grid">
+          <h2 class="rubric" id="opensource-title">開源生態與模型觀測站</h2>
+          <svg class="chev" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </div>
+      <div id="opensource-grid" class="os-grid"></div>
+    </section>
 
-      <aside class="pick-panel" id="pick-panel" aria-label="精選指標設定">
-        <div class="pick-panel-head">
-          <span class="pick-panel-title">精選指標</span>
-          <span class="pick-panel-sub">勾選您在意的指標，精選會依這些指標重新排序篩選（可複選）</span>
-        </div>
-        <div id="metric-list" class="metric-list"></div>
-        <div class="pick-panel-foot">
-          <label class="pick-count-label" for="picks-count">顯示則數</label>
-          <select id="picks-count" class="select select-sm">
-            <option value="3">3 則</option>
-            <option value="6" selected>6 則</option>
-            <option value="9">9 則</option>
-            <option value="12">12 則</option>
-            <option value="20">20 則</option>
-          </select>
-          <button type="button" id="metric-reset" class="mini-btn">重設</button>
-          <button type="button" id="metric-add-all" class="mini-btn mini-btn-primary">精選全部加入電子報</button>
-        </div>
-      </aside>
-    </div>
+    <!-- ───────── 事件資料庫 ───────── -->
+    <section class="plate" aria-labelledby="db-rubric">
+      <div class="plate-head">
+        <h2 class="rubric" id="db-rubric">全部收錄</h2>
+      </div>
+      <div id="db-toolbar" class="db-toolbar"></div>
+      <nav id="category-tabs" class="tabs" aria-label="分類篩選"></nav>
+      <div id="event-list" class="event-list"></div>
+      <nav id="db-pager" class="pager" aria-label="分頁"></nav>
+    </section>
 
-    <h2 class="section-title">
-      <span class="accent"></span>
-      <button type="button" id="os-toggle" class="collapse-toggle" aria-expanded="true" aria-controls="opensource-grid">
-        <span id="opensource-title">開源生態與模型觀測站</span>
-        <svg class="chev" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"
-             fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </button>
-    </h2>
-    <section id="opensource-grid" class="opensource-grid"></section>
+    <!-- ───────── 數據看板 ───────── -->
+    <section class="plate" aria-labelledby="metrics-title">
+      <div class="plate-head">
+        <h2 class="rubric" id="metrics-title">本日統計</h2>
+      </div>
+      <div id="metrics" class="metrics"></div>
+      <div class="analytics-grid">
+        <section class="analytics-card">
+          <h3 class="analytics-title">熱門被提及主體</h3>
+          <div id="top-entities" class="hbar-list"></div>
+        </section>
+        <section class="analytics-card">
+          <h3 class="analytics-title">事件分類分佈</h3>
+          <div id="cat-distribution"></div>
+        </section>
+      </div>
+    </section>
 
-    <h2 class="section-title"><span class="accent"></span>事件資料庫</h2>
-    <div id="db-toolbar" class="db-toolbar"></div>
-    <nav id="category-tabs" class="tabs" aria-label="分類篩選"></nav>
-    <section id="event-list" class="event-list"></section>
-    <nav id="db-pager" class="pager" aria-label="事件資料庫分頁"></nav>
-
-    <h2 class="section-title">
-      <span class="accent"></span><span id="metrics-title">今日 AI 局勢數據看板</span>
-    </h2>
-    <section id="metrics" class="metrics" aria-label="當日統計"></section>
-    <div class="analytics-grid">
-      <section class="analytics-card">
-        <h3 class="analytics-title">熱門被提及主體 (Top Mentioned Entities)</h3>
-        <div id="top-entities" class="hbar-list"></div>
-      </section>
-      <section class="analytics-card">
-        <h3 class="analytics-title">事件分類分佈 (Event Category Distribution)</h3>
-        <div id="cat-distribution"></div>
-      </section>
-    </div>
+    <footer class="colophon">
+      <p>晨誌 Morning Ledger — 每日 06:00 自動編成。事件由語言模型自新聞原文抽取、合併並評分，標題連結一律指向原始報導。</p>
+    </footer>
 
   </main>
 
-  <script type="module" src="./app.js?v=20260826a"></script>
+  <script type="module" src="./app.js?v=20260901a"></script>
 </body>
 </html>
