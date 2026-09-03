@@ -52,8 +52,8 @@ from config import OUTPUT_DIR, IMAGE_CFG
 #  所以這裡用實測數字抓，寧可保守。）
 NEURONS_PER_IMAGE = 83.0
 CF_DAILY_FREE_NEURONS = 10_000
-# 每天留給 06:00 排程的額度。排程跑在 UTC 22:00，跟白天手動補圖是同一個
-# UTC 日 —— 不留量的話手動補圖會把當晚 CI 的圖吃光。
+# 每天留給排程的額度。排程跑在 UTC 20:40（台灣隔天 04:40），跟台灣白天的
+# 手動補圖是同一個 UTC 日 —— 不留量的話白天補圖會把隔天早上的圖吃光。
 CF_RESERVE_FOR_CRON = 6_000
 
 
@@ -165,8 +165,8 @@ def main() -> None:
               f"（每日免費額度 {CF_DAILY_FREE_NEURONS:,}，約占 {est / CF_DAILY_FREE_NEURONS:.0%}）")
         budget = CF_DAILY_FREE_NEURONS - CF_RESERVE_FOR_CRON
         safe_n = int(budget // NEURONS_PER_IMAGE)
-        print(f"  （手動補圖建議一天不超過 {safe_n} 張 —— 06:00 的排程跑在同一個 "
-              f"UTC 日，要留 {CF_RESERVE_FOR_CRON:,} neurons 給它）")
+        print(f"  （手動補圖建議一天不超過 {safe_n} 張 —— 隔天早上的排程跟今天白天"
+              f"是同一個 UTC 日，要留 {CF_RESERVE_FOR_CRON:,} neurons 給它）")
         if est > budget:
             need = -(-len(jobs) // max(1, safe_n))
             print(f"⚠ 這批會吃掉排程要用的額度。建議加 --limit {safe_n}，"
