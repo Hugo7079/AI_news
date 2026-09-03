@@ -23,9 +23,9 @@
   --rule-heavy:  #16181D;
 
   /* 主色：印刷藍 */
-  --blue:        #17337A;
-  --blue-soft:   #E6EAF3;
-  --blue-mid:    #4463A8;
+  --blue:        #283B69;
+  --blue-soft:   #E8EBF1;
+  --blue-mid:    #566A96;
 
   /* 欄目色（低彩度印墨） */
   --cat-tech_research:     #1F3D7A;
@@ -36,7 +36,7 @@
   --cat-other:             #5E626C;
 
   --on-blue:     #FFFFFF;
-  --focus: #17337A;
+  --focus: #283B69;
 }
 
 /* 夜間版 */
@@ -52,9 +52,9 @@
     --rule:        #333844;
     --rule-soft:   #272B35;
     --rule-heavy:  #6E7480;
-    --blue:        #8FA9E6;
-    --blue-soft:   #232A3D;
-    --blue-mid:    #6E8AC9;
+    --blue:        #9EAFD7;
+    --blue-soft:   #282C38;
+    --blue-mid:    #7E90B9;
     --cat-tech_research:     #8DA5DE;
     --cat-industry_business: #6FBBA0;
     --cat-hardware_infra:    #D4A15C;
@@ -62,7 +62,7 @@
     --cat-policy_society:    #D28499;
     --cat-other:             #9A9EA8;
     --on-blue:     #12151C;
-    --focus: #8FA9E6;
+    --focus: #9EAFD7;
   }
 }
 :root[data-theme="dark"] {
@@ -76,9 +76,9 @@
   --rule:        #333844;
   --rule-soft:   #272B35;
   --rule-heavy:  #6E7480;
-  --blue:        #8FA9E6;
-  --blue-soft:   #232A3D;
-  --blue-mid:    #6E8AC9;
+  --blue:        #9EAFD7;
+  --blue-soft:   #282C38;
+  --blue-mid:    #7E90B9;
   --cat-tech_research:     #8DA5DE;
   --cat-industry_business: #6FBBA0;
   --cat-hardware_infra:    #D4A15C;
@@ -86,7 +86,7 @@
   --cat-policy_society:    #D28499;
   --cat-other:             #9A9EA8;
   --on-blue:     #12151C;
-  --focus: #8FA9E6;
+  --focus: #9EAFD7;
 }
 
 * { box-sizing: border-box; }

@@ -9,8 +9,11 @@
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#EDEEF0",
-  "theme_color": "#17337A",
-  "categories": ["news", "magazines"],
+  "theme_color": "#283B69",
+  "categories": [
+    "news",
+    "magazines"
+  ],
   "icons": [
     {
       "src": "/assets/icon-192.png",

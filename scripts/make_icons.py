@@ -23,7 +23,7 @@ from PIL import Image, ImageDraw
 OUT = Path(__file__).resolve().parents[1] / "web" / "assets"
 
 # 與 web/style.css 同一組色
-INK_BLUE = (23, 51, 122)      # #17337A
+INK_BLUE = (40, 59, 105)      # #283B69
 PAPER = (244, 245, 247)       # #F4F5F7
 
 # 正規化幾何（0..1，相對於畫布邊長）
@@ -74,7 +74,7 @@ def svg() -> str:
            f"A {r:.4f} {r:.4f} 0 0 1 {cx + r:.4f} {cy:.4f} Z")
     return f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" width="512" height="512">
   <title>晨誌 Morning Ledger</title>
-  <rect width="1" height="1" fill="#17337A"/>
+  <rect width="1" height="1" fill="#283B69"/>
   <path d="{arc}" fill="#F4F5F7"/>
   <rect x="{g['rule_x0']}" y="{g['rule_y0']}" width="{g['rule_x1'] - g['rule_x0']:.4f}" height="{g['rule_y1'] - g['rule_y0']:.4f}" fill="#F4F5F7"/>
   <rect x="{g['sub_x0']}" y="{g['sub_y0']}" width="{g['sub_x1'] - g['sub_x0']:.4f}" height="{g['sub_y1'] - g['sub_y0']:.4f}" fill="#F4F5F7"/>

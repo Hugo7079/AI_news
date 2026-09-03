@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // report.js — 產生「晨誌」電子報 PDF（瀏覽器列印成 PDF）
 //
-// 視覺與網站同一套：印刷藍 #17337A、低彩度欄目墨色、Noto Serif TC 報頭、
+// 視覺與網站同一套：印刷藍 #283B69、低彩度欄目墨色、Noto Serif TC 報頭、
 // 分隔靠細線與留白，不用陰影與圓角。
 //
 //   1) 目錄頁：第一頁是完整報頭（刊名 + 期別 + 日期），後續頁改小報眉；
@@ -267,7 +267,7 @@ body {
 .idx-card:first-of-type { border-top: 0; }
 .idx-no {
   font-family: "Newsreader", Georgia, serif; font-size: 13pt;
-  font-variant-numeric: tabular-nums; line-height: 1.2; color: #17337A;
+  font-variant-numeric: tabular-nums; line-height: 1.2; color: #283B69;
 }
 .idx-thumb {
   width: 32mm; height: 24mm; overflow: hidden; border: .25mm solid #C9CCD3;
@@ -335,7 +335,7 @@ body {
   font-family: "Newsreader", Georgia, serif; font-size: 8pt; color: #5E626C;
   margin: 4mm 0 0; padding-top: 2.5mm; border-top: .25mm solid #DEE0E5; word-break: break-all;
 }
-.nl-s a { color: #17337A; text-decoration: none; }
+.nl-s a { color: #283B69; text-decoration: none; }
 
 /* ── 換頁按鈕 ── */
 .nl-nav { position: absolute; right: 14mm; bottom: 9mm; display: flex; gap: 2mm; z-index: 4; }
@@ -343,7 +343,7 @@ body {
   display: inline-flex; align-items: center; gap: 1.4mm;
   border: .25mm solid #C9CCD3; background: #fff;
   padding: 1.6mm 4.5mm; font-family: "Newsreader", Georgia, serif;
-  font-size: 8.5pt; letter-spacing: .05em; color: #17337A; text-decoration: none;
+  font-size: 8.5pt; letter-spacing: .05em; color: #283B69; text-decoration: none;
 }
 .nl-nav svg { width: 3.2mm; height: 3.2mm; display: block; }
 
@@ -358,7 +358,7 @@ body {
   }
   .nl-toolbar button {
     border: 0; padding: 7px 16px; cursor: pointer;
-    font-weight: 600; font-size: 13px; background: #17337A; color: #fff;
+    font-weight: 600; font-size: 13px; background: #283B69; color: #fff;
   }
   .nl-toolbar span { align-self: center; color: #5E626C; padding-left: 6px; }
 }
