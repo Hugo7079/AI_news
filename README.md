@@ -21,6 +21,10 @@ LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接�
 > 但 R2 開通同樣需要填付款方式，所以除非你已經在用 Cloudflare 生態，
 > 沒必要為此多接一個服務。
 
+網站本身是 PWA，手機可以「加到主畫面」當 app 用（`web/manifest.webmanifest`）。
+識別圖示由 `scripts/make_icons.py` 產生 —— 幾何參數寫在該檔的 `GEO`，改完重跑
+就會同步更新 SVG 與所有尺寸的 PNG。
+
 兩套部署可以並存，同一份程式碼，差別只在 `AINEWS_STORE`：
 
 ```

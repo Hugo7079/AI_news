@@ -2,13 +2,30 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- viewport-fit=cover：加到主畫面後全螢幕執行，要自己處理瀏海與底部指示條 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>晨誌 Morning Ledger</title>
   <meta name="description" content="每日 AI 情報日報：50+ 來源、LLM 抽事件、重要度排序。" />
+
+  <!-- ── 加到主畫面（PWA）── -->
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <!-- 狀態列顏色跟著頁面底色走，看起來才像一體 -->
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#EDEEF0" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14161B" />
+
+  <!-- iOS 不讀 manifest 的 icons，主畫面圖示一定要這一張 -->
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="晨誌" />
+
+  <link rel="icon" href="/assets/icon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=20260901a" />
+  <link rel="stylesheet" href="./style.css?v=20260903a" />
 </head>
 <body>
   <main class="sheet">
@@ -122,11 +139,11 @@
     </section>
 
     <footer class="colophon">
-      <p>晨誌 Morning Ledger — 每日 06:00 自動編成。事件由語言模型自新聞原文抽取、合併並評分，標題連結一律指向原始報導。</p>
+      <p>晨誌 Morning Ledger — 每日清晨自動編成。事件由語言模型自新聞原文抽取、合併並評分，標題連結一律指向原始報導。</p>
     </footer>
 
   </main>
 
-  <script type="module" src="./app.js?v=20260901a"></script>
+  <script type="module" src="./app.js?v=20260903a"></script>
 </body>
 </html>
