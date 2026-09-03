@@ -49,20 +49,21 @@ jobs:
       - name: Run pipeline
         env:
           # LLM：Mistral La Plateforme（免費 Experiment tier）
-          AINEWS_LLM_API_KEY:           ${{ secrets.MISTRAL_API_KEY }}
+          # secret 名稱刻意與環境變數同名，省掉一層對照
+          AINEWS_LLM_API_KEY:           ${{ secrets.AINEWS_LLM_API_KEY }}
           AINEWS_LLM_BASE_URL:          "https://api.mistral.ai/v1"
           AINEWS_LLM_MODEL:             "mistral-small-latest"
           AINEWS_LLM_RPM:               "45"
           # 封面生圖：Cloudflare Workers AI（FLUX.1 [schnell]，免費 10,000 neurons/天）
           AINEWS_IMAGE_BACKEND:         "cloudflare"
-          AINEWS_CF_ACCOUNT_ID:         ${{ secrets.CF_ACCOUNT_ID }}
-          AINEWS_CF_API_TOKEN:          ${{ secrets.CF_API_TOKEN }}
+          AINEWS_CF_ACCOUNT_ID:         ${{ secrets.AINEWS_CF_ACCOUNT_ID }}
+          AINEWS_CF_API_TOKEN:          ${{ secrets.AINEWS_CF_API_TOKEN }}
           # 封面存放預設走 Firebase Storage（需 Blaze 方案）。
           # 下面三個 R2 secret 有設才會改走 Cloudflare R2；沒設就留空、不影響。
-          AINEWS_R2_ACCESS_KEY_ID:      ${{ secrets.R2_ACCESS_KEY_ID }}
-          AINEWS_R2_SECRET_ACCESS_KEY:  ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AINEWS_R2_ACCESS_KEY_ID:      ${{ secrets.AINEWS_R2_ACCESS_KEY_ID }}
+          AINEWS_R2_SECRET_ACCESS_KEY:  ${{ secrets.AINEWS_R2_SECRET_ACCESS_KEY }}
           AINEWS_R2_BUCKET:             ainews-covers
-          AINEWS_R2_PUBLIC_BASE:        ${{ secrets.R2_PUBLIC_BASE }}
+          AINEWS_R2_PUBLIC_BASE:        ${{ secrets.AINEWS_R2_PUBLIC_BASE }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: |
           DAYS="${{ github.event.inputs.days || '1' }}"
