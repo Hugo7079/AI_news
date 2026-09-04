@@ -8,15 +8,16 @@ fallback 底圖。這支只補圖、不重跑整個 pipeline。
 生圖後端沿用 src/cover_image.py 的設定（AINEWS_IMAGE_BACKEND），預設是
 Cloudflare Workers AI 的 FLUX.1 [schnell]。
 
-⚠ 免費額度：Cloudflare 每天 10,000 neurons，一張 1024×1024 / 4 steps 約
-   57.6 neurons ≈ 173 張/天。補多天時務必用 --top 只挑每天最重要的幾則，
-   否則會在中途撞到 429。腳本開跑前會估算並要你確認。
+⚠ 免費額度：Cloudflare 每天 10,000 neurons（以 UTC 日計），一張約 83。
+   每天的排程跑在 UTC 20:40，跟台灣白天的手動補圖是**同一個 UTC 日** ——
+   補太多會把排程的額度吃光，隔天早上整份報表就都是 fallback 底圖。
+   所以預設會自動限制張數並替排程留 6,000 neurons，不必自己算。
 
 用法：
-  # 補最近 10 天，每天挑重要度最高的 12 則（約 138 張 / 7,900 neurons）
-  python scripts/backfill_cover_images.py --days 10 --top 12
+  # 補最近 14 天（自動限制在安全張數內，跑幾天就補完了）
+  python scripts/backfill_cover_images.py --days 14 --yes
 
-  # 只補某一天，全部補滿
+  # 只補某一天
   python scripts/backfill_cover_images.py --date 2026-08-28
 
   # 先試 3 張看看成品
@@ -25,8 +26,8 @@ Cloudflare Workers AI 的 FLUX.1 [schnell]。
   # 連已經有圖的也重生
   python scripts/backfill_cover_images.py --date 2026-08-28 --force
 
-  # 不問直接跑（排程用）
-  python scripts/backfill_cover_images.py --days 10 --top 12 --yes
+  # 確定今晚排程已經跑完，把剩餘額度全用掉
+  python scripts/backfill_cover_images.py --days 14 --no-reserve --yes
 """
 
 from __future__ import annotations
@@ -121,7 +122,11 @@ def main() -> None:
                     help="從今天往回算 N 天（與 --date 二選一）")
     ap.add_argument("--top", type=int, default=0,
                     help="每天最多補幾則（依重要度排序，0=不限）")
-    ap.add_argument("--limit", type=int, default=0, help="總張數上限（0=不限）")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="總張數上限。不給的話自動用安全上限（見 --no-reserve）")
+    ap.add_argument("--no-reserve", action="store_true",
+                    help="不保留排程用的額度，把當日剩餘額度全部用掉。"
+                         "只有確定今晚排程已經跑完才該用")
     ap.add_argument("--force", action="store_true", help="連已有圖的也重生")
     ap.add_argument("--yes", action="store_true", help="不詢問直接開跑")
     args = ap.parse_args()
@@ -138,6 +143,16 @@ def main() -> None:
         store_label = f"Cloudflare R2 ({r2_storage.config()['bucket']})"
     else:
         store_label = "Firebase Storage（需要 Blaze 方案）"
+
+    # 預設就替排程留量。之前只是「印出建議」，沒加 --limit 就會照跑，
+    # 結果補圖把當晚排程的額度吃光、隔天早上整份報表都是 fallback 底圖。
+    # 現在把安全的做法變成預設，要覆寫得明講。
+    reserve_cap = int((CF_DAILY_FREE_NEURONS - CF_RESERVE_FOR_CRON) // NEURONS_PER_IMAGE)
+    auto_limited = False
+    if (backend_label.startswith("Cloudflare") and not args.no_reserve
+            and (args.limit == 0 or args.limit > reserve_cap)):
+        args.limit = reserve_cap
+        auto_limited = True
 
     if args.days:
         today = datetime.now(timezone(timedelta(hours=8))).date()
@@ -163,14 +178,13 @@ def main() -> None:
     if backend_label.startswith("Cloudflare"):
         print(f"預估耗用 {est:,.0f} neurons"
               f"（每日免費額度 {CF_DAILY_FREE_NEURONS:,}，約占 {est / CF_DAILY_FREE_NEURONS:.0%}）")
-        budget = CF_DAILY_FREE_NEURONS - CF_RESERVE_FOR_CRON
-        safe_n = int(budget // NEURONS_PER_IMAGE)
-        print(f"  （手動補圖建議一天不超過 {safe_n} 張 —— 隔天早上的排程跟今天白天"
-              f"是同一個 UTC 日，要留 {CF_RESERVE_FOR_CRON:,} neurons 給它）")
-        if est > budget:
-            need = -(-len(jobs) // max(1, safe_n))
-            print(f"⚠ 這批會吃掉排程要用的額度。建議加 --limit {safe_n}，"
-                  f"分 {need} 天跑完。")
+        if auto_limited:
+            print(f"  已自動限制為 {reserve_cap} 張 —— 排程跑在 UTC 20:40，跟你現在"
+                  f"是同一個 UTC 日，要留 {CF_RESERVE_FOR_CRON:,} neurons 給它，"
+                  f"否則隔天早上整份報表都會是 fallback 底圖。\n"
+                  f"  （確定今晚排程已經跑完了才用 --no-reserve 解除）")
+        elif args.no_reserve:
+            print("  --no-reserve：不留額度給排程")
 
     if not args.yes:
         try:
