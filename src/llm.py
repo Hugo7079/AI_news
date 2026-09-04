@@ -19,29 +19,45 @@ from config import LLM_CFG
 
 # ─── 全域速率限制 ───
 # Mistral 免費 Experiment tier 是 1 RPS（＝60 RPM）、500K TPM。
-# 預設 45 RPM，留 buffer 給 retry 與並行誤差。換別家記得跟著調：
+# 預設 30 RPM（＝2 秒一次）而不是貼著 60 跑：1 RPS 是硬限制，實測 45 RPM
+# （1.33 秒間隔）在多 worker 並行時仍會零星撞 429。2 秒留足餘裕，代價只是
+# 整趟多幾分鐘，遠比掉 batch 划算。換別家記得跟著調：
 # Groq 免費版 30 RPM、OpenRouter free 20 RPM。可用 AINEWS_LLM_RPM 覆寫。
-_RPM_LIMIT = int(os.getenv("AINEWS_LLM_RPM", "45"))
+_RPM_LIMIT = int(os.getenv("AINEWS_LLM_RPM", "30"))
 
 
 class _RateLimiter:
-    """以 60 秒滑動視窗強制不超過 N 次請求；thread-safe。"""
+    """同時管「每分鐘上限」與「兩次請求的最小間隔」；thread-safe。
+
+    只看每分鐘上限是不夠的：45 RPM 的滑動視窗允許瞬間連發 45 次，而 Mistral
+    免費版限制是 1 RPS —— pipeline 用 ThreadPoolExecutor 平行送，一定會爆
+    429。最小間隔直接由 rpm 推導（45 RPM → 1.33 秒），自然把請求攤平。
+    """
 
     def __init__(self, rpm: int):
         self.rpm = max(1, rpm)
+        self.min_interval = 60.0 / self.rpm
         self.lock = threading.Lock()
         self.timestamps: list[float] = []
+        self.last_sent = 0.0
 
     def acquire(self) -> None:
         while True:
             with self.lock:
                 now = time.monotonic()
                 self.timestamps = [t for t in self.timestamps if t > now - 60.0]
-                if len(self.timestamps) < self.rpm:
+
+                # 距離上一次太近 → 等到間隔滿足
+                gap = self.last_sent + self.min_interval - now
+                if gap > 0:
+                    wait = gap
+                elif len(self.timestamps) >= self.rpm:
+                    wait = self.timestamps[0] + 60.0 - now + 0.1
+                else:
                     self.timestamps.append(now)
+                    self.last_sent = now
                     return
-                wait = self.timestamps[0] + 60.0 - now + 0.1
-            time.sleep(max(wait, 0.05))
+            time.sleep(max(wait, 0.02))
 
 
 _rate_limiter = _RateLimiter(_RPM_LIMIT)
@@ -100,11 +116,9 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
 
     url = _build_url(base_url)
     if not _logged_url:
-        print(f"  [LLM] endpoint={url}  model={model}  rpm_limit={_RPM_LIMIT}")
+        print(f"  [LLM] endpoint={url}  model={model}  "
+                  f"rpm={_RPM_LIMIT} 最小間隔={_rate_limiter.min_interval:.2f}s")
         _logged_url = True
-
-    # 全域速率限制：阻塞直到本次請求合法
-    _rate_limiter.acquire()
 
     messages = []
     if system:
@@ -131,6 +145,9 @@ def chat(prompt: str, system: str | None = None, temperature: float = 0.0,
     backoff = 4.0
     resp = None
     for attempt in range(1, max_attempts + 1):
+        # 每次嘗試都重新排隊 —— 重試若繞過節流，就會直接撞在其他 worker
+        # 的請求上，把原本只是暫時性的 429 變成連環 429。
+        _rate_limiter.acquire()
         try:
             resp = _session.post(
                 url,

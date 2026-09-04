@@ -186,11 +186,14 @@ NOISE_KEYWORDS = [
 DEFAULT_DAYS_BACK = 1           # 每日跑時抓近 N 天
 MAX_PER_SOURCE = 50             # 每個來源最多抓幾則（避免 RSS 太長）
 ENABLE_GOOGLE_NEWS_DEFAULT = False  # Google News 補強預設關閉（內容過雜）
-# 個別來源覆寫上限（arxiv 一天就有 50 篇，太多）
+# arXiv 一天就有上百篇，而且 RSS 沒有任何熱度訊號 —— 全收會讓報表被
+# 「某某團隊提出 XXX 框架」洗版（實測佔了進 LLM 總量的 23%）。
+# 這裡砍到每類 5 篇，真正有熱度的論文改由 HuggingFace Daily Papers 供給，
+# 那是依社群 upvote 篩過的。
 PER_SOURCE_MAX_OVERRIDES = {
-    "arXiv cs.AI (新論文)": 15,
-    "arXiv cs.LG (新論文)": 15,
-    "arXiv cs.CL (新論文)": 15,
+    "arXiv cs.AI (新論文)": 5,
+    "arXiv cs.LG (新論文)": 5,
+    "arXiv cs.CL (新論文)": 5,
     "Hacker News (front)": 15,
 }
 LLM_CLASSIFY_ENABLED = True     # 是否使用 LLM 分類（關掉則只用關鍵字落到「未分類」）

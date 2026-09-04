@@ -271,83 +271,61 @@ def parse_relative_time_to_days(s: str) -> float:
 # ─────────────────────────────────────────────────────────────
 # 4. Ollama Library
 # ─────────────────────────────────────────────────────────────
-def fetch_ollama_library(days_back: int = 7, limit: int = 20) -> list[dict]:
-    url = "https://ollama.com/library"
-    raw = _http_get(url)
+def fetch_ollama_library(days_back: int = 7, limit: int = 8) -> list[dict]:
+    """Ollama Library 的新模型。
+
+    2026-09 改寫：Ollama 換掉了版面，原本依賴的 x-test-model / x-test-updated /
+    x-test-pull-count 屬性全部消失，於是舊程式每天都落到「無過濾 fallback」，
+    固定吐出 llama3.1 / deepseek-r1 / gemma3 這些一兩年前的模型當新聞。
+
+    新版沒有可解析的更新日期，改用 ?sort=newest —— 排序本身就是新鮮度訊號，
+    取前 limit 個即可。寧可少抓也不要抓到舊模型：解析失敗就回空陣列，
+    不再有無過濾的 fallback。
+    """
+    raw = _http_get("https://ollama.com/library?sort=newest")
     if not raw:
         return []
     html = raw.decode("utf-8", errors="ignore")
 
+    # 依模型連結切段，每段取到下一個模型連結為止當作它的描述區
+    anchors = list(re.finditer(r'href="/library/([a-z0-9._\-]+)"', html))
     items: list[dict] = []
     seen: set[str] = set()
-    # 結構：每個 model 是一個 <li> 帶 <a href="/library/{name}"> + <p> 描述
-    li_re = re.compile(r'<li[^>]*x-test-model[^>]*>(.*?)</li>', re.S)
-    for li in li_re.findall(html):
-        name_m = re.search(r'href="/library/([^"]+)"', li)
-        if not name_m:
-            continue
-        name = name_m.group(1).strip()
+    for i, m in enumerate(anchors):
+        name = m.group(1)
         if name in seen:
             continue
         seen.add(name)
-
-        desc_m = re.search(r'<p[^>]*x-test-model-description[^>]*>(.*?)</p>', li, flags=re.S)
-        desc = _strip_tags(desc_m.group(1)) if desc_m else ""
-
-        pulls_m = re.search(r'x-test-pull-count[^>]*>\s*([\d.,KM]+)', li)
-        pulls = pulls_m.group(1) if pulls_m else ""
-        updated_m = re.search(r'x-test-updated[^>]*>\s*([^<]+)<', li)
-        updated = (updated_m.group(1).strip() if updated_m else "")
-
-        # 嚴格時間過濾：若更新天數大於 days_back，則在爬取端直接丟棄
-        if updated:
-            days_ago = parse_relative_time_to_days(updated)
-            if days_ago > days_back:
-                continue
-
-        bits = []
-        if pulls:
-            bits.append(f"pulls {pulls}")
-        if updated:
-            bits.append(f"updated {updated}")
-        meta = " · ".join(bits)
+        # 從 <a ...> 這個標籤「關閉之後」才開始取，否則會把 class="..." 的
+        # 屬性值一起當成內文（_strip_tags 只認完整標籤）
+        tag_end = html.find(">", m.end())
+        seg_start = tag_end + 1 if tag_end != -1 else m.end()
+        seg = html[seg_start: anchors[i + 1].start() if i + 1 < len(anchors) else seg_start + 1400]
+        import html as _html
+        desc = _html.unescape(re.sub(r"\s+", " ", _strip_tags(seg))).strip()
+        # 版面會把模型名重覆放在描述最前面，去掉
+        if desc.lower().startswith(name.lower()):
+            desc = desc[len(name):].strip(" ·:-")
+        # 去掉參數量標籤（3b / 8B / 32b…）與尾端殘留符號
+        desc = re.sub(r"\b\d+(\.\d+)?[bB]\b", "", desc).strip(" ·,")
+        desc = re.sub(r"\s{2,}", " ", desc).strip()
+        if len(desc) > 240:
+            desc = desc[:240].rsplit(" ", 1)[0] + "…"
 
         items.append({
-            "title": f"[Ollama 模型] {name}",
+            "title": f"[Ollama 新模型] {name}",
             "url": f"https://ollama.com/library/{name}",
-            "summary": (f"{meta}。{desc}" if desc else meta) or f"Ollama 開源模型 {name}",
+            "summary": desc or f"Ollama 新上架模型 {name}",
             "published": "",
             "source_name": "Ollama Library",
             "source_region": "GLOBAL",
             "source_kind": "opensource",
             "source_lang": "en",
             "is_opensource": True,
-            "pulls": pulls,
-            "updated": updated,
         })
         if len(items) >= limit:
             break
 
-    # Fallback：若 x-test-model 選擇器失效，退回粗暴 anchor 解析（保底 5 則）
-    if not items:
-        for m in re.finditer(r'href="/library/([a-z0-9._\-]+)"', html):
-            name = m.group(1)
-            if name in seen or "/" in name:
-                continue
-            seen.add(name)
-            items.append({
-                "title": f"[Ollama 模型] {name}",
-                "url": f"https://ollama.com/library/{name}",
-                "summary": f"Ollama 開源模型 {name}",
-                "published": "",
-                "source_name": "Ollama Library",
-                "source_region": "GLOBAL",
-                "source_kind": "opensource",
-                "source_lang": "en",
-                "is_opensource": True,
-            })
-            if len(items) >= 10:
-                break
     return items
 
 
