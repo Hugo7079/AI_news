@@ -48,11 +48,11 @@ jobs:
 
       - name: Run pipeline
         env:
-          # LLM：Mistral La Plateforme（免費 Experiment tier）
+          # LLM：d8ai gateway（litellm proxy，OpenAI 相容）
           # secret 名稱刻意與環境變數同名，省掉一層對照
           AINEWS_LLM_API_KEY:           ${{ secrets.AINEWS_LLM_API_KEY }}
-          AINEWS_LLM_BASE_URL:          "https://api.mistral.ai/v1"
-          AINEWS_LLM_MODEL:             "mistral-small-latest"
+          AINEWS_LLM_BASE_URL:          "https://llm-gateway.d8ai.ai/"
+          AINEWS_LLM_MODEL:             "gemma-4-31B-it"
           AINEWS_LLM_RPM:               "45"
           # 封面生圖：Cloudflare Workers AI（FLUX.1 [schnell]，免費 10,000 neurons/天）
           AINEWS_IMAGE_BACKEND:         "cloudflare"

@@ -256,16 +256,65 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
 
 
 def _require_llm_key() -> None:
-    """沒有 LLM 金鑰就直接停，不要抓完一整輪才發現每則都抽不出事件。"""
+    """
+    開跑前確認 LLM「有金鑰」而且「金鑰真的能用」。
+
+    只檢查有沒有金鑰是不夠的 —— 2026-09-05 那天就是金鑰還在、但配額被降成 0
+    （429 且 x-ratelimit-limit-req-minute: 0）。每一次抽事件都失敗，pipeline
+    照樣跑完、exit 0、Actions 一片綠，最後寫進去 0 則。
+    故障看起來跟「今天真的沒新聞」一模一樣，這種沉默失敗最難發現。
+    """
+    import json
+    import urllib.error
+    import urllib.request
     from config import LLM_CFG
-    if LLM_CFG.get("api_key"):
-        return
-    raise SystemExit(
-        "[錯誤] 找不到 LLM API key。\n"
-        "  Docker  : 在專案根目錄的 .env 設定 AINEWS_LLM_API_KEY（可從 .env.example 複製）\n"
-        "  本機開發: 設環境變數 AINEWS_LLM_API_KEY，或建立 .ainews_llm_config.json\n"
-        "  Actions : 在 workflow 的 env / repository secrets 設定"
+
+    if not LLM_CFG.get("api_key"):
+        raise SystemExit(
+            "[錯誤] 找不到 LLM API key。\n"
+            "  Docker  : 在專案根目錄的 .env 設定 AINEWS_LLM_API_KEY（可從 .env.example 複製）\n"
+            "  本機開發: 設環境變數 AINEWS_LLM_API_KEY，或建立 .ainews_llm_config.json\n"
+            "  Actions : 在 workflow 的 env / repository secrets 設定"
+        )
+
+    base = LLM_CFG["base_url"].rstrip("/")
+    if not base.endswith("/v1"):
+        base += "/v1"
+    req = urllib.request.Request(
+        base + "/chat/completions",
+        data=json.dumps({
+            "model": LLM_CFG["model"],
+            "messages": [{"role": "user", "content": "ping"}],
+            "max_tokens": 1,
+        }).encode("utf-8"),
+        headers={"Content-Type": "application/json",
+                 "Authorization": f"Bearer {LLM_CFG['api_key']}"},
     )
+    try:
+        with urllib.request.urlopen(req, timeout=45):
+            return
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", "ignore")[:200]
+        hint = ""
+        if e.code == 429:
+            limit = e.headers.get("x-ratelimit-limit-req-minute")
+            if limit == "0":
+                hint = ("\n  這把金鑰的每分鐘配額是 0 —— 不是用量爆掉，"
+                        "是這個帳號當下根本不被允許發請求。要去服務商後台看方案狀態。")
+            else:
+                hint = "\n  被限流。稍後再跑，或降低 AINEWS_LLM_RPM。"
+        elif e.code in (401, 403):
+            hint = "\n  金鑰無效或沒有這個模型的權限。"
+        raise SystemExit(
+            f"[錯誤] LLM 連線測試失敗：HTTP {e.code}\n"
+            f"  端點：{base}\n  模型：{LLM_CFG['model']}\n"
+            f"  回應：{detail}{hint}\n"
+            f"  先停在這裡，不要抓完一整輪才發現每則都抽不出事件。"
+        ) from e
+    except Exception as e:  # noqa: BLE001
+        raise SystemExit(
+            f"[錯誤] LLM 連線測試失敗：{type(e).__name__}: {e}\n  端點：{base}"
+        ) from e
 
 
 if __name__ == "__main__":
