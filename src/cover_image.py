@@ -743,8 +743,14 @@ def attach_cover_images(items: list[dict], date_str: str,
             if deadline is not None and time.monotonic() > deadline:
                 print("  封面圖：已達時間預算上限，跳過剩餘重試")
                 break
-            still_failed = [it for it in items
-                            if (it.get("cover_image") or {}).get("kind") != "local"]
+            # 只重試「真的沒圖」的。原本挑 kind != "local"，會把 og:image 抓到的
+            # remote 原圖一起算進來，下面又清成 None —— 首輪辛苦抓到的 20 張原圖
+            # 就這樣被洗掉，最終統計變成 0 張。
+            still_failed = [
+                it for it in items
+                if not ((it.get("cover_image") or {}).get("kind") in ("local", "remote")
+                        and (it.get("cover_image") or {}).get("url"))
+            ]
             if not still_failed:
                 break
             print(f"  封面圖重試第 {round_no} 輪：{len(still_failed)} 則待補...")
