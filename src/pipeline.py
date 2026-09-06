@@ -31,7 +31,7 @@ from config import OUTPUT_DIR, CATEGORIES, CATEGORY_LABEL_BY_ID, DEFAULT_DAYS_BA
 from fetcher import fetch_all_sources, google_news_supplement, prefilter
 from sources_extra import fetch_opensource_supplement
 from events import extract_events_from_items, merge_events, filter_events
-from cover_image import attach_cover_images
+from cover_image import attach_cover_images, prefill_og_covers
 from enrich import generate_full_content
 
 
@@ -130,6 +130,8 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     for ev in db_events:
         if ev.get("sources"):
             ev["url"] = ev["sources"][0].get("url", "")
+    # 先抓文章原圖，剩下的才生圖 —— 生圖額度與其他專案共用，不能整鍋吃光
+    prefill_og_covers(db_events)
     attach_cover_images(db_events, today, deadline=deadline)
 
     # 9.5) 全文彙整（LLM 把每個事件擴寫成多段內文，供 PDF 報表細節區）
@@ -244,10 +246,16 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
         except Exception as e:
             print(f"[firestore] 寫入失敗（本地輸出已完成）：{type(e).__name__}: {e}")
 
+    covers_ok = sum(1 for e in db_events
+                    if isinstance(e.get("cover_image"), dict)
+                    and e["cover_image"].get("kind") in ("remote", "local")
+                    and e["cover_image"].get("url"))
+
     return {
         "date": today,
         "total_db": len(db_events),
         "total_top": len(top_events),
+        "covers_ok": covers_ok,
         "by_category": dict(by_cat_label),
         "output_db_json": str(json_db_path),
         "output_json": str(json_top_path),
@@ -328,6 +336,25 @@ if __name__ == "__main__":
     args = p.parse_args()
     _require_llm_key()
 
-    run(days_back=args.days,
-        enable_google_news=args.google,
-        only_kinds=set(args.kinds) if args.kinds else None)
+    result = run(days_back=args.days,
+                 enable_google_news=args.google,
+                 only_kinds=set(args.kinds) if args.kinds else None)
+
+    # 收尾檢查 —— 沉默地產出空白比直接失敗更糟：
+    # 故障看起來會跟「今天真的沒新聞」一模一樣，網站照樣顯示、沒人會發現。
+    # 2026-09-05 那天就是這樣：排程成功、Actions 綠燈、網站 0 則。
+    problems = []
+    if result["total_db"] == 0:
+        problems.append("事件數 0 —— 正常日子不可能沒有新聞，這一定是故障")
+    if result["total_db"] and result["covers_ok"] == 0:
+        problems.append(f"{result['total_db']} 則事件全部沒有封面圖 —— "
+                        f"生圖後端多半掛了（額度用盡或金鑰失效）")
+
+    if problems:
+        print("\n[失敗] 這次執行的產出不可用：")
+        for x in problems:
+            print(f"  ‣ {x}")
+        raise SystemExit(1)
+
+    print(f"\n[ok] {result['date']}：事件 {result['total_db']} 則 / "
+          f"精選 {result['total_top']} 則 / 有封面 {result['covers_ok']} 則")

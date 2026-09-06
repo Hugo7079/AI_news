@@ -588,6 +588,38 @@ def image_ext(data: bytes) -> str:
     return "png"
 
 
+def prefill_og_covers(items: list[dict], max_workers: int = 10) -> int:
+    """
+    先用文章自己的 og:image 當封面，抓不到才輪到生圖。
+
+    為什麼重要：生圖一張約 57.6 neurons，一天 100 則就是 5,760，
+    而 Cloudflare 免費額度是每天 10,000、且與其他專案共用同一個帳號。
+    全部用生圖等於把整鍋額度吃光，別的東西就餓死了。
+    真圖對新聞站來說也比 AI 生成的誠實 —— 生圖只該是沒有原圖時的退路。
+    """
+    todo = [it for it in items
+            if not (isinstance(it.get("cover_image"), dict)
+                    and it["cover_image"].get("url"))]
+    if not todo:
+        return 0
+
+    def _grab(it: dict) -> bool:
+        for s in (it.get("sources") or [])[:3]:
+            u = s.get("url") or ""
+            if not u:
+                continue
+            img = extract_og_image(u)
+            if img:
+                it["cover_image"] = {"kind": "remote", "url": img}
+                return True
+        return False
+
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        got = sum(1 for ok in ex.map(_grab, todo) if ok)
+    print(f"  封面 og:image：{got}/{len(todo)} 則抓到文章原圖（不必生圖）")
+    return got
+
+
 def attach_cover_images(items: list[dict], date_str: str,
                         generate_fallback: bool = True,
                         max_generate: int = 150,
@@ -654,6 +686,13 @@ def attach_cover_images(items: list[dict], date_str: str,
         url = it.get("url", "")
         cat = it.get("category") or "uncategorized"
 
+        # 已經有真圖（og:image 前置階段抓到的）就不要再生一張蓋掉
+        cover = it.get("cover_image")
+        if isinstance(cover, dict) and cover.get("kind") == "remote" and cover.get("url"):
+            with counter_lock:
+                counters["og"] = counters.get("og", 0) + 1
+            return
+
         # 時間預算保險：超過 deadline 就不再生圖，直接落 fallback（快速收尾）
         if deadline is not None and time.monotonic() > deadline:
             it["cover_image"] = {"kind": "fallback", "category": cat}
@@ -695,7 +734,8 @@ def attach_cover_images(items: list[dict], date_str: str,
     print(f"  封面圖生成（{len(items)} 則，backend={src}，平行 {max_workers}）...")
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
         list(ex.map(_one, items))
-    print(f"  封面圖首輪：生成 {counters['gen']} 張 / fallback {counters['fallback']} 張")
+    print(f"  封面圖首輪：原圖 {counters.get('og', 0)} 張 / "
+          f"生成 {counters['gen']} 張 / fallback {counters['fallback']} 張")
 
     # 重試掃尾：gateway 暫時忙就會 504，掃個一兩輪幾乎都能補齊
     if can_generate and retry_passes > 0:
