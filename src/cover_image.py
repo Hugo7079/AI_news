@@ -756,9 +756,12 @@ def attach_cover_images(items: list[dict], date_str: str,
             with ThreadPoolExecutor(max_workers=max_workers) as ex:
                 list(ex.map(_one, still_failed))
 
-    real = sum(1 for it in items
-               if (it.get("cover_image") or {}).get("kind") == "local")
-    fallback = len(items) - real
-    print(f"  封面圖最終：生成 {real} 張 / fallback {fallback} 張")
+    # 有真圖的兩種都算數：og 抓來的（remote）與生成的（local）。
+    # 只數 local 會把 og 原圖誤報成 fallback，日誌看起來像整批失敗。
+    kinds = [(it.get("cover_image") or {}).get("kind") for it in items]
+    og = sum(1 for k in kinds if k == "remote")
+    real = sum(1 for k in kinds if k == "local")
+    fallback = len(items) - og - real
+    print(f"  封面圖最終：原圖 {og} 張 / 生成 {real} 張 / fallback {fallback} 張")
     if fallback:
-        print(f"  [warn] 仍有 {fallback} 則使用分類 fallback（gateway 連續失敗）")
+        print(f"  [warn] 仍有 {fallback} 則沒有封面圖（既抓不到 og:image，生圖也失敗）")
