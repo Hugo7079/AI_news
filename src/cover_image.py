@@ -294,39 +294,44 @@ def check_cf_config() -> Optional[str]:
     return None
 
 
-def verify_cf_token(timeout: int = 15) -> Optional[str]:
-    """跟 Cloudflare 確認 token 本身有效；有問題回一句人話，沒問題回 None。
+def verify_cf_token(timeout: int = 20) -> Optional[str]:
+    """跟 Cloudflare 確認這把 token 真的能用；有問題回一句人話，沒問題回 None。
 
-    這是網路呼叫，只在批次作業開跑前做一次 —— 比讓每一張圖各自撞 401 便宜太多
-    （每次撞牆前都會先花一次 LLM 呼叫去產視覺提示）。"""
+    **不要用 /user/tokens/verify 判死刑。** 那個端點只認 user token，
+    帳號範圍的 token（cfat_ 開頭）會被它回 401，但拿去打 Workers AI 完全正常。
+    先前就是這樣誤判成「Cloudflare 不認這把 token」而整批關掉生圖。
+
+    所以改成直接打一次最小的 Workers AI 呼叫 —— 那才是我們真正要用的權限。
+    """
     problem = check_cf_config()
     if problem:
         return problem
+
     token = IMAGE_CFG.get("cf_api_token", "")
+    account = IMAGE_CFG.get("cf_account_id", "")
+    url = (f"https://api.cloudflare.com/client/v4/accounts/{account}"
+           f"/ai/run/@cf/meta/llama-3.2-1b-instruct")
     req = urllib.request.Request(
-        "https://api.cloudflare.com/client/v4/user/tokens/verify",
+        url, data=json.dumps({"prompt": "ok", "max_tokens": 1}).encode("utf-8"),
         headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            obj = json.loads(resp.read().decode("utf-8", errors="ignore"))
+        with urllib.request.urlopen(req, timeout=timeout):
+            return None
     except urllib.error.HTTPError as e:
-        if e.code == 401:
+        if e.code in (401, 403):
             return (f"Cloudflare 不認這把 token（長度 {len(token)}、"
-                    f"開頭 {token[:4]!r}）。\n"
-                    f"    標準的 Cloudflare API token 是 40 個字元、沒有前綴。\n"
+                    f"開頭 {token[:5]!r}）或它沒有 Workers AI 權限。\n"
                     f"    到 dash.cloudflare.com/profile/api-tokens → Create Token，\n"
-                    f"    用 Workers AI 範本（或 Custom：Account → Workers AI → Read），\n"
-                    f"    再把它填進 .ainews_llm_config.json 的 cf_api_token。")
+                    f"    用 Workers AI 範本（或 Custom：Account → Workers AI → Read）。")
+        if e.code == 429:
+            # 額度用完不代表憑證有問題；讓實際生圖去處理，該落 fallback 就落
+            print("  [cf-image] 預檢時已達額度上限，生圖多半會落 fallback")
+            return None
         return f"驗證 token 時收到 HTTP {e.code}"
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         # 網路問題不該擋住整批作業，交給實際呼叫去處理
         print(f"  [cf-image] token 預檢跳過（{type(e).__name__}）")
         return None
-
-    status = (obj.get("result") or {}).get("status")
-    if status and status != "active":
-        return f"token 狀態是 {status!r}，不是 active —— 可能已被停用或過期"
-    return None
 
 
 def _cf_generate(prompt: str) -> Optional[bytes]:
