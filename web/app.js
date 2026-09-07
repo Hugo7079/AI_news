@@ -513,6 +513,17 @@ function renderTopPicks(events) {
     $topPicks.innerHTML = `<div class="empty">您關注的欄目中${escapeHtml(rangeWord(currentRange))}暫無事件。</div>`;
     return;
   }
+  // 頭版沒圖，整個首屏就像壞掉 —— 抓圖偶爾會漏一兩則，那一則不能站在最顯眼的位置。
+  // 在前幾名裡挑第一則「有圖」的當頭條，其餘順序不變；全都沒圖才照原順序。
+  const hasCover = (ev) => {
+    const c = ev.cover_image || {};
+    return (c.kind === "remote" || c.kind === "local") && !!c.url;
+  };
+  const leadIdx = currentPicks.findIndex(hasCover);
+  if (leadIdx > 0) {
+    const [withCover] = currentPicks.splice(leadIdx, 1);
+    currentPicks.unshift(withCover);
+  }
   const [lead, ...rest] = currentPicks;
   // 只有一則時不留空欄，頭條直接佔滿版面
   $topPicks.classList.toggle("single", rest.length === 0);
