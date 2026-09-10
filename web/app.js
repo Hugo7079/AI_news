@@ -173,7 +173,9 @@ if (!selectedMetrics.size) selectedMetrics = new Set(DEFAULT_METRICS);
 
 let picksCount = Number(LS.get("ainews_picks_count", "6")) || 6;
 let osCollapsed = LS.get("ainews_os_collapsed", "0") === "1";
-let picksPanelCollapsed = LS.get("ainews_picks_panel_collapsed", "0") === "1";
+// 手機沒有側欄空間，編輯台預設收起來（使用者手動展開過就以他的選擇為準）
+const isNarrow = () => window.matchMedia("(max-width: 1080px)").matches;
+let picksPanelCollapsed = LS.get("ainews_picks_panel_collapsed", isNarrow() ? "1" : "0") === "1";
 
 // ─── 報表匯出：使用者勾選的事件 ───
 const exportSelected = new Map();   // event_id → event 物件
@@ -899,6 +901,7 @@ function ensureExportBar() {
   });
   document.getElementById("export-cfg").addEventListener("click", () => {
     document.getElementById("export-cfg-panel").classList.toggle("hidden");
+    syncExportBarHeight();
   });
   for (const [id, key] of [["cfg-title", "title"], ["cfg-issue", "issue"], ["cfg-date", "dateLabel"]]) {
     document.getElementById(id).addEventListener("change", (e) => {
@@ -923,12 +926,21 @@ function ensureExportBar() {
   });
 }
 
+// 匯出列在手機上是貼底的整條工具列，會蓋住內文結尾，
+// 把它實際的高度回寫成 CSS 變數，讓 .sheet 自己讓出對應的底部留白
+function syncExportBarHeight() {
+  const bar = document.getElementById("export-bar");
+  const h = bar && !bar.classList.contains("hidden") ? bar.offsetHeight : 0;
+  document.documentElement.style.setProperty("--export-bar-h", `${h}px`);
+}
+
 function updateExportBar() {
   const bar = document.getElementById("export-bar");
   if (!bar) return;
   const n = exportSelected.size;
   document.getElementById("export-n").textContent = String(n);
   bar.classList.toggle("hidden", n === 0);
+  syncExportBarHeight();
 }
 
 function syncExportChecks() {
@@ -1052,6 +1064,10 @@ function wireControls() {
   });
 
   $rangeSelect.addEventListener("change", (e) => showRange(Number(e.target.value) || 1));
+
+  // 轉向／改變視窗大小時，匯出列高度會變，底部留白要跟著重算
+  window.addEventListener("resize", syncExportBarHeight);
+  window.addEventListener("orientationchange", syncExportBarHeight);
 }
 
 async function main() {
