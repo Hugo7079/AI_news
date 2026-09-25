@@ -195,6 +195,7 @@ PER_SOURCE_MAX_OVERRIDES = {
     "arXiv cs.LG (新論文)": 5,
     "arXiv cs.CL (新論文)": 5,
     "Hacker News (front)": 15,
+    "Reddit (ML+LocalLLaMA+singularity)": 75,   # 三個 sub 合併成一條 multireddit，維持原本 3×25
 }
 LLM_CLASSIFY_ENABLED = True     # 是否使用 LLM 分類（關掉則只用關鍵字落到「未分類」）
 LLM_DEDUP_ENABLED = True        # 是否使用 LLM 去重

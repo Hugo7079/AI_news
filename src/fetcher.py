@@ -231,10 +231,10 @@ def prefilter(items: list[dict], verbose: bool = True) -> list[dict]:
     """
     # vendor 部落格 + podcast + 開源生態（HF/GH/Ollama/OpenRouter）全部豁免
     ai_native_kinds = {"vendor", "podcast", "opensource"}
-    ai_native_names = {"Reddit r/MachineLearning", "Reddit r/LocalLLaMA",
+    ai_native_names = {"Reddit (ML+LocalLLaMA+singularity)",
                        "arXiv cs.AI (新論文)", "arXiv cs.LG (新論文)", "arXiv cs.CL (新論文)",
                        "Hugging Face Blog", "Import AI", "The Decoder",
-                       "VentureBeat AI", "iThome AI 專區"}
+                       "iThome AI 專區"}
 
     from collections import defaultdict
     in_count: dict[str, int] = defaultdict(int)
