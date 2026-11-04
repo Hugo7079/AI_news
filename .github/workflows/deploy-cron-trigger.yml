@@ -1,0 +1,62 @@
+name: Deploy cron trigger (Cloudflare Worker)
+
+# 把 cron-trigger/ 部署到 Cloudflare Workers，不需要本機環境。
+# 需要兩個 repo secret（Settings → Secrets and variables → Actions）：
+#   CLOUDFLARE_API_TOKEN   Cloudflare 的「Edit Cloudflare Workers」範本建的 token
+#                          （AINEWS_CF_API_TOKEN 只有 Workers AI 權限，不能拿來部署）
+#   AINEWS_CRON_GH_TOKEN   GitHub fine-grained token，只給本 repo 的 Actions: Read and write，
+#                          Worker 用它打 workflow_dispatch
+# 帳號 ID 沿用既有的 AINEWS_CF_ACCOUNT_ID。
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "cron-trigger/**"
+      - ".github/workflows/deploy-cron-trigger.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-cron-trigger
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: cron-trigger
+    env:
+      CLOUDFLARE_API_TOKEN:  ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.AINEWS_CF_ACCOUNT_ID }}
+      WORKER_GH_TOKEN:       ${{ secrets.AINEWS_CRON_GH_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check secrets
+        run: |
+          missing=""
+          [ -z "$CLOUDFLARE_API_TOKEN" ]  && missing="$missing CLOUDFLARE_API_TOKEN"
+          [ -z "$CLOUDFLARE_ACCOUNT_ID" ] && missing="$missing AINEWS_CF_ACCOUNT_ID"
+          [ -z "$WORKER_GH_TOKEN" ]       && missing="$missing AINEWS_CRON_GH_TOKEN"
+          if [ -n "$missing" ]; then
+            echo "::warning::還沒設定 secret:$missing —— 這次不部署（設好後到 Actions 頁手動執行本 workflow）"
+            echo "SKIP=1" >> "$GITHUB_ENV"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: env.SKIP != '1'
+        with:
+          node-version: "22"
+
+      - name: Deploy worker
+        if: env.SKIP != '1'
+        run: npx --yes wrangler@4 deploy
+
+      - name: Set GH_TOKEN secret on worker
+        if: env.SKIP != '1'
+        run: printf '%s' "$WORKER_GH_TOKEN" | npx --yes wrangler@4 secret put GH_TOKEN

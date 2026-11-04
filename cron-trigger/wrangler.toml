@@ -1,0 +1,16 @@
+name = "ainews-cron-trigger"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+
+# UTC。20:40 = 台灣 04:40；22:40 = 台灣 06:40 當重試
+# （第一次成功的話，第二次 workflow 會自己跳過）
+[triggers]
+crons = ["40 20 * * *", "40 22 * * *"]
+
+[vars]
+GH_REPO = "Hugo7079/AI_news"
+GH_WORKFLOW = "daily.yml"
+GH_REF = "main"
+
+# GH_TOKEN 是 secret，不要寫在這裡：
+#   npx wrangler secret put GH_TOKEN
