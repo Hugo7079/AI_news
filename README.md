@@ -222,19 +222,27 @@ GitHub Actions 的 cron **不保證準時**：實測會延遲 3–8 小時，偶
 Cloudflare Worker（免費方案即可）。它在固定時間打 `workflow_dispatch`，
 且每次會先把 workflow 重新 enable，順便解決 60 天自動停用的問題。
 
-1. 建 GitHub fine-grained token：Settings → Developer settings → Fine-grained tokens，
+全程在網頁上完成，不需要本機環境：
+
+1. 建 GitHub fine-grained token：GitHub → Settings → Developer settings →
+   Personal access tokens → Fine-grained tokens → Generate new token。
    Repository access 只選 `Hugo7079/AI_news`，Permissions → **Actions: Read and write**。
-   記下到期日，到期前要換新的。
-2. 部署：
+   記下到期日，到期前要換新的（換完重跑步驟 4 即可）。
+2. 建 Cloudflare token：dash.cloudflare.com → My Profile → API Tokens → Create Token →
+   範本 **Edit Cloudflare Workers**。（既有的 `AINEWS_CF_API_TOKEN` 只有 Workers AI 權限，不能部署）
+3. repo → Settings → Secrets and variables → Actions 新增：
 
-   ```bash
-   cd cron-trigger
-   npx wrangler login
-   npx wrangler secret put GH_TOKEN      # 貼上剛剛的 token
-   npx wrangler deploy
-   ```
+   | Secret | 內容 |
+   | --- | --- |
+   | `AINEWS_CRON_GH_TOKEN` | 步驟 1 的 GitHub token |
+   | `CLOUDFLARE_API_TOKEN` | 步驟 2 的 Cloudflare token |
 
-3. 確認：Cloudflare Dashboard → Workers → `ainews-cron-trigger` → Settings → Triggers
+4. Actions 頁 → **Deploy cron trigger (Cloudflare Worker)** → Run workflow。
+   之後改 `cron-trigger/` 推上 main 也會自動重新部署。
+
+   有本機環境的話也可以直接 `cd cron-trigger && npx wrangler secret put GH_TOKEN && npx wrangler deploy`。
+
+5. 確認：Cloudflare Dashboard → Workers → `ainews-cron-trigger` → Settings → Triggers
    會看到兩個 cron；隔天在 GitHub Actions 頁會看到 `workflow_dispatch` 觸發的 run。
 
 ---
