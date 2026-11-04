@@ -2,20 +2,22 @@ name: Daily AI news crawl
 
 on:
   schedule:
-    # 20:40 UTC = 台灣時間 04:40。目標是「08:30 之前一定看得到」。
+    # 台灣時間 04:40 起每小時一個時段（20:40 / 21:40 / 22:40 / 23:40 UTC）。
     #
-    # 為什麼要提前這麼多：GitHub Actions 的 cron 只是「排進佇列」，不保證準時。
-    # 實測最近 15 次（原本排 22:00 UTC）的實際開始時間：
-    #   22:14–22:19  延遲 15–20 分
-    #   23:43–23:48  延遲 1h45（最近三次都是）
-    #   00:07、00:55 延遲 2–3h
-    #   02:46、03:26 延遲 4.5–5.5h
-    #   05:53        延遲 8h
-    # 加上執行本身要 16–48 分鐘，排在 06:00 常常拖到 08:30 之後才跑完。
+    # GitHub Actions 的 cron 只是「排進佇列」，不保證準時，甚至會整個被丟掉：
+    #   - 先前實測延遲 15 分到 8 小時不等（HH:00 尖峰最嚴重，所以分鐘用 40）
+    #   - 2026-11-02 那次延遲 6 小時（台灣 10:37 才跑）
+    #   - 2026-11-03 20:40 UTC 那次直接沒觸發
+    # 只排一個時段的話，一被丟掉當天就沒報。所以排四個當備援，
+    # 由下面的 check job 確保「台灣當天已經成功過就不再跑」，
+    # 不會重複燒 Cloudflare 生圖額度；前一個失敗的話，後面的時段等於自動重試。
     #
-    # 分鐘刻意用 40 而不是整點 —— HH:00 是全球尖峰，延遲最嚴重。
-    # 04:40 起跑就算延遲 3 小時、再跑滿 48 分鐘，08:30 前仍然完成。
+    # 真正要準時，請部署 cron-trigger/ 的 Cloudflare Worker，
+    # 由它在固定時間打 workflow_dispatch（見 README「排程可靠性」）。
     - cron: "40 20 * * *"
+    - cron: "40 21 * * *"
+    - cron: "40 22 * * *"
+    - cron: "40 23 * * *"
   workflow_dispatch:
     inputs:
       days:
@@ -27,9 +29,57 @@ on:
         type: boolean
         required: false
         default: false
+      skip_if_done:
+        description: "台灣當天已有成功的一次就跳過（外部排程用；手動跑不用勾）"
+        type: boolean
+        required: false
+        default: false
+
+# 同一時間只跑一個。後到的會排隊，等前一個結束後由 check job 判斷要不要跳過。
+concurrency:
+  group: daily-crawl
+  cancel-in-progress: false
+
+permissions:
+  actions: read
+  contents: read
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.decide.outputs.run }}
+    steps:
+      - id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          SKIP_IF_DONE: ${{ github.event.inputs.skip_if_done }}
+        run: |
+          # 手動觸發（沒勾 skip_if_done）一律照跑
+          if [ "$EVENT" != "schedule" ] && [ "$SKIP_IF_DONE" != "true" ]; then
+            echo "手動觸發，照跑"
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # 台灣當天 00:00 換成 UTC
+          SINCE=$(date -u -d "@$(TZ=Asia/Taipei date -d 'today 00:00' +%s)" +%Y-%m-%dT%H:%M:%SZ)
+          DONE=$(gh run list --workflow daily.yml --status success --created ">=$SINCE" \
+                   --limit 50 --json databaseId \
+                   --jq "[.[] | select(.databaseId != $GITHUB_RUN_ID)] | length")
+          if [ "$DONE" -gt 0 ]; then
+            echo "台灣當天（$SINCE 之後）已有 $DONE 次成功，跳過"
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "台灣當天還沒成功過，開跑"
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   crawl:
+    needs: check
+    if: needs.check.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
