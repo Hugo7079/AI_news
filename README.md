@@ -226,7 +226,9 @@ Cloudflare Worker（免費方案即可）。它在固定時間打 `workflow_disp
 
 1. 建 GitHub fine-grained token：GitHub → Settings → Developer settings →
    Personal access tokens → Fine-grained tokens → Generate new token。
-   Repository access 只選 `Hugo7079/AI_news`，Permissions → **Actions: Read and write**。
+   Repository access 選 `Hugo7079/AI_news` **和 `Hugo7079/resolution`**（同一支 Worker 也幫解析度準時觸發），
+   Permissions → **Actions: Read and write**。已經建好只含 AI_news 的 token，到 token 設定頁把 resolution 加進去即可，
+   token 字串不變、不用重設 secret。
    記下到期日，到期前要換新的（換完重跑步驟 4 即可）。
 2. 建 Cloudflare token：dash.cloudflare.com → My Profile → API Tokens → Create Token →
    範本 **Edit Cloudflare Workers**。（既有的 `AINEWS_CF_API_TOKEN` 只有 Workers AI 權限，不能部署）
@@ -243,7 +245,10 @@ Cloudflare Worker（免費方案即可）。它在固定時間打 `workflow_disp
    有本機環境的話也可以直接 `cd cron-trigger && npx wrangler secret put GH_TOKEN && npx wrangler deploy`。
 
 5. 確認：Cloudflare Dashboard → Workers → `ainews-cron-trigger` → Settings → Triggers
-   會看到兩個 cron；隔天在 GitHub Actions 頁會看到 `workflow_dispatch` 觸發的 run。
+   會看到四個 cron（:10 打 resolution、:40 打 AI_news，哪個時段打哪個 repo 見 `wrangler.toml` 的 `[vars.TARGETS]`）；
+   隔天在兩個 repo 的 GitHub Actions 頁都會看到 `workflow_dispatch` 觸發的 run。
+   某個 repo 打不進去（例如 token 沒含 resolution）只會讓那一個失敗，另一個照常觸發；
+   錯誤看 Worker 的 Logs。
 
 ---
 

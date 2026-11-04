@@ -4,8 +4,8 @@ name: Deploy cron trigger (Cloudflare Worker)
 # 需要兩個 repo secret（Settings → Secrets and variables → Actions）：
 #   CLOUDFLARE_API_TOKEN   Cloudflare 的「Edit Cloudflare Workers」範本建的 token
 #                          （AINEWS_CF_API_TOKEN 只有 Workers AI 權限，不能拿來部署）
-#   AINEWS_CRON_GH_TOKEN   GitHub fine-grained token，只給本 repo 的 Actions: Read and write，
-#                          Worker 用它打 workflow_dispatch
+#   AINEWS_CRON_GH_TOKEN   GitHub fine-grained token，給 AI_news 與 resolution 兩個 repo 的
+#                          Actions: Read and write，Worker 用它打兩邊的 workflow_dispatch
 # 帳號 ID 沿用既有的 AINEWS_CF_ACCOUNT_ID。
 
 on:

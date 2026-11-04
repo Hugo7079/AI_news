@@ -1,4 +1,7 @@
-// 準時觸發 GitHub Actions 的 daily.yml。
+// 準時觸發 GitHub Actions 的 daily.yml（晨誌 AI_news 與 解析度 resolution 共用）。
+//
+// 哪個 cron 打哪些 repo 由 wrangler.toml 的 [vars.TARGETS] 決定；
+// 沒對到的 cron 退回 GH_REPO（舊設定相容）。
 //
 // GitHub Actions 自己的 cron 會延遲數小時、甚至整個被丟掉；Cloudflare 的
 // Cron Trigger 基本上分鐘級準時，所以改由這裡在固定時間打 workflow_dispatch。
@@ -11,8 +14,7 @@
 
 const API = "https://api.github.com";
 
-async function trigger(env) {
-  const repo = env.GH_REPO;
+async function trigger(env, repo) {
   const workflow = env.GH_WORKFLOW || "daily.yml";
   const ref = env.GH_REF || "main";
   const base = `${API}/repos/${repo}/actions/workflows/${workflow}`;
@@ -41,10 +43,27 @@ async function trigger(env) {
   console.log(`dispatched ${repo} ${workflow}@${ref}`);
 }
 
+function targetsFor(env, cron) {
+  const map = env.TARGETS || {};
+  const list = map[cron] || (env.GH_REPO ? [env.GH_REPO] : []);
+  if (!list.length) throw new Error(`cron "${cron}" 沒有對應的 repo`);
+  return list;
+}
+
+// 每個 repo 各自觸發，一個失敗不影響另一個；最後有失敗才丟出去
+async function run(env, cron) {
+  const repos = targetsFor(env, cron);
+  const results = await Promise.allSettled(repos.map((r) => trigger(env, r)));
+  const failed = results
+    .map((r, i) => (r.status === "rejected" ? `${repos[i]}: ${r.reason}` : null))
+    .filter(Boolean);
+  if (failed.length) throw new Error(failed.join("\n"));
+}
+
 export default {
   async scheduled(controller, env, ctx) {
-    ctx.waitUntil(trigger(env));
+    ctx.waitUntil(run(env, controller.cron));
   },
 };
 
-export { trigger };
+export { trigger, run, targetsFor };
