@@ -30,7 +30,7 @@ LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接�
 ```
 A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完全本地）
 
-   Actions cron (02:40 TPE 起)                  ainews 容器（每天 06:00）
+   Actions cron (07:28 TPE 起)                  ainews 容器（每天 06:00）
         │                                              │
         ▼  AINEWS_STORE=firestore                      ▼  AINEWS_STORE=local
    src/pipeline.py                                src/pipeline.py
@@ -105,7 +105,7 @@ A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完�
 ├── storage.rules            同上
 │
 ├── .github/workflows/
-│   └── daily.yml            每天台灣 02:40 起的 cron（跑 src/pipeline.py）
+│   └── daily.yml            每天台灣 07:28 起的排程（跑 src/pipeline.py）
 │
 ├── cron-trigger/            Cloudflare Worker：準時打 workflow_dispatch（選用）
 │
@@ -205,23 +205,23 @@ python3 scripts/migrate_legacy.py --dry-run   # 先看會匯哪些
 | `AINEWS_LLM_MODEL` | 模型名（例如 `gemma-4-31B-it`） |
 | `HF_TOKEN` | Hugging Face token（用於 FLUX 生封面圖；可留空） |
 
-設好後 [`.github/workflows/daily.yml`](.github/workflows/daily.yml) 會在台灣 02:40 起自動跑。
+設好後 [`.github/workflows/daily.yml`](.github/workflows/daily.yml) 每天台灣 07:28 由 Worker 準點觸發（見下方「排程可靠性」）。
 
 ### 6. 排程可靠性（建議設定）
 
 GitHub Actions 的 cron **不保證準時**：實測會延遲 3–8 小時，偶爾整個不觸發
 （2026-11-03 那次就是）。另外**公開 repo 60 天沒有 commit，GitHub 會自動停用排程**。
 
-`daily.yml` 已經做了兩層保護：
+所以準時靠的是 [`cron-trigger/`](cron-trigger/) 這個 Cloudflare Worker（免費方案即可）：
+它在**台灣 07:28** 準點打 `workflow_dispatch`、**07:43** 重試，目標在 07:30–08:00
+之間產出當天的報。每次也會先把 workflow 重新 enable，順便解決 60 天自動停用的問題。
 
-- 排四個時段（台灣 02:40 / 03:40 / 04:40 / 05:40），任一個有觸發就好；
-  提早是為了就算延遲 5 小時也能在 08:00 前完成
+`daily.yml` 自己的 cron 只當 Worker 失敗時的保底：
+
+- 排在 Worker 之後（台灣 07:50 / 08:50 / 09:50）。不能排在前面，否則 GitHub cron
+  若剛好準時在凌晨跑完，當天就以那次為準，Worker 那次會被跳過
 - `check` job 會查「台灣當天是否已有成功的一次」，有就跳過，不重複燒生圖額度；
   前一次失敗的話，後面的時段等於自動重試。手動觸發一律照跑。
-
-但這只能降低機率，要真的準時，請部署 [`cron-trigger/`](cron-trigger/) 這個
-Cloudflare Worker（免費方案即可）。它在固定時間打 `workflow_dispatch`，
-且每次會先把 workflow 重新 enable，順便解決 60 天自動停用的問題。
 
 全程在網頁上完成，不需要本機環境：
 
@@ -246,7 +246,7 @@ Cloudflare Worker（免費方案即可）。它在固定時間打 `workflow_disp
    有本機環境的話也可以直接 `cd cron-trigger && npx wrangler secret put GH_TOKEN && npx wrangler deploy`。
 
 5. 確認：Cloudflare Dashboard → Workers → `ainews-cron-trigger` → Settings → Triggers
-   會看到三個 cron（台灣 04:40 / 05:40 / 06:40）；隔天在 GitHub Actions 頁會看到 `workflow_dispatch` 觸發的 run。
+   會看到兩個 cron（台灣 07:28 / 07:43）；隔天在 GitHub Actions 頁會看到 `workflow_dispatch` 觸發的 run。
 
 ---
 
