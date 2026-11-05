@@ -2,10 +2,11 @@ name = "ainews-cron-trigger"
 main = "worker.js"
 compatibility_date = "2025-09-01"
 
-# UTC。20:40 = 台灣 04:40；22:40 = 台灣 06:40 當重試
-# （第一次成功的話，第二次 workflow 會自己跳過）
+# UTC。20:40 = 台灣 04:40；21:40 = 05:40、22:40 = 06:40 當重試
+# （前一次成功的話，後面的 workflow 會自己跳過）
+# 06:40 那次就算跑滿 48 分鐘也在 08:00 前完成。
 [triggers]
-crons = ["40 20 * * *", "40 22 * * *"]
+crons = ["40 20 * * *", "40 21 * * *", "40 22 * * *"]
 
 [vars]
 GH_REPO = "Hugo7079/AI_news"

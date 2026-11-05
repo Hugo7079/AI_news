@@ -30,7 +30,7 @@ LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接�
 ```
 A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完全本地）
 
-   Actions cron (04:40 TPE 起)                  ainews 容器（每天 06:00）
+   Actions cron (02:40 TPE 起)                  ainews 容器（每天 06:00）
         │                                              │
         ▼  AINEWS_STORE=firestore                      ▼  AINEWS_STORE=local
    src/pipeline.py                                src/pipeline.py
@@ -105,7 +105,7 @@ A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完�
 ├── storage.rules            同上
 │
 ├── .github/workflows/
-│   └── daily.yml            每天台灣 04:40 起的 cron（跑 src/pipeline.py）
+│   └── daily.yml            每天台灣 02:40 起的 cron（跑 src/pipeline.py）
 │
 ├── cron-trigger/            Cloudflare Worker：準時打 workflow_dispatch（選用）
 │
@@ -205,7 +205,7 @@ python3 scripts/migrate_legacy.py --dry-run   # 先看會匯哪些
 | `AINEWS_LLM_MODEL` | 模型名（例如 `gemma-4-31B-it`） |
 | `HF_TOKEN` | Hugging Face token（用於 FLUX 生封面圖；可留空） |
 
-設好後 [`.github/workflows/daily.yml`](.github/workflows/daily.yml) 會在台灣 04:40 起自動跑。
+設好後 [`.github/workflows/daily.yml`](.github/workflows/daily.yml) 會在台灣 02:40 起自動跑。
 
 ### 6. 排程可靠性（建議設定）
 
@@ -214,7 +214,8 @@ GitHub Actions 的 cron **不保證準時**：實測會延遲 3–8 小時，偶
 
 `daily.yml` 已經做了兩層保護：
 
-- 排四個時段（台灣 04:40 / 05:40 / 06:40 / 07:40），任一個有觸發就好
+- 排四個時段（台灣 02:40 / 03:40 / 04:40 / 05:40），任一個有觸發就好；
+  提早是為了就算延遲 5 小時也能在 08:00 前完成
 - `check` job 會查「台灣當天是否已有成功的一次」，有就跳過，不重複燒生圖額度；
   前一次失敗的話，後面的時段等於自動重試。手動觸發一律照跑。
 
@@ -226,7 +227,9 @@ Cloudflare Worker（免費方案即可）。它在固定時間打 `workflow_disp
 
 1. 建 GitHub fine-grained token：GitHub → Settings → Developer settings →
    Personal access tokens → Fine-grained tokens → Generate new token。
-   Repository access 只選 `Hugo7079/AI_news`，Permissions → **Actions: Read and write**。
+   **必須用 `Hugo7079` 帳號建**（Resource owner = `Hugo7079`；fine-grained token
+   不能存取別人帳號的 repo），Repository access 只選 `Hugo7079/AI_news`，
+   Permissions → **Actions: Read and write**。
    記下到期日，到期前要換新的（換完重跑步驟 4 即可）。
 2. 建 Cloudflare token：dash.cloudflare.com → My Profile → API Tokens → Create Token →
    範本 **Edit Cloudflare Workers**。（既有的 `AINEWS_CF_API_TOKEN` 只有 Workers AI 權限，不能部署）
@@ -243,7 +246,7 @@ Cloudflare Worker（免費方案即可）。它在固定時間打 `workflow_disp
    有本機環境的話也可以直接 `cd cron-trigger && npx wrangler secret put GH_TOKEN && npx wrangler deploy`。
 
 5. 確認：Cloudflare Dashboard → Workers → `ainews-cron-trigger` → Settings → Triggers
-   會看到兩個 cron；隔天在 GitHub Actions 頁會看到 `workflow_dispatch` 觸發的 run。
+   會看到三個 cron（台灣 04:40 / 05:40 / 06:40）；隔天在 GitHub Actions 頁會看到 `workflow_dispatch` 觸發的 run。
 
 ---
 
