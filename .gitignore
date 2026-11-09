@@ -25,3 +25,8 @@ firestore-debug.log
 ui-debug.log
 dist/
 *.tar.gz
+
+# Cloud Run 部署：真正的金鑰檔，絕對不能進版控
+deploy/*.env
+!deploy/*.env.example
+!deploy/config.env

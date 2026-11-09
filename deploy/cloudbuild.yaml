@@ -1,0 +1,9 @@
+# Cloud Build：用 docker/Dockerfile 建 image 推到 Artifact Registry。
+# 由 deploy/deploy.sh 呼叫，_IMAGE 由它帶入。
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ["build", "-f", "docker/Dockerfile", "-t", "${_IMAGE}", "."]
+images:
+  - "${_IMAGE}"
+options:
+  logging: CLOUD_LOGGING_ONLY

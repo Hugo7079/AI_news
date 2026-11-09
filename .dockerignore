@@ -20,3 +20,7 @@ output
 *.pdf
 *.xlsx
 web/_report_test.html
+
+# Cloud Run 部署用的金鑰檔
+deploy/*.env
+.clewline

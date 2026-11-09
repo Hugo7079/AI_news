@@ -28,9 +28,9 @@ LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接�
 兩套部署可以並存，同一份程式碼，差別只在 `AINEWS_STORE`：
 
 ```
-A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完全本地）
+A. 雲端版（Cloud Run Jobs + Firebase）       B. 自架版（Docker，完全本地）
 
-   Actions cron (07:28 TPE 起)                  ainews 容器（每天 06:00）
+   Cloud Scheduler（07:28 TPE）                 ainews 容器（每天 06:00）
         │                                              │
         ▼  AINEWS_STORE=firestore                      ▼  AINEWS_STORE=local
    src/pipeline.py                                src/pipeline.py
@@ -78,7 +78,8 @@ A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完�
 │
 ├── docker/                  容器化
 │   ├── Dockerfile
-│   └── entrypoint.sh        schedule / once / 任意指令
+│   └── entrypoint.sh        schedule / once / job / 任意指令
+├── deploy/                  雲端版：Cloud Run Job 的建置與部署腳本（見 deploy/README.md）
 ├── compose.yaml             docker compose 設定（放根目錄，會自動讀 .env）
 ├── .env.example             環境變數範本（複製成 .env）
 │
@@ -103,11 +104,6 @@ A. 雲端版（GitHub Actions + Firebase）        B. 自架版（Docker，完�
 ├── .firebaserc              project ID
 ├── firestore.rules          安全規則：public read, admin-only write
 ├── storage.rules            同上
-│
-├── .github/workflows/
-│   └── daily.yml            每天台灣 07:28 起的排程（跑 src/pipeline.py）
-│
-├── cron-trigger/            Cloudflare Worker：準時打 workflow_dispatch（選用）
 │
 └── output/                  資料與產出（已 gitignore）
     ├── store/               本地資料庫，一天一個 JSON
@@ -193,60 +189,18 @@ python3 scripts/migrate_legacy.py --dry-run   # 先看會匯哪些
 
 匯完到 Firestore Console 確認 `events` / `daily_summary` 兩個 collection 有資料即可。
 
-### 5. GitHub Actions Secrets
+### 5. 每日排程：Google Cloud Run Jobs
 
-到 GitHub repo → Settings → Secrets and variables → Actions，新增：
+2026-11-09 起每日排程從 GitHub Actions 搬到 Google Cloud Run Jobs + Cloud Scheduler
+（GitHub 帳號 11/6 因帳務問題被鎖，Actions 全停）。GitHub 現在只放程式碼。
 
-| Secret | 內容 |
-| --- | --- |
-| `FIREBASE_SERVICE_ACCOUNT_JSON` | 整段 service account JSON 的內容（複製 `firebase-credentials.json` 整檔貼上） |
-| `AINEWS_LLM_API_KEY` | LLM API key |
-| `AINEWS_LLM_BASE_URL` | LLM base URL（例如 `http://125.227.53.125:50062/`） |
-| `AINEWS_LLM_MODEL` | 模型名（例如 `gemma-4-31B-it`） |
-| `HF_TOKEN` | Hugging Face token（用於 FLUX 生封面圖；可留空） |
+- 台灣 07:28 由 Cloud Scheduler 準時觸發，失敗自動重跑一次
+- 金鑰放 Secret Manager；寫 Firestore 不需要 service account 金鑰檔
+  （job 的 service account 直接被授權寫 d8ainews）
+- 設定、部署、手動觸發、看 log：見 [`deploy/README.md`](deploy/README.md)
 
-設好後 [`.github/workflows/daily.yml`](.github/workflows/daily.yml) 每天台灣 07:28 由 Worker 準點觸發（見下方「排程可靠性」）。
-
-### 6. 排程可靠性（建議設定）
-
-GitHub Actions 的 cron **不保證準時**：實測會延遲 3–8 小時，偶爾整個不觸發
-（2026-11-03 那次就是）。另外**公開 repo 60 天沒有 commit，GitHub 會自動停用排程**。
-
-所以準時靠的是 [`cron-trigger/`](cron-trigger/) 這個 Cloudflare Worker（免費方案即可）：
-它在**台灣 07:28** 準點打 `workflow_dispatch`、**07:43** 重試，目標在 07:30–08:00
-之間產出當天的報。每次也會先把 workflow 重新 enable，順便解決 60 天自動停用的問題。
-
-`daily.yml` 自己的 cron 只當 Worker 失敗時的保底：
-
-- 排在 Worker 之後（台灣 07:50 / 08:50 / 09:50）。不能排在前面，否則 GitHub cron
-  若剛好準時在凌晨跑完，當天就以那次為準，Worker 那次會被跳過
-- `check` job 會查「台灣當天是否已有成功的一次」，有就跳過，不重複燒生圖額度；
-  前一次失敗的話，後面的時段等於自動重試。手動觸發一律照跑。
-
-全程在網頁上完成，不需要本機環境：
-
-1. 建 GitHub fine-grained token：GitHub → Settings → Developer settings →
-   Personal access tokens → Fine-grained tokens → Generate new token。
-   **必須用 `Hugo7079` 帳號建**（Resource owner = `Hugo7079`；fine-grained token
-   不能存取別人帳號的 repo），Repository access 只選 `Hugo7079/AI_news`，
-   Permissions → **Actions: Read and write**。
-   記下到期日，到期前要換新的（換完重跑步驟 4 即可）。
-2. 建 Cloudflare token：dash.cloudflare.com → My Profile → API Tokens → Create Token →
-   範本 **Edit Cloudflare Workers**。（既有的 `AINEWS_CF_API_TOKEN` 只有 Workers AI 權限，不能部署）
-3. repo → Settings → Secrets and variables → Actions 新增：
-
-   | Secret | 內容 |
-   | --- | --- |
-   | `AINEWS_CRON_GH_TOKEN` | 步驟 1 的 GitHub token |
-   | `CLOUDFLARE_API_TOKEN` | 步驟 2 的 Cloudflare token |
-
-4. Actions 頁 → **Deploy cron trigger (Cloudflare Worker)** → Run workflow。
-   之後改 `cron-trigger/` 推上 main 也會自動重新部署。
-
-   有本機環境的話也可以直接 `cd cron-trigger && npx wrangler secret put GH_TOKEN && npx wrangler deploy`。
-
-5. 確認：Cloudflare Dashboard → Workers → `ainews-cron-trigger` → Settings → Triggers
-   會看到兩個 cron（台灣 07:28 / 07:43）；隔天在 GitHub Actions 頁會看到 `workflow_dispatch` 觸發的 run。
+原本的 `.github/workflows/` 與 `cron-trigger/`（Cloudflare Worker 準點觸發 Actions）已移除，
+需要回頭查可以看 git 歷史。
 
 ---
 
@@ -260,7 +214,7 @@ python3 src/pipeline.py --kinds vendor podcast             # 只抓某些來源
 AINEWS_STORE=local python3 src/pipeline.py --days 1         # 只寫本地 store
 AINEWS_STORE=both python3 src/pipeline.py --days 1          # 本地 + Firestore 都寫
 
-# GitHub Actions 也可在 repo Actions 頁面手動觸發（workflow_dispatch）
+# 雲端手動觸發：gcloud run jobs execute ainews-daily（見 deploy/README.md）
 # Docker 見第九章
 ```
 
@@ -298,11 +252,11 @@ Firestore 與本地 store 用**同一份** schema（`src/doc_model.py`），
 ## 六、安全模型
 
 - **Firestore Rules**：所有 collection 開放 public read，前端的 firebaseConfig 雖然會被看到但無法寫入。
-- **寫入權限**：只有持有 service account JSON 的 GitHub Actions（或本機）能寫，靠 Admin SDK 繞過 rules。
+- **寫入權限**：只有 Cloud Run Job 的 service account（被授權 Firestore 寫入）或持有 service account JSON 的本機能寫，靠 Admin SDK 繞過 rules。
 - **Storage**：封面圖公開讀，同樣只有 service account 能上傳。
 
 把 `firebase-credentials.json` 守好，不要 commit、不要貼到 Slack/聊天室。
-GitHub Secret 不會在 logs 顯示，安全的方式是直接複製整段 JSON 內容貼到 secret 欄位。
+雲端的其他金鑰放在 Google Secret Manager（見 deploy/README.md），不會出現在 log。
 
 ---
 
@@ -368,7 +322,7 @@ firebase emulators:start --only hosting
 
 ## 九、自架版：Docker（完全本地，不需要 Firebase）
 
-雲端那套（GitHub Actions + Firebase）**照舊保留**，兩邊可以並存。
+雲端那套（Cloud Run Jobs + Firebase）**照舊保留**，兩邊可以並存。
 自架版把資料存成本地 JSON、封面圖留在本機、網站也由容器自己提供，
 整台機器斷開外網（除了抓新聞與呼叫 LLM）也能運作。
 

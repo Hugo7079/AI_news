@@ -17,6 +17,9 @@ Schema:
   1. GOOGLE_APPLICATION_CREDENTIALS 環境變數 → service account JSON 路徑
   2. FIREBASE_SERVICE_ACCOUNT_JSON 環境變數 → 整段 JSON 字串（CI/GitHub Actions 用）
   3. 本機 firebase-credentials.json（在 .gitignore 裡）
+  4. 在 Cloud Run Job 裡（有 CLOUD_RUN_JOB 環境變數）→ 用 job 自己的 service account
+     （Application Default Credentials），不需要任何金鑰檔。
+     那個 service account 要先在 d8ainews 專案拿到 Firestore 寫入權限，見 deploy/README.md。
 """
 
 from __future__ import annotations
@@ -56,6 +59,11 @@ def _load_credentials():
                        BASE_DIR / "firebase-credentials.json"):
         if local_path.exists():
             return credentials.Certificate(str(local_path))
+
+    # Cloud Run 會自動設 CLOUD_RUN_JOB；AINEWS_USE_ADC=1 則是給本機 gcloud 登入後測試用。
+    # projectId 在 _init() 明確指定為 d8ainews，不會跑去寫 job 所在的那個專案。
+    if os.getenv("CLOUD_RUN_JOB") or os.getenv("AINEWS_USE_ADC") == "1":
+        return credentials.ApplicationDefault()
 
     raise RuntimeError(
         "找不到 Firebase service account 憑證。請設定 GOOGLE_APPLICATION_CREDENTIALS "
