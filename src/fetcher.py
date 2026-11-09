@@ -204,6 +204,57 @@ def google_news_supplement(days_back: int = 1, parallel: int = 6) -> list[dict]:
 
 
 # ─────────────────────────────────────────────────────────────
+# 導言補強
+# ─────────────────────────────────────────────────────────────
+_DESC_PATTERNS = [
+    re.compile(r'<meta[^>]+property=["\']og:description["\'][^>]+content=["\']([^"\']+)["\']', re.I),
+    re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:description["\']', re.I),
+    re.compile(r'<meta[^>]+name=["\']description["\'][^>]+content=["\']([^"\']+)["\']', re.I),
+    re.compile(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+name=["\']description["\']', re.I),
+]
+
+
+def _fetch_dek(url: str, timeout: int = 8) -> str:
+    """抓文章的 og:description（編輯寫的一句話導言）；失敗回空字串。"""
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw = resp.read(200_000).decode("utf-8", errors="ignore")  # meta 一定在 <head>
+    except Exception:
+        return ""
+    for pat in _DESC_PATTERNS:
+        m = pat.search(raw)
+        if m:
+            return _strip_html(m.group(1))
+    return ""
+
+
+def enrich_with_dek(items: list[dict], parallel: int = 10) -> int:
+    """
+    把媒體文章的 og:description 補到 summary 前面。
+
+    RSS 的 summary 常常只是內文第一段。特寫 / 專訪類文章以人物故事開場
+    （例：TechCrunch 報 Jev 那篇，RSS 只給「ChatGPT broke Diogo Almeida's heart…」），
+    標題也沒寫產品名，LLM 看不出這是一則模型發布，直接判成沒有事件。
+    og:description 是編輯寫的導言，通常會點名主體。
+    """
+    todo = [it for it in items if it.get("source_kind") == "media" and it.get("url")]
+
+    def _one(it: dict) -> bool:
+        dek = _fetch_dek(it["url"])
+        summary = it.get("summary", "")
+        if len(dek) < 30 or dek[:60] in summary:
+            return False
+        it["summary"] = f"{dek} {summary}"[:1200]
+        return True
+
+    with ThreadPoolExecutor(max_workers=parallel) as ex:
+        got = sum(ex.map(_one, todo))
+    print(f"  導言補強：{got}/{len(todo)} 則媒體文章補上 og:description")
+    return got
+
+
+# ─────────────────────────────────────────────────────────────
 # 粗篩
 # ─────────────────────────────────────────────────────────────
 def is_ai_related(item: dict) -> bool:

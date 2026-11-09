@@ -76,6 +76,8 @@ def event_to_doc(ev: dict, date_str: str, is_top: bool,
         "sources":        [source_to_doc(s) for s in (ev.get("sources") or [])],
         "cover_image":    cover_resolver(ev, date_str),
         "is_top":         bool(is_top),
+        # 跨日熱度加權的依據（trending.py）；沒被加權的是 None
+        "trending":       ev.get("trending") or None,
         "generated_at":   utc_now_iso(),
     }
 

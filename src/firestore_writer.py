@@ -161,6 +161,17 @@ def _delete_day(date_str: str) -> int:
     return n
 
 
+def load_events_for_trending(start: str, end: str) -> list[dict]:
+    """讀 [start, end] 的事件，只取跨日熱度加權用得到的欄位（省流量）。"""
+    from google.cloud.firestore_v1.base_query import FieldFilter
+    _init()
+    q = (_db.collection("events")
+         .where(filter=FieldFilter("date", ">=", start))
+         .where(filter=FieldFilter("date", "<=", end))
+         .select(["date", "title", "summary", "who", "sources"]))
+    return [d.to_dict() for d in q.stream()]
+
+
 def write_run(date_str: str,
               db_events: list[dict],
               top_events: list[dict],

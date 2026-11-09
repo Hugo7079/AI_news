@@ -10,8 +10,10 @@
   2.5) fetch_opensource_supplement() — HF / GitHub / Ollama / OpenRouter
   3) prefilter()                   — AI 關鍵字粗篩
   4) URL 去重
+  4.5) enrich_with_dek()          — 媒體文章補 og:description 導言
   5) extract_events_from_items()   — LLM 抽事件（一篇可拆 0..N 個）
   6) merge_events()                — fingerprint + LLM 邊界判定，合併同事件
+  6.5) apply_trending_boost()      — 近幾天連續被討論的新興主體加重要度
   7) filter_events()                — 重要度 / 摘要長度硬篩
   8) attach_cover_images(top)      — 給 top 事件抓 og:image 或 HF 生圖
   9) 輸出 events.json + events.xlsx
@@ -28,11 +30,12 @@ from pathlib import Path
 import pandas as pd
 
 from config import OUTPUT_DIR, CATEGORIES, CATEGORY_LABEL_BY_ID, DEFAULT_DAYS_BACK, ENABLE_GOOGLE_NEWS_DEFAULT
-from fetcher import fetch_all_sources, google_news_supplement, prefilter
+from fetcher import fetch_all_sources, google_news_supplement, prefilter, enrich_with_dek
 from sources_extra import fetch_opensource_supplement
 from events import extract_events_from_items, merge_events, filter_events
 from cover_image import attach_cover_images, prefill_og_covers
 from enrich import generate_full_content
+from trending import load_history, apply_trending_boost
 
 
 # 每類事件保留上限（資料庫）
@@ -87,12 +90,18 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
         uniq.append(it)
     print(f"URL 去重後：{len(uniq)} 則新聞進入事件抽取階段")
 
+    # 4.5) 特寫類文章的 RSS 摘要只有人物開場，補上編輯導言 LLM 才認得出主體
+    enrich_with_dek(uniq)
+
     # 5) LLM 抽事件（一篇可展開為 0..N 個事件）
     raw_events = extract_events_from_items(uniq)
 
     # 6) 合併事件（fingerprint + LLM 邊界判定）
     print("事件合併中...")
     events = merge_events(raw_events)
+
+    # 6.5) 跨日熱度：放在品質過濾之前，讓被低估但連日延燒的事件不會先被刪掉
+    apply_trending_boost(events, load_history(today_date), today_date)
 
     # 7) 品質過濾（含事件層時間 cutoff — when 欄位早於 cutoff 也丟）
     events = filter_events(events, days_back=days_back, today=today_date)
