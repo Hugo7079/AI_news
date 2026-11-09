@@ -222,7 +222,7 @@ def load_llm_config() -> dict:
         # 2026-09-02 曾改用 Mistral 免費層，但那把金鑰的配額被降為 0
         # （429 且 x-ratelimit-limit-req-minute: 0），整條抽事件的路等於斷掉，
         # 而且 pipeline 會「成功」跑完並產出 0 則，故障看起來像沒新聞。改回 gateway。
-        "base_url": "https://llm-gateway.d8ai.ai/",
+        "base_url": "https://d8-manager.d8ai.ai/",
         "model":    "gemma-4-31B-it",
         "timeout":  90,
     }
