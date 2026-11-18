@@ -122,6 +122,7 @@ _CATEGORY_STYLE = {
     "hardware_infra": "macro shot of silicon wafer or GPU chip, dark background, cyan glow, photoreal",
     "products_apps": "a sleek device on a tilted angle with a softly glowing abstract blank screen, vibrant accent color, soft studio light, isometric",
     "policy_society": "abstract symbol of scales and digital network, neutral palette, minimal editorial illustration",
+    "cybersecurity": "abstract digital shield and padlock over a dark network grid, deep red and charcoal, minimal high-tech",
     "uncategorized": "abstract AI motif, minimal geometric, blue gradient",
 }
 
@@ -189,6 +190,7 @@ _CATEGORY_FALLBACK_SUBJECTS = {
     "hardware_infra": "glowing close-up shot of silicon microchips and electronic circuits",
     "products_apps": "a sleek smartphone on a stand with a softly glowing blank gradient screen, studio lighting",
     "policy_society": "abstract minimalist scales of justice on a glowing digital network mesh",
+    "cybersecurity": "a glowing digital padlock floating above a dark circuit board with red warning light",
     "uncategorized": "abstract glowing geometric connections on violet and blue gradient",
 }
 

@@ -1,4 +1,4 @@
-import { exportEventsToPdf, getNewsletterConfig, saveNewsletterConfig } from "./report.js";
+import { exportEventsToPdf, getNewsletterConfig, saveNewsletterConfig } from "./report.js?v=20261118a";
 
 // ─── 資料來源 ───────────────────────────────────────────────────────────────
 // 由 ./config.json 的 mode 決定：
@@ -84,8 +84,9 @@ const CATEGORIES = {
   hardware_infra:    { label: "硬體與基礎建設", color: "var(--cat-hardware_infra)" },
   products_apps:     { label: "產品與應用",     color: "var(--cat-products_apps)" },
   policy_society:    { label: "政策法規與社會影響", color: "var(--cat-policy_society)" },
+  cybersecurity:     { label: "資訊安全",       color: "var(--cat-cybersecurity)" },
 };
-const CATEGORY_ORDER = ["tech_research","industry_business","hardware_infra","products_apps","policy_society"];
+const CATEGORY_ORDER = ["tech_research","industry_business","hardware_infra","products_apps","policy_society","cybersecurity"];
 const FALLBACK_CAT = { label: "其他", color: "var(--cat-other)" };
 
 const ICONS = {
@@ -94,6 +95,7 @@ const ICONS = {
   hardware_infra: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>`,
   products_apps: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg>`,
   policy_society: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>`,
+  cybersecurity: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>`,
   _default: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>`,
 };
 
@@ -119,6 +121,11 @@ const $metricAddAll  = document.getElementById("metric-add-all");
 const $pickToggle    = document.getElementById("pick-panel-toggle");
 const $pickToggleLbl = document.getElementById("pick-toggle-label");
 const $picksLayout   = document.getElementById("picks-layout");
+const $secTitle      = document.getElementById("security-title");
+const $secToggle     = document.getElementById("sec-toggle");
+const $secZone       = document.getElementById("security-zone");
+const $secGrid       = document.getElementById("security-grid");
+const $secFoot       = document.getElementById("security-foot");
 const $opensource    = document.getElementById("opensource-grid");
 const $dbToolbar     = document.getElementById("db-toolbar");
 const $tabs          = document.getElementById("category-tabs");
@@ -173,6 +180,7 @@ if (!selectedMetrics.size) selectedMetrics = new Set(DEFAULT_METRICS);
 
 let picksCount = Number(LS.get("ainews_picks_count", "6")) || 6;
 let osCollapsed = LS.get("ainews_os_collapsed", "0") === "1";
+let secCollapsed = LS.get("ainews_sec_collapsed", "0") === "1";
 // 手機沒有側欄空間，編輯台預設收起來（使用者手動展開過就以他的選擇為準）
 const isNarrow = () => window.matchMedia("(max-width: 1080px)").matches;
 let picksPanelCollapsed = LS.get("ainews_picks_panel_collapsed", isNarrow() ? "1" : "0") === "1";
@@ -393,6 +401,24 @@ function renderMetricList() {
   });
 }
 
+// 頭版裡資安最多佔三分之一（預設 6 則中最多 2 則，與 pipeline.py 的 TOP_PICKS_MAX_SECURITY 一致），
+// 避免資安擠掉 AI 新聞；其他欄目不夠補滿時才再放資安（例如只關注資安時）
+function capSecurity(sorted, n) {
+  const maxSec = Math.max(1, Math.round(n / 3));
+  const picks = [];
+  const overflow = [];
+  let sec = 0;
+  for (const ev of sorted) {
+    if (picks.length >= n) break;
+    if (ev.category === "cybersecurity") {
+      if (sec >= maxSec) { overflow.push(ev); continue; }
+      sec += 1;
+    }
+    picks.push(ev);
+  }
+  return [...picks, ...overflow.slice(0, n - picks.length)];
+}
+
 // 依目前指標排序後的精選清單
 function rankedPicks(events) {
   const pool = applyInterestFilter(events);
@@ -407,7 +433,7 @@ function rankedPicks(events) {
   });
   // 只留下真的符合所選指標的事件；若一則都沒有就退回完整排序，避免精選開天窗
   const hit = sorted.filter((ev) => (scoreById.get(eventKey(ev))?.total || 0) > 0);
-  return (hit.length ? hit : sorted).slice(0, picksCount);
+  return capSecurity(hit.length ? hit : sorted, picksCount);
 }
 
 // ─── 頭版 ───
@@ -536,6 +562,82 @@ function renderTopPicks(events) {
        </aside>`
     : "";
   $topPicks.innerHTML = leadHtml(lead) + briefs;
+}
+
+// ─── 資安專區 ───
+const SEC_LIMIT = 8;
+
+function coverSrc(ev) {
+  const cover = ev.cover_image || {};
+  if (!((cover.kind === "remote" || cover.kind === "local") && cover.url)) return "";
+  let imgUrl = cover.url;
+  // file:// 直接開檔案測試時，把 media/ 或 /media/ 改指向真正的 output/
+  if (location.protocol === "file:" && !imgUrl.startsWith("http")) {
+    imgUrl = imgUrl.replace(/^\/?media\//, "../output/");
+  }
+  return imgUrl;
+}
+
+function secCardHtml(ev) {
+  const src = coverSrc(ev);
+  const mention = Number(ev.mention_count || 1);
+  const sourceChips = (ev.sources || []).slice(0, 3).map((s) => `
+    <a class="source-chip" href="${escapeHtml(s.url || "#")}" target="_blank" rel="noopener noreferrer">
+      ${escapeHtml(s.source_name || "?")}
+    </a>
+  `).join("");
+  // 封面多半是新聞原圖（外站網址）：不帶 referrer 避開防盜連；載入失敗就拿掉 <img>，露出底下的盾牌色塊
+  const img = src
+    ? `<img src="${escapeHtml(src)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" />`
+    : "";
+  return `
+    <article class="sec-card">
+      <div class="sec-thumb">${ICONS.cybersecurity}${img}</div>
+      <div class="sec-body">
+        <div class="sec-meta">
+          ${ev.what ? `<span class="sec-what">${escapeHtml(ev.what)}</span>` : ""}
+          ${ev.date ? `<span class="row-date">${escapeHtml(fmtDateShort(ev.date))}</span>` : ""}
+          <span class="pill pill-importance">${ICON_STAR} ${Number(ev.importance || 0)}</span>
+          ${mention > 1 ? `<span class="pill pill-mention">${mention} 家報導</span>` : ""}
+        </div>
+        <h3 class="sec-title">${titleLinkHtml(ev)}</h3>
+        <p class="sec-summary">${escapeHtml(ev.summary || "")}</p>
+        <div class="sec-card-foot">
+          ${sourceChips ? `<div class="sources">${sourceChips}</div>` : "<span></span>"}
+          ${pickBoxHtml(ev)}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function applySecCollapse() {
+  $secZone.classList.toggle("collapsed", secCollapsed);
+  $secToggle.setAttribute("aria-expanded", secCollapsed ? "false" : "true");
+  $secToggle.classList.toggle("is-collapsed", secCollapsed);
+}
+
+function renderSecurity(events) {
+  $secFoot.innerHTML = "";
+  if (selectedCategories.size && !selectedCategories.has("cybersecurity")) {
+    $secGrid.innerHTML = `<div class="empty" style="grid-column:1/-1">目前沒有關注「${escapeHtml(catLabel("cybersecurity"))}」欄目，可在上方欄目列重新選取。</div>`;
+    applySecCollapse();
+    return;
+  }
+  const secEvents = events
+    .filter((ev) => ev.category === "cybersecurity")
+    .sort((a, b) => (b.importance || 0) - (a.importance || 0)
+      || (b.mention_count || 0) - (a.mention_count || 0)
+      || String(b.date || "").localeCompare(String(a.date || "")));
+  if (!secEvents.length) {
+    $secGrid.innerHTML = `<div class="empty" style="grid-column:1/-1">${escapeHtml(rangeWord(currentRange))}無資安事件。</div>`;
+  } else {
+    $secGrid.innerHTML = secEvents.slice(0, SEC_LIMIT).map(secCardHtml).join("");
+    if (secEvents.length > SEC_LIMIT) {
+      $secFoot.innerHTML = `<button type="button" class="btn" data-goto-db>在全部收錄查看 ${secEvents.length} 則資安事件</button>`;
+    }
+  }
+  applySecCollapse();
 }
 
 // ─── Open Source Radar ───
@@ -953,6 +1055,7 @@ function syncExportChecks() {
 function updateSectionTitles() {
   const rl = rangeLabel(currentRange);
   if ($topPicksTitle) $topPicksTitle.textContent = `${rl}頭版`;
+  if ($secTitle)      $secTitle.textContent      = `資安專區（${rl}）`;
   if ($osTitle)       $osTitle.textContent       = `開源生態與模型觀測站（${rl}）`;
   if ($metricsTitle)  $metricsTitle.textContent  = `${rl}統計`;
 }
@@ -980,6 +1083,7 @@ function renderAll() {
   updateRangeHint();
   updateEdition();
   renderTopPicks(currentEvents);
+  renderSecurity(currentEvents);
   renderOpenSource(currentEvents);
   renderTabsAndList(currentEvents);
   renderMetrics(currentEvents);
@@ -996,6 +1100,8 @@ async function showRange(days) {
   rangeStart = shiftDate(anchor, -(days - 1));
 
   $topPicks.innerHTML = `<div class="loading"><div class="spinner"></div><div>讀取中…</div></div>`;
+  $secGrid.innerHTML = "";
+  $secFoot.innerHTML = "";
   $opensource.innerHTML = "";
   $eventList.innerHTML = "";
   $dbPager.innerHTML = "";
@@ -1056,6 +1162,23 @@ function wireControls() {
     applyPicksPanelCollapse();
   });
 
+  // 資安專區收合
+  $secToggle.addEventListener("click", () => {
+    secCollapsed = !secCollapsed;
+    LS.set("ainews_sec_collapsed", secCollapsed ? "1" : "0");
+    applySecCollapse();
+  });
+
+  // 資安專區「查看全部」→ 全部收錄切到資安分頁
+  $secFoot.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-goto-db]")) return;
+    activeTab = "cybersecurity";
+    dbPage = 1;
+    renderTabsAndList(currentEvents);
+    syncExportChecks();
+    $dbToolbar.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
   // 開源區收合
   $osToggle.addEventListener("click", () => {
     osCollapsed = !osCollapsed;
@@ -1077,6 +1200,7 @@ async function main() {
     renderInterestChips();
     renderMetricList();
     wireControls();
+    applySecCollapse();
     applyOsCollapse();
     applyPicksPanelCollapse();
 

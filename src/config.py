@@ -4,7 +4,7 @@ AI 新聞爬搜整理 — 全域設定
 
 定義：
   1. 新聞分類架構（目標讀者導向）
-  2. AI 相關關鍵字（粗篩用）
+  2. AI / 資安關鍵字（粗篩用）
   3. 噪音字（排除誤判）
   4. LLM 連線設定（與 emap 同格式）
 """
@@ -21,7 +21,7 @@ OUTPUT_DIR = Path(os.getenv("AINEWS_OUTPUT_DIR", "").strip() or (BASE_DIR / "out
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ─────────────────────────────────────────────────────────────
-# 1. 分類架構（5 類）
+# 1. 分類架構（6 類）
 #
 # 設計思路：一般人看 AI 新聞的身份多半是
 #   ‣ 技術開發者 / AI 研究者
@@ -29,7 +29,8 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 #   ‣ 硬體 / 供應鏈從業者（台灣特別多）
 #   ‣ 企業 IT / 產品經理 / 一般職場
 #   ‣ 政策法務 / 社會關注者
-# 對應出 5 大主題類別。
+# 對應出 5 大主題類別；另加「資訊安全」獨立成第 6 類（前端有資安專區）。
+# 資安類不限 AI：所有資安事件都收，且資安事件一律歸這類，不再落到其他 5 類。
 # ─────────────────────────────────────────────────────────────
 CATEGORIES: dict[str, dict] = {
     "tech_research": {
@@ -74,12 +75,26 @@ CATEGORIES: dict[str, dict] = {
     },
     "policy_society": {
         "label": "政策法規與社會影響",
-        "desc": "AI 立法、訴訟、智財權、安全與對齊、勞動衝擊、隱私、教育、社會輿論。",
+        "desc": "AI 立法、訴訟、智財權、AI 安全與對齊（模型行為、風險治理，非資安攻防）、勞動衝擊、隱私、教育、社會輿論。"
+                "資安相關（攻擊、外洩、漏洞、詐騙、資安法規）請歸 cybersecurity。",
         "examples": [
             "歐盟 AI Act 進度、美國行政命令",
             "NYT vs OpenAI 著作權訴訟",
-            "Deepfake、AI 詐騙、選舉假訊息",
+            "Deepfake 與選舉假訊息",
             "AI 對就業/教育衝擊報導",
+        ],
+    },
+    "cybersecurity": {
+        "label": "資訊安全",
+        "desc": "駭客攻擊、資料外洩、勒索軟體、漏洞與修補（CVE / 零時差）、惡意程式、網路釣魚與詐騙、"
+                "APT 與國家級攻擊、資安法規與主管機關動態、資安產品與資安業者（含融資併購）；"
+                "也包含 AI 資安（AI 被用於攻擊、模型越獄 / 提示注入、AI 系統外洩）。不限於 AI 相關新聞。"
+                "只要事件核心是資安，一律歸這類，不要放進其他類別。",
+        "examples": [
+            "某企業遭勒索軟體攻擊、客戶個資外洩",
+            "Chrome / Windows 零時差漏洞與緊急修補",
+            "提示注入攻擊、AI Agent 被劫持、AI 詐騙",
+            "資安署發布新規範、資安公司融資或併購",
         ],
     },
 }
@@ -171,6 +186,28 @@ AI_KEYWORDS_EN = [
 ]
 
 ALL_AI_KEYWORDS = AI_KEYWORDS_ZH + AI_KEYWORDS_EN
+
+# 資安關鍵字：一般媒體的文章含其一也放行（資安類不要求跟 AI 有關）。
+# 刻意不放「攻擊」「外洩」「詐騙」這類單詞，避免軍事、社會新聞誤入。
+SECURITY_KEYWORDS_ZH = [
+    "資安", "資訊安全", "網路安全", "網安", "資通安全", "資安署", "TWCERT",
+    "駭客", "黑客", "勒索軟體", "勒索病毒", "勒索集團",
+    "資料外洩", "個資外洩", "資料洩漏", "洩漏個資",
+    "漏洞", "零時差", "零日", "惡意程式", "惡意軟體", "木馬", "後門", "殭屍網路",
+    "網路釣魚", "釣魚郵件", "釣魚網站", "網路詐騙", "深偽詐騙",
+    "網路攻擊", "供應鏈攻擊", "阻斷服務", "DDoS", "APT", "CVE", "零信任",
+]
+
+SECURITY_KEYWORDS_EN = [
+    "cybersecurity", "cyber security", "cyberattack", "cyber attack", "infosec",
+    "hacker", "hacked", "ransomware", "malware", "spyware", "infostealer",
+    "phishing", "data breach", "data leak", "vulnerability", "vulnerabilities",
+    "zero-day", "0-day", "exploit", "botnet", "backdoor", "trojan",
+    "threat actor", "supply chain attack", "security flaw", "security patch",
+    "CISA", "DDoS", "APT", "CVE",
+]
+
+ALL_SECURITY_KEYWORDS = SECURITY_KEYWORDS_ZH + SECURITY_KEYWORDS_EN
 
 # 噪音字（標題含其一則丟棄 — 多半非 AI 新聞）
 NOISE_KEYWORDS = [

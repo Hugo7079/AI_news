@@ -8,6 +8,7 @@
   3. AI 廠商 / 研究機構官方部落格
   4. 社群與聚合（HN / Reddit / arXiv）
   5. AI 主題 Podcast (RSS feed)
+  6. 資安媒體（topic="security"，不需含 AI 關鍵字即放行）
 另保留 Google News 搜尋作為「即時 Web Search」備援（見 fetcher.py）。
 
 每個 source 是 dict：
@@ -17,6 +18,7 @@
     "region": "TW" | "GLOBAL",
     "kind": "media" | "vendor" | "community" | "podcast",
     "lang": "zh" | "en",
+    "topic": "security"（選填；資安專門來源才標）,
   }
 
 註：feed 連結會隨時間變動，若失效請更新或於 Streamlit UI 暫時關閉。
@@ -77,6 +79,19 @@ SOURCES: list[dict] = [
     {"name": "矽谷輕鬆談 Just Kidding Tech", "url": "https://anchor.fm/s/120c33e0/podcast/rss",      "region": "TW", "kind": "podcast", "lang": "zh"},
     {"name": "M觀點",                "url": "https://feeds.soundon.fm/podcasts/b8f5a471-f4f7-4763-9678-65887beda63a.xml", "region": "TW", "kind": "podcast", "lang": "zh"},
     {"name": "科技浪 Tech.wav",      "url": "https://feed.firstory.me/rss/user/cm3o5681s06e801v3fxpjehwb", "region": "TW", "kind": "podcast", "lang": "zh"},
+
+    # ─────────────────────────── 資安媒體（2026-11 驗證，一天約 70 則） ───────────────────────────
+    # BleepingComputer 對爬蟲回 403；iThome 另有 /rss/securitynews，但與 /rss/security 重疊七成以上，只留一個
+    {"name": "iThome 資安",          "url": "https://www.ithome.com.tw/rss/security",                "region": "TW", "kind": "media", "lang": "zh", "topic": "security"},
+    {"name": "TWCERT/CC 資安新聞",   "url": "https://www.twcert.org.tw/tw/rss-104-1.xml",            "region": "TW", "kind": "media", "lang": "zh", "topic": "security"},
+    {"name": "TechNews 資安",        "url": "https://technews.tw/tag/%E8%B3%87%E5%AE%89/feed/",      "region": "TW", "kind": "media", "lang": "zh", "topic": "security"},
+    {"name": "The Hacker News",      "url": "https://feeds.feedburner.com/TheHackersNews",           "region": "GLOBAL", "kind": "media", "lang": "en", "topic": "security"},
+    {"name": "SecurityWeek",         "url": "https://www.securityweek.com/feed/",                    "region": "GLOBAL", "kind": "media", "lang": "en", "topic": "security"},
+    {"name": "Dark Reading",         "url": "https://www.darkreading.com/rss.xml",                   "region": "GLOBAL", "kind": "media", "lang": "en", "topic": "security"},
+    {"name": "The Record",           "url": "https://therecord.media/feed",                          "region": "GLOBAL", "kind": "media", "lang": "en", "topic": "security"},
+    {"name": "The Register 資安",    "url": "https://www.theregister.com/security/headlines.atom",   "region": "GLOBAL", "kind": "media", "lang": "en", "topic": "security"},
+    {"name": "Help Net Security",    "url": "https://www.helpnetsecurity.com/feed/",                 "region": "GLOBAL", "kind": "media", "lang": "en", "topic": "security"},
+    {"name": "Krebs on Security",    "url": "https://krebsonsecurity.com/feed/",                     "region": "GLOBAL", "kind": "media", "lang": "en", "topic": "security"},
 ]
 
 
@@ -87,6 +102,7 @@ GOOGLE_NEWS_QUERIES_ZH = [
     "人形機器人 OR Tesla Optimus OR Figure",
     "AI 新創 融資 OR 估值",
     "OpenAI OR Anthropic OR Google DeepMind",
+    "資安 OR 駭客 OR 勒索軟體 OR 資料外洩",
 ]
 
 GOOGLE_NEWS_QUERIES_EN = [
@@ -96,4 +112,5 @@ GOOGLE_NEWS_QUERIES_EN = [
     "humanoid robot OR robotics startup",
     "AI funding OR \"AI startup\" raises",
     "AI regulation OR \"AI act\" OR \"AI lawsuit\"",
+    "cyberattack OR ransomware OR \"data breach\" OR \"zero-day\"",
 ]

@@ -5,7 +5,7 @@
   <!-- viewport-fit=cover：加到主畫面後全螢幕執行，要自己處理瀏海與底部指示條 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>晨誌 Morning Ledger</title>
-  <meta name="description" content="每日 AI 情報日報：50+ 來源、LLM 抽事件、重要度排序。" />
+  <meta name="description" content="每日 AI 與資安情報日報：60+ 來源、LLM 抽事件、重要度排序。" />
 
   <!-- ── 加到主畫面（PWA）── -->
   <link rel="manifest" href="/manifest.webmanifest" />
@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@400;600;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./style.css?v=20260910a" />
+  <link rel="stylesheet" href="./style.css?v=20261118a" />
 </head>
 <body>
   <main class="sheet">
@@ -95,6 +95,23 @@
       </div>
     </section>
 
+    <!-- ───────── 資安專區 ───────── -->
+    <section class="plate" aria-labelledby="security-title">
+      <div class="plate-head">
+        <button type="button" id="sec-toggle" class="rubric-toggle" aria-expanded="true" aria-controls="security-zone">
+          <h2 class="rubric" id="security-title">資安專區</h2>
+          <svg class="chev" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+      </div>
+      <div id="security-zone" class="sec-zone">
+        <div id="security-grid" class="sec-grid"></div>
+        <div id="security-foot" class="sec-foot"></div>
+      </div>
+    </section>
+
     <!-- ───────── 開源生態 ───────── -->
     <section class="plate" aria-labelledby="opensource-title">
       <div class="plate-head">
@@ -144,6 +161,6 @@
 
   </main>
 
-  <script type="module" src="./app.js?v=20260910a"></script>
+  <script type="module" src="./app.js?v=20261118a"></script>
 </body>
 </html>

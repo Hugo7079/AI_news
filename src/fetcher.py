@@ -24,7 +24,8 @@ from typing import Optional
 
 import feedparser  # type: ignore
 
-from config import FETCH_TIMEOUT, MAX_PER_SOURCE, NOISE_KEYWORDS, ALL_AI_KEYWORDS, PER_SOURCE_MAX_OVERRIDES
+from config import (FETCH_TIMEOUT, MAX_PER_SOURCE, NOISE_KEYWORDS, ALL_AI_KEYWORDS,
+                    ALL_SECURITY_KEYWORDS, PER_SOURCE_MAX_OVERRIDES)
 from sources import SOURCES, GOOGLE_NEWS_QUERIES_ZH, GOOGLE_NEWS_QUERIES_EN
 
 
@@ -104,6 +105,7 @@ def fetch_rss(source: dict, days_back: int = 7) -> list[dict]:
             "source_region": source.get("region", ""),
             "source_kind": source.get("kind", ""),
             "source_lang": source.get("lang", ""),
+            "source_topic": source.get("topic", ""),
         })
     return items
 
@@ -257,13 +259,13 @@ def enrich_with_dek(items: list[dict], parallel: int = 10) -> int:
 # ─────────────────────────────────────────────────────────────
 # 粗篩
 # ─────────────────────────────────────────────────────────────
-def is_ai_related(item: dict) -> bool:
-    """標題或摘要含任一 AI 關鍵字，且不含噪音字。"""
+def _has_keyword(item: dict, keywords: list[str]) -> bool:
+    """標題或摘要含任一關鍵字，且不含噪音字。"""
     text = f"{item.get('title', '')} {item.get('summary', '')}"
     if any(nk in text for nk in NOISE_KEYWORDS):
         return False
     lower = text.lower()
-    for kw in ALL_AI_KEYWORDS:
+    for kw in keywords:
         if len(kw) <= 3:
             # 短字使用大小寫敏感、單字邊界（避免 AI 命中 "raise" 之類）
             if re.search(rf"(?<![A-Za-z]){re.escape(kw)}(?![A-Za-z])", text):
@@ -274,10 +276,18 @@ def is_ai_related(item: dict) -> bool:
     return False
 
 
+def is_ai_related(item: dict) -> bool:
+    return _has_keyword(item, ALL_AI_KEYWORDS)
+
+
+def is_security_related(item: dict) -> bool:
+    return _has_keyword(item, ALL_SECURITY_KEYWORDS)
+
+
 def prefilter(items: list[dict], verbose: bool = True) -> list[dict]:
     """
-    對非 AI vendor / arxiv / Reddit-AI 等來源做 AI 關鍵字粗篩；
-    AI 廠商與 AI 專屬社群來源直接全收。
+    對非 AI vendor / arxiv / Reddit-AI 等來源做 AI 或資安關鍵字粗篩；
+    AI 廠商、AI 專屬社群與資安專門來源（topic="security"）直接全收。
     verbose=True 時印出各來源 (進 → 留) 統計。
     """
     # vendor 部落格 + podcast + 開源生態（HF/GH/Ollama/OpenRouter）全部豁免
@@ -296,11 +306,12 @@ def prefilter(items: list[dict], verbose: bool = True) -> list[dict]:
         src = it.get("source_name", "?")
         in_count[src] += 1
         passed = False
-        if it.get("source_kind") in ai_native_kinds or it.get("source_name") in ai_native_names:
+        if (it.get("source_kind") in ai_native_kinds or it.get("source_name") in ai_native_names
+                or it.get("source_topic") == "security"):
             text = f"{it.get('title', '')} {it.get('summary', '')}"
             if not any(nk in text for nk in NOISE_KEYWORDS):
                 passed = True
-        elif is_ai_related(it):
+        elif is_ai_related(it) or is_security_related(it):
             passed = True
         if passed:
             kept.append(it)

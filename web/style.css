@@ -33,6 +33,7 @@
   --cat-hardware_infra:    #8A5A1B;
   --cat-products_apps:     #2A6E86;
   --cat-policy_society:    #7A2340;
+  --cat-cybersecurity:     #A8321E;
   --cat-other:             #5E626C;
 
   --on-blue:     #FFFFFF;
@@ -63,6 +64,7 @@
     --cat-hardware_infra:    #D4A15C;
     --cat-products_apps:     #78B4C9;
     --cat-policy_society:    #D28499;
+    --cat-cybersecurity:     #E8936F;
     --cat-other:             #9A9EA8;
     --on-blue:     #12151C;
     --focus: #9EAFD7;
@@ -87,6 +89,7 @@
   --cat-hardware_infra:    #D4A15C;
   --cat-products_apps:     #78B4C9;
   --cat-policy_society:    #D28499;
+  --cat-cybersecurity:     #E8936F;
   --cat-other:             #9A9EA8;
   --on-blue:     #12151C;
   --focus: #9EAFD7;
@@ -613,6 +616,61 @@ a { color: inherit; }
 .os-badge svg { width: 10px; height: 10px; }
 .os-badge-alt { color: var(--blue); border-color: var(--blue-mid); }
 
+/* ───────── 資安專區 ───────── */
+.sec-zone.collapsed { display: none; }
+.sec-grid {
+  display: grid;
+  /* min(…, 100%)：容器比 360px 窄時（小手機）不會撐出橫向捲動 */
+  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
+  gap: 1px;
+  background: var(--rule-soft);
+  border: 1px solid var(--rule-soft);
+}
+.sec-grid > .empty { background: var(--panel); border-top: 0; padding: 22px 15px; }
+.sec-card {
+  background: var(--panel);
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 14px;
+  padding: 15px;
+}
+/* 縮圖：底下是欄目色＋盾牌圖示，圖載入失敗（外站防盜連）就露出這層 */
+.sec-thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--cat-cybersecurity);
+  color: var(--panel);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  align-self: start;
+}
+.sec-thumb svg { width: 26px; height: 26px; opacity: .8; }
+.sec-thumb img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.sec-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 10px; margin: 0 0 4px; }
+.sec-what {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: .66rem; letter-spacing: .14em; font-weight: 600;
+  color: var(--cat-cybersecurity);
+}
+.sec-title { font-size: .92rem; font-weight: 700; line-height: 1.55; margin: 0; }
+.sec-title a { text-decoration: none; }
+.sec-title a:hover { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.sec-summary {
+  font-size: .76rem; line-height: 1.75; color: var(--muted); margin: 5px 0 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sec-card-foot {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 4px 12px; margin-top: 8px;
+}
+.sec-card-foot .sources { margin-top: 0; }
+.sec-foot { display: flex; justify-content: flex-end; margin-top: 12px; }
+.sec-foot:empty { display: none; }
+
 /* ───────── 全部收錄 ───────── */
 .db-toolbar {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
@@ -933,6 +991,13 @@ a { color: inherit; }
   .deskpanel-foot .select { flex: 1; }
   .deskpanel-foot .btn-ghost { flex: none; }
   .deskpanel-foot .btn-solid { flex: 1 1 100%; }
+
+  /* 資安專區：單欄，縮圖縮小 */
+  .sec-grid { grid-template-columns: 1fr; }
+  .sec-card { grid-template-columns: 84px minmax(0, 1fr); gap: 12px; padding: 13px 14px 14px; }
+  .sec-title { font-size: .9rem; }
+  .sec-summary { font-size: .78rem; }
+  .sec-foot .btn { width: 100%; }
 
   /* 開源生態：單欄 */
   .os-grid { grid-template-columns: 1fr; }

@@ -49,8 +49,9 @@ const CAT_META = {
   hardware_infra:    { label: "硬體與基礎建設",     color: "#8A5A1B" },
   products_apps:     { label: "產品與應用",         color: "#2A6E86" },
   policy_society:    { label: "政策法規與社會影響", color: "#7A2340" },
+  cybersecurity:     { label: "資訊安全",           color: "#A8321E" },
 };
-const CAT_ORDER = ["tech_research", "industry_business", "hardware_infra", "products_apps", "policy_society"];
+const CAT_ORDER = ["tech_research", "industry_business", "hardware_infra", "products_apps", "policy_society", "cybersecurity"];
 const CAT_FALLBACK = { label: "其他 AI 新聞", color: "#5E626C" };
 
 const CAT_ICON = {
@@ -59,6 +60,7 @@ const CAT_ICON = {
   hardware_infra: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>',
   products_apps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></svg>',
   policy_society: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>',
+  cybersecurity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>',
   _default: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>',
 };
 
@@ -415,7 +417,7 @@ const LAYOUT_JS = String.raw`
 
   function thumbHtml(it) {
     if (it.cover) {
-      return '<div class="idx-thumb"><img src="' + esc(it.cover) + '" alt="" ' +
+      return '<div class="idx-thumb"><img src="' + esc(it.cover) + '" alt="" referrerpolicy="no-referrer" ' +
              'onerror="this.parentNode.style.background=\'' + it.color + '\';this.remove()" /></div>';
     }
     return '<div class="idx-thumb" style="background:' + it.color + '">' + it.icon + '</div>';

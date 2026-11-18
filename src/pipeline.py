@@ -8,7 +8,7 @@
   1) fetch_all_sources()           — RSS / vendor / community / podcast
   2) google_news_supplement()      — Google News 即時搜尋
   2.5) fetch_opensource_supplement() — HF / GitHub / Ollama / OpenRouter
-  3) prefilter()                   — AI 關鍵字粗篩
+  3) prefilter()                   — AI / 資安關鍵字粗篩
   4) URL 去重
   4.5) enrich_with_dek()          — 媒體文章補 og:description 導言
   5) extract_events_from_items()   — LLM 抽事件（一篇可拆 0..N 個）
@@ -42,12 +42,33 @@ from trending import load_history, apply_trending_boost
 PER_CAT_DB = 25
 # 精選總數（跨所有分類合計），依 importance / mention_count 取前 N
 TOP_PICKS_TOTAL = 6
+# 精選裡資安最多幾則：資安來源多、重要度又常偏高（AI新聞爬搜整理 2026-10-27 實跑
+# 6 則精選有 3 則是資安），不設限會擠掉 AI 新聞。前端 app.js 的 capSecurity() 用同一比例（三分之一）。
+TOP_PICKS_MAX_SECURITY = 2
 
 # 全程時間預算（秒）。GitHub Actions 的 crawl job 硬上限是 90 分鐘，超過會被 cancel
 # → 整份報表消失。這裡設一個較早的軟性 deadline：一旦跑到這個時間，最花時間的兩個
 # 尾段階段（封面生圖、全文彙整）就只對「還沒處理到的事件」直接落 fallback / summary，
 # 立刻收尾去寫 JSON/Excel/Firestore，確保永遠有完整輸出。可用環境變數覆寫。
 DEADLINE_SECONDS = int(os.getenv("AINEWS_DEADLINE_SECONDS", str(72 * 60)))
+
+
+def _pick_top(sorted_events: list[dict]) -> list[dict]:
+    """依排序取前 TOP_PICKS_TOTAL 則，資安最多 TOP_PICKS_MAX_SECURITY 則；
+    其他類別不夠補滿時才再放超額的資安。"""
+    picks: list[dict] = []
+    overflow: list[dict] = []
+    n_sec = 0
+    for ev in sorted_events:
+        if len(picks) >= TOP_PICKS_TOTAL:
+            break
+        if ev.get("category") == "cybersecurity":
+            if n_sec >= TOP_PICKS_MAX_SECURITY:
+                overflow.append(ev)
+                continue
+            n_sec += 1
+        picks.append(ev)
+    return picks + overflow[:TOP_PICKS_TOTAL - len(picks)]
 
 
 def run(days_back: int = DEFAULT_DAYS_BACK,
@@ -77,7 +98,7 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
 
     # 3) 粗篩
     items = prefilter(items)
-    print(f"AI 粗篩後：{len(items)} 則")
+    print(f"AI / 資安粗篩後：{len(items)} 則")
 
     # 4) URL 去重
     seen: set[str] = set()
@@ -129,8 +150,10 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
     db_sorted = sorted(db_events,
                        key=lambda e: (e.get("importance", 0), e.get("mention_count", 0)),
                        reverse=True)
-    top_events: list[dict] = db_sorted[:TOP_PICKS_TOTAL]
-    print(f"    今日精選           合計 {len(top_events)} / 上限 {TOP_PICKS_TOTAL}（跨類別 importance 排序）")
+    top_events: list[dict] = _pick_top(db_sorted)
+    n_top_sec = sum(1 for ev in top_events if ev.get("category") == "cybersecurity")
+    print(f"    今日精選           合計 {len(top_events)} / 上限 {TOP_PICKS_TOTAL}"
+          f"（跨類別 importance 排序；資安 {n_top_sec} 則，上限 {TOP_PICKS_MAX_SECURITY}）")
 
     # 9) 封面圖（給所有 db_events — PDF 報表每一則都要有文生圖封面）
     remaining = deadline - time.monotonic()

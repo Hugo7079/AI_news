@@ -1,6 +1,6 @@
 # 晨誌 Morning Ledger
 
-每天自動抓取 **台灣 + 國際 + AI 廠商 + 社群 + Podcast** 的 AI 相關新聞，
+每天自動抓取 **台灣 + 國際 + AI 廠商 + 社群 + Podcast + 資安媒體** 的 AI 與資安新聞，
 LLM 抽事件 / 去重 / 分類 → 寫入 **Firestore** → 靜態網站直接顯示。
 
 外部服務全部走免費額度：
@@ -61,7 +61,7 @@ A. 雲端版（Cloud Run Jobs + Firebase）       B. 自架版（Docker，完全
 ├── src/                     Python 主程式
 │   ├── pipeline.py          主流程（CLI 進入點）
 │   ├── config.py            分類、關鍵字、LLM / 生圖設定、路徑
-│   ├── sources.py           50+ RSS feed + Google News query
+│   ├── sources.py           60+ RSS feed（含 10 個資安媒體）+ Google News query
 │   ├── sources_extra.py     HF / GitHub / Ollama / OpenRouter
 │   ├── fetcher.py           RSS / Google News 抓取
 │   ├── llm.py               OpenAI 相容 LLM 包裝
@@ -116,7 +116,7 @@ A. 雲端版（Cloud Run Jobs + Firebase）       B. 自架版（Docker，完全
 
 ---
 
-## 二、五大分類
+## 二、六大分類
 
 | 對應讀者 | category_id | 內容 |
 | --- | --- | --- |
@@ -124,9 +124,17 @@ A. 雲端版（Cloud Run Jobs + Firebase）       B. 自架版（Docker，完全
 | 創業者 / 投資人 | `industry_business` | 融資、併購、財報、合作 |
 | 硬體 / 半導體 | `hardware_infra` | GPU/NPU、HBM、資料中心、人形機器人 |
 | 企業 IT / PM | `products_apps` | 產品上市、企業導入、AI 工具評測 |
-| 政策 / 法務 | `policy_society` | 立法、訴訟、安全、勞動衝擊 |
+| 政策 / 法務 | `policy_society` | 立法、訴訟、AI 安全與對齊、勞動衝擊 |
+| 資安 / IT 維運 | `cybersecurity` | 攻擊、外洩、勒索軟體、漏洞修補、詐騙、資安法規與業者；不限 AI |
 
-修改在 [`src/config.py`](src/config.py) 的 `CATEGORIES`。
+修改在 [`src/config.py`](src/config.py) 的 `CATEGORIES`；抽事件的 prompt 會直接讀這份定義。
+
+### 資訊安全怎麼收
+
+- **來源**：[`src/sources.py`](src/sources.py) 裡標 `"topic": "security"` 的 10 個資安媒體（iThome 資安、TWCERT/CC、The Hacker News、SecurityWeek 等），粗篩直接放行；一般科技媒體的文章含資安關鍵字（`config.SECURITY_KEYWORDS_*`）也會放行。
+- **分類**：只要事件核心是資安（含 AI 資安，例如提示注入、AI 被用於攻擊）一律歸 `cybersecurity`，不會落到其他五類。重要度改看實際衝擊：受害規模、是否已遭利用、是否需要立即修補。
+- **頭版上限**：資安來源多、重要度又常偏高，頭版裡資安最多佔三分之一（每日 6 則精選最多 2 則，`pipeline.TOP_PICKS_MAX_SECURITY`；網站上換刊登則數時同比例），其他欄目不夠才補資安。
+- **網站**：頭版下方有可收合的「資安專區」，列出重要度最高的 8 則（附縮圖），超過時可一鍵跳到「全部收錄」的資訊安全分頁。
 
 ---
 
@@ -298,7 +306,7 @@ firebase emulators:start --only hosting
 每個指標會先在「目前區間的事件池」內正規化成 0~1，再把被勾選的指標平均成「精選分」（卡片上會顯示，滑上去可看各指標分數）。沒有勾任何指標時，退回預設的「重要度 + 報導熱度」。
 
 顯示則數（3 / 6 / 9 / 12 / 20）也可以在同一塊面板調整；
-點面板標題可以把整塊指標收起來，「開源生態與模型觀測站」也一樣可收合，收合狀態會記住。
+點面板標題可以把整塊指標收起來，「資安專區」「開源生態與模型觀測站」也一樣可收合，收合狀態會記住。
 
 ### 2. 事件資料庫
 
