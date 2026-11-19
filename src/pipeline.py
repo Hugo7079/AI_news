@@ -36,6 +36,7 @@ from events import extract_events_from_items, merge_events, filter_events
 from cover_image import attach_cover_images, prefill_og_covers
 from enrich import generate_full_content
 from trending import load_history, apply_trending_boost
+from tags import TAG_LABEL_BY_ID
 
 
 # 每類事件保留上限（資料庫）
@@ -228,6 +229,7 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
             "報導數": ev.get("mention_count", 1),
             "事件標題": ev.get("title", ""),
             "摘要": ev.get("summary", ""),
+            "主題標籤": "、".join(TAG_LABEL_BY_ID.get(t, t) for t in (ev.get("tags") or [])),
             "主體": "、".join(ev.get("who", [])),
             "動作": ev.get("what", ""),
             "時間": ev.get("when", ""),
@@ -238,7 +240,7 @@ def run(days_back: int = DEFAULT_DAYS_BACK,
 
     df = pd.DataFrame([_to_row(ev) for ev in db_events])
     if df.empty:
-        df = pd.DataFrame(columns=["類別", "重要度", "報導數", "事件標題", "摘要", "主體", "動作", "時間", "地點", "證據來源", "category_id"])
+        df = pd.DataFrame(columns=["類別", "重要度", "報導數", "事件標題", "摘要", "主題標籤", "主體", "動作", "時間", "地點", "證據來源", "category_id"])
 
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         df.drop(columns="category_id", errors="ignore").to_excel(writer, sheet_name="全部事件", index=False)

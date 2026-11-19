@@ -15,6 +15,7 @@ from datetime import datetime, timezone
 from typing import Callable
 
 from config import CATEGORY_LABEL_BY_ID
+from tags import TAGS_VERSION, normalize_tags
 
 # cover_resolver(event, date_str) -> cover_image dict
 CoverResolver = Callable[[dict, str], dict]
@@ -67,6 +68,11 @@ def event_to_doc(ev: dict, date_str: str, is_top: bool,
         "full_content":   ev.get("full_content", ""),
         "category":       ev.get("category", "uncategorized"),
         "category_label": CATEGORY_LABEL_BY_ID.get(ev.get("category"), "其他"),
+        # 第二層主題標籤（0-3 個）；tags_by 標明來源，回溯補標的資料可與每日抽取的分開分析。
+        # 沒有 tags 欄位的是 v1 之前的舊事件，標 none 以免被當成 LLM 抽取結果
+        "tags":           normalize_tags(ev.get("tags")),
+        "tags_by":        ev.get("tags_by") or ("extract" if "tags" in ev else "none"),
+        "tags_version":   ev.get("tags_version") or TAGS_VERSION,
         "importance":     int(ev.get("importance", 0) or 0),
         "mention_count":  int(ev.get("mention_count", 1) or 1),
         "who":            list(ev.get("who", []) or []),
@@ -97,6 +103,23 @@ def build_docs(date_str: str,
     return docs
 
 
+def tag_stats(events: list[dict]) -> dict:
+    """主題標籤統計：一則事件可掛多個標籤，加總會大於事件數。"""
+    by_tag: dict[str, int] = {}
+    mentions: dict[str, int] = {}
+    high: dict[str, int] = {}
+    for ev in events:
+        mc = int(ev.get("mention_count") or len(ev.get("sources") or []) or 1)
+        imp = int(ev.get("importance") or 0)
+        for t in dict.fromkeys(ev.get("tags") or []):
+            by_tag[t] = by_tag.get(t, 0) + 1
+            mentions[t] = mentions.get(t, 0) + mc
+            if imp >= 8:
+                high[t] = high.get(t, 0) + 1
+    return {"by_tag": by_tag, "mentions_by_tag": mentions,
+            "high_importance_by_tag": high, "tags_version": TAGS_VERSION}
+
+
 def build_summary(date_str: str,
                   db_events: list[dict],
                   top_events: list[dict],
@@ -106,5 +129,6 @@ def build_summary(date_str: str,
         "total_db":          len(db_events),
         "total_top":         len(top_events),
         "by_category_label": dict(by_category_label),
+        **tag_stats(db_events),
         "generated_at":      utc_now_iso(),
     }

@@ -129,6 +129,24 @@ A. 雲端版（Cloud Run Jobs + Firebase）       B. 自架版（Docker，完全
 
 修改在 [`src/config.py`](src/config.py) 的 `CATEGORIES`；抽事件的 prompt 會直接讀這份定義。
 
+### 第二層：主題標籤 `tags[]`
+
+分類是**雙層**的：`category` 是第一層（上面 6 類，單選、互斥、長期凍結），`tags` 是第二層（0–3 個主題標籤，多選、字典可增減）。
+
+- **字典**：[`src/tags.py`](src/tags.py)，v1 共 56 個標籤，分 7 群（模型與技術、Agent 與開發、應用場景、硬體與基礎建設、產業與資本、政策與社會、資訊安全），例如 `ai_agent`、`coding_ai`、`robotics`、`ai_chips`、`energy_power`、`ai_security`、`ransomware`、`zero_day`、`copyright`。v1 是從 2026-05-20 起約 1.6 萬則歷史事件歸納出來的。
+- **怎麼標**：抽事件的同一次 LLM 呼叫多輸出 `"tags": [...]`，不多花 API call；字典外的 id 會被 `normalize_tags()` 丟掉，常見近義寫法（`agents`、`hbm`、`coding_agent`）會對回正式 id。字典裡沒有符合的就留空，不硬套。
+- **合併去重**：同一事件被多則新聞報導時，`tags` 取聯集，依出現次數排序，最多 3 個。
+- **跨領域**：例如「AI Agent 遭提示注入造成外洩」主類歸 `cybersecurity`，標籤同時掛 `ai_security`、`ai_agent`。
+- **欄位**：事件文件多了 `tags`、`tags_by`（`extract` 每日抽取／`backfill_rules`、`backfill_llm` 回溯補標／`none` 舊資料）、`tags_version`；每日彙總多了 `by_tag`、`mentions_by_tag`、`high_importance_by_tag`。
+- **字典治理**：標籤 id 上線後不改名，不用了標 `deprecated` 不刪；增減標籤要更新 `TAGS_VERSION`。兩個專案（AI新聞爬搜整理、AInews）共用同一份 `tags.py`，改一邊要同步另一邊。
+- **歷史回溯**：[`scripts/backfill_tags.py`](scripts/backfill_tags.py) 只補寫 `tags` 相關欄位，不動主分類，每日抽取的標籤永遠不覆寫；預設試跑，加 `--write` 才寫回。`--mode rules` 用關鍵詞規則（免費、幾秒跑完，抽樣對照 LLM 準確率約 86%、召回率約 41%，適合新標籤先快速長出歷史曲線），`--mode llm` 用同一份字典請 LLM 批次標註（建議正式回溯用這個，歷史與每日標註才是同一套方法）。
+
+```bash
+python3 scripts/backfill_tags.py                          # 試跑：只印各標籤統計
+python3 scripts/backfill_tags.py --compare 150            # 抽樣比較規則與 LLM
+python3 scripts/backfill_tags.py --mode llm --write       # 正式回溯並寫回
+```
+
 ### 資訊安全怎麼收
 
 - **來源**：[`src/sources.py`](src/sources.py) 裡標 `"topic": "security"` 的 10 個資安媒體（iThome 資安、TWCERT/CC、The Hacker News、SecurityWeek 等），粗篩直接放行；一般科技媒體的文章含資安關鍵字（`config.SECURITY_KEYWORDS_*`）也會放行。
@@ -240,6 +258,7 @@ Firestore 與本地 store 用**同一份** schema（`src/doc_model.py`），
 | `date` | string | `YYYY-MM-DD` |
 | `title` / `summary` | string | LLM 抽出的事件標題與摘要 |
 | `category` / `category_label` | string | 分類 id 與中文標籤 |
+| `tags[]` / `tags_by` / `tags_version` | array / string | 第二層主題標籤（0–3 個）、標籤來源、字典版本 |
 | `importance` / `mention_count` | int | 重要度 (0-10) 與報導數 |
 | `who[]` / `what` / `when` / `where` | — | 5W |
 | `sources[]` | array | 證據來源（url, title, source_name, source_kind, published） |

@@ -9,7 +9,8 @@
     "event_id":    "hash",
     "title":       "Google 發布 Gemini 3.5 Flash",        # 8-20 字繁體中文
     "summary":     "...",                                    # 2-3 句繁體中文 80-150 字
-    "category":    "tech_research" | ... ,                  # 6 類之一（含 cybersecurity）
+    "category":    "tech_research" | ... ,  # 單選、長期凍結
+    "tags":        ["ai_agent", "ai_security"],  # 0-3 個主題標籤（tags.py 字典），多選                  # 6 類之一（含 cybersecurity）
     "importance":  1..10,
     # 5W1H / 人事時地物
     "who":         ["Google", "Sundar Pichai"],              # 主體 list
@@ -38,6 +39,7 @@ from datetime import date, timedelta
 
 from config import CATEGORY_IDS, CATEGORIES, LLM_BATCH_SIZE
 from llm import chat_json
+from tags import MAX_TAGS, merge_tags, normalize_tags, tag_spec_for_prompt
 
 
 # 平行度。Gemini 2.5 Flash 免費版只有 10 RPM，2.0 Flash 也只有 15 RPM；
@@ -103,6 +105,13 @@ _EXTRACT_SYSTEM = (
     "是否波及關鍵基礎設施或大量使用者。例：已遭大規模利用的零時差漏洞、上千萬筆個資外洩 7-9；"
     "一般漏洞修補公告、單一中小企業受害 4-6；資安研討會、產品小改版 3-4。\n"
     "\n"
+    "\n"
+    f"主題標籤（tags）：0-{MAX_TAGS} 個，只能從下列字典挑 id，依關聯強度排序、最核心的放第一個。\n"
+    "tags 描述事件『涉及的主題』，跟 category 互補、可以跨分類"
+    "（例如 AI Agent 遭提示注入造成外洩：category 填 cybersecurity，tags 填 [\"ai_security\", \"ai_agent\"]）。\n"
+    "字典裡沒有真正符合的主題就給 []，不要硬套最接近的標籤。\n"
+    f"{tag_spec_for_prompt()}\n"
+    "\n"
     "一則新聞可能描述多個獨立事件——請全部列出，不要合併。\n"
     "範例：一則 Google I/O 報導可能同時包含「Gemini 3.5 Flash 發布」、"
     "「Veo 4 公開」、「Antigravity 工具上線」三個事件，請拆成 3 筆。\n"
@@ -112,6 +121,7 @@ _EXTRACT_SYSTEM = (
     '  "title":       "8-20 字繁體中文事件標題（直述、無前綴）",\n'
     '  "summary":     "2-3 句繁體中文摘要，80-150 字，含具體事實",\n'
     f'  "category":   "{ " | ".join(CATEGORY_IDS) }",\n'
+    f'  "tags":        ["標籤 id"],   // 0-{MAX_TAGS} 個，只能用上方字典的 id\n'
     '  "importance":  1-10 整數,\n'
     '  "who":         ["主體 1", "主體 2"],   // 公司/人物/產品名；'
     '若是產品/模型發布類事件，第一個放產品名（例：「Gemini 3.5 Flash」），公司名放後面；'
@@ -171,6 +181,7 @@ def _normalize_event(ev: dict, src_item: dict) -> dict | None:
         "title": title[:80],
         "summary": summary[:400],
         "category": cat,
+        "tags": normalize_tags(ev.get("tags")),
         "importance": importance,
         "who": who[:6],
         "what": (ev.get("what") or "").strip()[:20],
@@ -497,6 +508,7 @@ def _merge_into(head: dict, other: dict) -> None:
             cur_set.add(_norm_token(w))
     head["who"] = cur_who[:8]
     head["importance"] = max(_safe_int(head.get("importance"), 0), _safe_int(other.get("importance"), 0))
+    head["tags"] = merge_tags(head.get("tags") or [], other.get("tags") or [])
 
 
 def _llm_group_merge(comp: list[dict]) -> list[dict]:
@@ -582,6 +594,9 @@ def _merge_into_programmatic(head: dict, other: dict) -> None:
 
     # 3. importance 取最大值
     head["importance"] = max(_safe_int(head.get("importance"), 5), _safe_int(other.get("importance"), 5))
+
+    # 3.5 tags 聯集（依出現次數排序，最多 MAX_TAGS 個）
+    head["tags"] = merge_tags(head.get("tags") or [], other.get("tags") or [])
 
     # 4. 更好的 when / where
     w_head = head.get("when") or ""
